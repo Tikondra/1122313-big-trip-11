@@ -1,7 +1,7 @@
 # Личный проект «Большое путешествие» [![Build status][travis-image]][travis-url]
 
 * Студент: [Дарья Веденеева](https://up.htmlacademy.ru/ecmascript/11/user/1122313).
-* Наставник: `Неизвестно`.
+* Наставник: [Артем Рудов](https://htmlacademy.ru/profile/artrudov).
 
 ---
 
