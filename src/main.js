@@ -11,6 +11,10 @@ const tripInfoContainer = document.querySelector(`.trip-main`);
 const tripControls = document.querySelector(`.trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
 
+const cleanContainer = (container) => {
+  container.innerHTML = ``;
+};
+
 const creatTripInfo = () => {
   return (
     `<section class="trip-main__trip-info  trip-info">
@@ -32,7 +36,6 @@ const createTripCost = () => {
 };
 
 const createMenu = () => {
-  tripControls.innerHTML = ``;
   return (
     `<h2 class="visually-hidden">Switch trip view</h2>
      <nav class="trip-controls__trip-tabs  trip-tabs">
@@ -67,7 +70,6 @@ const createFilter = () => {
 };
 
 const createSort = () => {
-  tripEvents.innerHTML = ``;
   return (
     `<h2 class="visually-hidden">Trip events</h2>
      <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
@@ -351,14 +353,15 @@ const init = () => {
 
   render(tripInfo, createTripCost(), Place.BEFOREEND);
 
-  render(tripControls, createMenu(), Place.AFTERBEGIN);
+  cleanContainer(tripControls);
 
+  render(tripControls, createMenu(), Place.AFTERBEGIN);
   render(tripControls, createFilter(), Place.BEFOREEND);
 
+  cleanContainer(tripEvents);
+
   render(tripEvents, createSort(), Place.AFTERBEGIN);
-
   render(tripEvents, createEventEdit(), Place.BEFOREEND);
-
   render(tripEvents, creatTripDaysCont(), Place.BEFOREEND);
 
   const tripDays = tripEvents.querySelector(`.trip-days`);
