@@ -8,28 +8,13 @@ import {creatTripDaysCont} from "./components/days-container";
 import {createEventDay} from "./components/event-day";
 import {createEvent} from "./components/event";
 
-const EVENT_COUNT = 3;
+import {EVENT_COUNT, Place} from "./components/consts";
 
-const Place = {
-  AFTERBEGIN: `afterbegin`,
-  BEFOREEND: `beforeend`
-};
+import {cleanContainer, render, renderCard} from "./components/utils";
 
 const tripInfoContainer = document.querySelector(`.trip-main`);
 const tripControls = document.querySelector(`.trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
-
-const cleanContainer = (container) => {
-  container.innerHTML = ``;
-};
-
-const renderCard = (container, elem, count) => {
-  for (let i = 0; i < count; i++) {
-    render(container, elem, Place.BEFOREEND);
-  }
-};
-
-const render = (container, template, place) => container.insertAdjacentHTML(place, template);
 
 const init = () => {
   render(tripInfoContainer, creatTripInfo(), Place.AFTERBEGIN);
