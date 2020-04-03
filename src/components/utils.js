@@ -1,4 +1,4 @@
-import {Place} from "./constants";
+import {Place} from "./consts";
 
 const cleanContainer = (container) => {
   container.innerHTML = ``;
