@@ -15,6 +15,15 @@ export const TEXT = [
   `Nunc fermentum tortor ac porta dapibus.`,
   `In rutrum ac purus sit amet tempus.`
 ];
+export const OFFERS_DESCRIPTION = [
+  `Order Uber`,
+  `Add luggage`,
+  `Rent a car`,
+  `Add breakfast`,
+  `Switch to comfort`,
+  `Book tickets`,
+  `Lunch in city`
+];
 export const RANDOM_PIC = `http://picsum.photos/248/152?r=${Math.random()}`;
 export const LESS_TEN = 10;
 export const HOURS_RANGE = 10;
@@ -27,4 +36,3 @@ export const Place = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`
 };
-
