@@ -20,22 +20,24 @@ export const createEvent = (event) => {
     const endTime = formatTime(end);
     const duration = getDuration(start, end);
     const date = start.getFullYear() + `-` + castTimeFormat(start.getMonth()) + `-` + castTimeFormat(start.getDay());
+    const imgEvent = tipEvent.toLowerCase();
 
     return {
       startTime,
       endTime,
       duration,
-      date
+      date,
+      imgEvent
     };
   };
 
-  const {startTime, endTime, duration, date} = getDataEvent(timeStart, timeEnd);
+  const {startTime, endTime, duration, date, imgEvent} = getDataEvent(timeStart, timeEnd);
 
   return (
     `<li class="trip-events__item">
       <div class="event">
         <div class="event__type">
-          <img class="event__type-icon" width="42" height="42" src="img/icons/${tipEvent}.png" alt="Event type icon">
+          <img class="event__type-icon" width="42" height="42" src="img/icons/${imgEvent}.png" alt="Event type icon">
         </div>
         <h3 class="event__title">${tipEvent} to ${city}</h3>
 

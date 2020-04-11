@@ -1,6 +1,6 @@
 export const EVENT_COUNT = 3;
 
-export const TIP_EVENT = [`taxi`, `bus`, `train`, `ship`, `transport`, `drive`, `flight`, `check-in`, `sightseeing`, `restaurant`];
+export const TIP_EVENT = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`, `Check-in`, `Sightseeing`, `Restaurant`];
 export const CITIES = [`Amsterdam`, `Geneva`, `Venice`, `Tokyo`, `Los Angeles`, `Ottawa`];
 export const TEXT = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
