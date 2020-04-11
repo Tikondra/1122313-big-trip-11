@@ -6,15 +6,17 @@ import {createSort} from "./components/sort";
 import {createEventEdit} from "./components/event-edit";
 import {creatTripDaysCont} from "./components/days-container";
 import {createEventDay} from "./components/event-day";
-import {createEvent} from "./components/event";
+import {generateEvents} from "./Mocks/event-mock";
 
 import {EVENT_COUNT, Place} from "./components/consts";
 
-import {cleanContainer, render, renderCard} from "./components/utils";
+import {cleanContainer, render, renderEvents} from "./components/utils";
 
 const tripInfoContainer = document.querySelector(`.trip-main`);
 const tripControls = document.querySelector(`.trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
+
+const events = generateEvents(EVENT_COUNT);
 
 const init = () => {
   render(tripInfoContainer, creatTripInfo(), Place.AFTERBEGIN);
@@ -40,7 +42,7 @@ const init = () => {
 
   const eventList = tripDays.querySelector(`.trip-events__list`);
 
-  renderCard(eventList, createEvent(), EVENT_COUNT);
+  renderEvents(eventList, events, EVENT_COUNT);
 };
 
 init();

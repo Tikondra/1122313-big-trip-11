@@ -1,19 +1,51 @@
-export const createEvent = () => {
+import {formatTime, castTimeFormat} from "./utils";
+import {IN_HOUR} from "./consts";
+
+export const createEvent = (event) => {
+  const {tipEvent, city, timeStart, timeEnd} = event;
+
+  const getDuration = (start, end) => {
+    const startValue = (start.getHours() * IN_HOUR) + start.getMinutes();
+    const endValue = (end.getHours() * IN_HOUR) + end.getMinutes();
+    const durationHour = Math.floor((endValue - startValue) / IN_HOUR);
+    const durationMinute = (endValue - startValue) % IN_HOUR;
+    const durationH = durationHour ? castTimeFormat(durationHour) + `H` : ``;
+    const durationM = durationMinute ? castTimeFormat(durationMinute) + `M` : ``;
+
+    return durationH + ` ` + durationM;
+  };
+
+  const getDataEvent = (start, end) => {
+    const startTime = formatTime(start);
+    const endTime = formatTime(end);
+    const duration = getDuration(start, end);
+    const date = start.getFullYear() + `-` + castTimeFormat(start.getMonth()) + `-` + castTimeFormat(start.getDay());
+
+    return {
+      startTime,
+      endTime,
+      duration,
+      date
+    };
+  };
+
+  const {startTime, endTime, duration, date} = getDataEvent(timeStart, timeEnd);
+
   return (
     `<li class="trip-events__item">
       <div class="event">
         <div class="event__type">
-          <img class="event__type-icon" width="42" height="42" src="img/icons/taxi.png" alt="Event type icon">
+          <img class="event__type-icon" width="42" height="42" src="img/icons/${tipEvent}.png" alt="Event type icon">
         </div>
-        <h3 class="event__title">Taxi to Amsterdam</h3>
+        <h3 class="event__title">${tipEvent} to ${city}</h3>
 
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="2019-03-18T10:30">10:30</time>
+            <time class="event__start-time" datetime="${date}T${startTime}">${startTime}</time>
             &mdash;
-            <time class="event__end-time" datetime="2019-03-18T11:00">11:00</time>
+            <time class="event__end-time" datetime="${date}T${endTime}">${endTime}</time>
           </p>
-          <p class="event__duration">30M</p>
+          <p class="event__duration">${duration}</p>
         </div>
 
         <p class="event__price">
