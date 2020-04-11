@@ -33,7 +33,7 @@ const init = () => {
   cleanContainer(tripEvents);
 
   render(tripEvents, createSort(), Place.AFTERBEGIN);
-  render(tripEvents, createEventEdit(), Place.BEFOREEND);
+  render(tripEvents, createEventEdit(events[0]), Place.BEFOREEND);
   render(tripEvents, creatTripDaysCont(), Place.BEFOREEND);
 
   const tripDays = tripEvents.querySelector(`.trip-days`);

@@ -1,7 +1,7 @@
 import {createOption} from "./option-markup";
 
 export const createOptions = (options) => {
-  const optionsMarkup = options.map((it) => createOption(it)).join(`\n`);
+  const optionsMarkup = options.slice(0, 3).map((it) => createOption(it)).join(`\n`);
 
   return (
     `<h4 class="visually-hidden">Offers:</h4>
