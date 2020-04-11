@@ -1,8 +1,10 @@
 import {formatTime, castTimeFormat} from "./utils";
 import {IN_HOUR} from "./consts";
+import {createTypeEvent} from "./type-event";
+import {createTimeEvent} from "./time-event";
 
 export const createEvent = (event) => {
-  const {tipEvent, city, timeStart, timeEnd} = event;
+  const {typeEvent, city, timeStart, timeEnd} = event;
 
   const getDuration = (start, end) => {
     const startValue = (start.getHours() * IN_HOUR) + start.getMinutes();
@@ -20,7 +22,7 @@ export const createEvent = (event) => {
     const endTime = formatTime(end);
     const duration = getDuration(start, end);
     const date = start.getFullYear() + `-` + castTimeFormat(start.getMonth()) + `-` + castTimeFormat(start.getDay());
-    const imgEvent = tipEvent.toLowerCase();
+    const imgEvent = typeEvent.toLowerCase();
 
     return {
       startTime,
@@ -36,19 +38,8 @@ export const createEvent = (event) => {
   return (
     `<li class="trip-events__item">
       <div class="event">
-        <div class="event__type">
-          <img class="event__type-icon" width="42" height="42" src="img/icons/${imgEvent}.png" alt="Event type icon">
-        </div>
-        <h3 class="event__title">${tipEvent} to ${city}</h3>
-
-        <div class="event__schedule">
-          <p class="event__time">
-            <time class="event__start-time" datetime="${date}T${startTime}">${startTime}</time>
-            &mdash;
-            <time class="event__end-time" datetime="${date}T${endTime}">${endTime}</time>
-          </p>
-          <p class="event__duration">${duration}</p>
-        </div>
+        ${createTypeEvent(typeEvent, city, imgEvent)}
+        ${createTimeEvent(date, startTime, endTime, duration)}
 
         <p class="event__price">
           &euro;&nbsp;<span class="event__price-value">20</span>

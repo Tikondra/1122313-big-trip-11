@@ -1,5 +1,5 @@
 import {getRandomArrayItem, getRandomIntegerNumber} from "../components/utils";
-import {TIP_EVENT, CITIES, TEXT, RANDOM_PIC, HOURS_RANGE, START_TIME, MINUTES_RANGE} from "../components/consts";
+import {TYPE_EVENT, CITIES, TEXT, RANDOM_PIC, HOURS_RANGE, START_TIME, MINUTES_RANGE} from "../components/consts";
 
 const MAX_PRICE = 50;
 
@@ -26,12 +26,12 @@ const generateEvent = () => {
   const timeEnd = getEndTime(timeStart);
 
   return {
-    tipEvent: getRandomArrayItem(TIP_EVENT),
+    typeEvent: getRandomArrayItem(TYPE_EVENT),
     city: getRandomArrayItem(CITIES),
     timeStart,
     timeEnd,
     options: {
-      tipOptions: getRandomArrayItem(TIP_EVENT),
+      tipOptions: getRandomArrayItem(TYPE_EVENT),
       description: getRandomArrayItem(TEXT),
       price: getRandomIntegerNumber(MAX_PRICE)
     },
