@@ -1,15 +1,14 @@
-export const createOffer = (option) => {
-  const {description, price} = option;
+export const createOffer = (option, i) => {
+  const {description, price, typeOptions} = option;
 
   return (
     `<div class="event__offer-selector">
       <input
         class="event__offer-checkbox  visually-hidden"
-        id="event-offer-luggage-1"
+        id="${typeOptions}-${i}"
         type="checkbox"
-        name="event-offer-luggage"
-        checked>
-      <label class="event__offer-label" for="event-offer-luggage-1">
+        name="event-offer-${typeOptions}">
+      <label class="event__offer-label" for="${typeOptions}-${i}">
         <span class="event__offer-title">${description}</span>
         &plus;
         &euro;&nbsp;<span class="event__offer-price">${price}</span>

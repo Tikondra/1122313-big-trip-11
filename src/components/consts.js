@@ -25,7 +25,6 @@ export const OFFERS_DESCRIPTION = [
   `Book tickets`,
   `Lunch in city`
 ];
-export const RANDOM_PIC = `http://picsum.photos/248/152?r=${Math.random()}`;
 export const LESS_TEN = 10;
 export const HOURS_RANGE = 10;
 export const MINUTES_RANGE = 60;

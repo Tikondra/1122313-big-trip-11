@@ -2,7 +2,7 @@ import {createOffer} from "./offers-item";
 
 export const createOffers = (options) => {
   const offers = options
-    .map((it) => createOffer(it))
+    .map((it, i) => createOffer(it, i))
     .join(`\n`);
 
   return (

@@ -42,6 +42,15 @@ const generateOption = () => {
   };
 };
 
+const getRandomPicture = () => {
+  const pictures = [];
+  for (let i = 0; i < getRandomIntegerNumber(MAX_OPTIONS, MIN_OPTIONS); i++) {
+    pictures.push(`http://picsum.photos/248/152?r=${Math.random()}`);
+  }
+
+  return pictures;
+};
+
 const generateEvent = () => {
   const timeStart = getRandomStartTime();
   const timeEnd = getEndTime(timeStart);
@@ -52,9 +61,9 @@ const generateEvent = () => {
     timeStart,
     timeEnd,
     eventPrice: getRandomIntegerNumber(MAX_PRICE),
-    picture: RANDOM_PIC,
+    pictures: getRandomPicture(),
     options: generateEvents(getRandomIntegerNumber(MAX_OPTIONS, MIN_OPTIONS), generateOption),
-    destinations: DESTINATION.slice(getRandomIntegerNumber(DESTINATION.length))
+    destinations: DESTINATION.slice(getRandomIntegerNumber(DESTINATION.length)).slice(0, 5)
   };
 };
 

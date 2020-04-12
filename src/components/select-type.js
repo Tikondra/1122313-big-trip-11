@@ -1,4 +1,5 @@
-import {createActivity, createTransfer} from "./transfer-select";
+import {createTransfer} from "./select-transfer";
+import {createActivity} from "./select-activity";
 
 export const createEventType = (typeEvent) => {
   const typeImg = typeEvent.toLowerCase();
