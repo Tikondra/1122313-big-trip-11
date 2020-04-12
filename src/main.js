@@ -5,12 +5,11 @@ import {createFilter} from "./components/filter";
 import {createSort} from "./components/sort";
 import {createEventEdit} from "./components/event-edit";
 import {creatTripDaysCont} from "./components/days-container";
-import {createEventDay} from "./components/event-day";
 import {generateEvent, generateEvents} from "./Mocks/event-mock";
 
 import {EVENT_COUNT, Place} from "./components/consts";
 
-import {cleanContainer, render, renderEvents} from "./components/utils";
+import {cleanContainer, render} from "./components/utils";
 
 const tripInfoContainer = document.querySelector(`.trip-main`);
 const tripControls = document.querySelector(`.trip-controls`);
@@ -35,14 +34,6 @@ const init = () => {
   render(tripEvents, createSort(), Place.AFTERBEGIN);
   render(tripEvents, createEventEdit(events[0]), Place.BEFOREEND);
   render(tripEvents, creatTripDaysCont(), Place.BEFOREEND);
-
-  const tripDays = tripEvents.querySelector(`.trip-days`);
-
-  render(tripDays, createEventDay(), Place.BEFOREEND);
-
-  const eventList = tripDays.querySelector(`.trip-events__list`);
-
-  renderEvents(eventList, events, EVENT_COUNT);
 };
 
 init();
