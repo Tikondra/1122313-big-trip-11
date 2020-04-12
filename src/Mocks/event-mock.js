@@ -1,9 +1,19 @@
 import {getRandomArrayItem, getRandomIntegerNumber} from "../components/utils";
-import {TYPE_EVENT_TRANSPORT, TYPE_EVENT, CITIES, OFFERS_DESCRIPTION, RANDOM_PIC, HOURS_RANGE, START_TIME, MINUTES_RANGE} from "../components/consts";
+import {
+  TYPE_EVENT_TRANSPORT,
+  TYPE_EVENT,
+  CITIES,
+  OFFERS_DESCRIPTION,
+  RANDOM_PIC,
+  HOURS_RANGE,
+  START_TIME,
+  MINUTES_RANGE,
+  DESTINATION
+} from "../components/consts";
 
 const MAX_PRICE = 1000;
 const MAX_PRICE_OFFERS = 300;
-const MAX_OPTIONS = 5;
+const MAX_OPTIONS = 6;
 const MIN_OPTIONS = 1;
 
 const getRandomStartTime = () => {
@@ -43,7 +53,8 @@ const generateEvent = () => {
     timeEnd,
     eventPrice: getRandomIntegerNumber(MAX_PRICE),
     picture: RANDOM_PIC,
-    options: generateEvents(getRandomIntegerNumber(MAX_OPTIONS, MIN_OPTIONS), generateOption)
+    options: generateEvents(getRandomIntegerNumber(MAX_OPTIONS, MIN_OPTIONS), generateOption),
+    destinations: DESTINATION.slice(getRandomIntegerNumber(DESTINATION.length))
   };
 };
 

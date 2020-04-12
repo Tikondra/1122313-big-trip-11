@@ -3,7 +3,7 @@ export const EVENT_COUNT = 3;
 export const TYPE_EVENT_TRANSPORT = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`];
 export const TYPE_EVENT = [`Check-in`, `Sightseeing`, `Restaurant`];
 export const CITIES = [`Amsterdam`, `Geneva`, `Venice`, `Tokyo`, `Los Angeles`, `Ottawa`];
-export const TEXT = [
+export const DESTINATION = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
   `Cras aliquet varius magna, non porta ligula feugiat eget.`,
   `Fusce tristique felis at fermentum pharetra.`,
@@ -31,6 +31,7 @@ export const HOURS_RANGE = 10;
 export const MINUTES_RANGE = 60;
 export const START_TIME = 6;
 export const IN_HOUR = 60;
+export const YEAR_FORMAT = 2;
 
 
 export const Place = {
