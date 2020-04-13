@@ -1,11 +1,10 @@
 import {CITIES} from "./consts";
 import {createOptionCity} from "./option-city";
-import {getRandomIntegerNumber} from "./utils";
+import {getRandomArrayItem} from "./utils";
+
+const getCities = () => CITIES.map((it) => createOptionCity(it)).join(`\n`);
 
 export const createCitySelect = (typeEvent) => {
-  const citySelect = CITIES
-    .map((it) => createOptionCity(it))
-    .join(`\n`);
 
   return (
     `<div class="event__field-group  event__field-group--destination">
@@ -17,10 +16,10 @@ export const createCitySelect = (typeEvent) => {
         id="event-destination-1"
         type="text"
         name="event-destination"
-        value="${CITIES[getRandomIntegerNumber(CITIES.length)]}"
+        value="${getRandomArrayItem(CITIES)}"
         list="destination-list-1">
       <datalist id="destination-list-1">
-        ${citySelect}
+        ${getCities()}
       </datalist>
     </div>`
   );

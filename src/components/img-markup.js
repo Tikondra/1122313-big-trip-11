@@ -1,5 +1,1 @@
-export const createImg = (img) => {
-  return (
-    `<img class="event__photo" src="${img}" alt="Event photo">`
-  );
-};
+export const createImg = (img) => `<img class="event__photo" src="${img}" alt="Event photo">`;

@@ -1,4 +1,4 @@
-import {Place, LESS_TEN} from "./consts";
+import {Place, Format} from "./consts";
 import {createEvent} from "./event";
 
 export const isTrue = () => Math.random() > 0.5;
@@ -17,7 +17,7 @@ export const getRandomArrayItem = (array) => {
   return array[randomIndex];
 };
 
-export const castTimeFormat = (value) => value < LESS_TEN ? `0${value}` : String(value);
+export const castTimeFormat = (value) => value < Format.LESS_TEN ? `0${value}` : String(value);
 
 export const formatTime = (date) => {
   const hours = castTimeFormat(date.getHours());

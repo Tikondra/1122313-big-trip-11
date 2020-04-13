@@ -1,7 +1,3 @@
-export const EVENT_COUNT = 3;
-
-export const TYPE_EVENT_TRANSPORT = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`];
-export const TYPE_EVENT = [`Check-in`, `Sightseeing`, `Restaurant`];
 export const CITIES = [`Amsterdam`, `Geneva`, `Venice`, `Tokyo`, `Los Angeles`, `Ottawa`];
 export const DESTINATION = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
@@ -25,14 +21,20 @@ export const OFFERS_DESCRIPTION = [
   `Book tickets`,
   `Lunch in city`
 ];
-export const LESS_TEN = 10;
-export const HOURS_RANGE = 10;
-export const MINUTES_RANGE = 60;
-export const START_TIME = 6;
-export const IN_HOUR = 60;
-export const YEAR_FORMAT = 2;
 
-
+export const EvenOption = {
+  COUNT: 3,
+  TYPE_TRANSPORT: [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`],
+  TYPE_ACTIVITY: [`Check-in`, `Sightseeing`, `Restaurant`],
+};
+export const Format = {
+  LESS_TEN: 10,
+  HOURS_RANGE: 10,
+  MINUTES_RANGE: 60,
+  START_TIME: 6,
+  IN_HOUR: 60,
+  YEAR: 2,
+};
 export const Place = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`

@@ -1,12 +1,13 @@
 import {castTimeFormat} from "./utils";
-import {YEAR_FORMAT} from "./consts";
+import {Format} from "./consts";
+
+const getDate = (date) => {
+  const dateValue = castTimeFormat(date.getDate()) + `/` + castTimeFormat(date.getMonth()) + `/` + castTimeFormat(date.getFullYear()).slice(Format.YEAR);
+  const timeValue = castTimeFormat(date.getHours()) + `:` + castTimeFormat(date.getMinutes());
+  return dateValue + ` ` + timeValue;
+};
 
 export const createSelectTime = (timeStart) => {
-  const getDate = (date) => {
-    const dateValue = castTimeFormat(date.getDate()) + `/` + castTimeFormat(date.getMonth()) + `/` + castTimeFormat(date.getFullYear()).slice(YEAR_FORMAT);
-    const timeValue = castTimeFormat(date.getHours()) + `:` + castTimeFormat(date.getMinutes());
-    return dateValue + ` ` + timeValue;
-  };
 
   return (
     `<div class="event__field-group  event__field-group--time">

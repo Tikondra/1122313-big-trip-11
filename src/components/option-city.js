@@ -1,5 +1,1 @@
-export const createOptionCity = (city) => {
-  return (
-    `<option value="${city}"></option>`
-  );
-};
+export const createOptionCity = (city) => `<option value="${city}"></option>`;

@@ -1,32 +1,32 @@
 import {formatTime, castTimeFormat} from "./utils";
-import {IN_HOUR} from "./consts";
+import {Format} from "./consts";
+
+const getDuration = (start, end) => {
+  const startValue = (start.getHours() * Format.IN_HOUR) + start.getMinutes();
+  const endValue = (end.getHours() * Format.IN_HOUR) + end.getMinutes();
+  const durationHour = Math.floor((endValue - startValue) / Format.IN_HOUR);
+  const durationMinute = (endValue - startValue) % Format.IN_HOUR;
+  const durationH = durationHour ? castTimeFormat(durationHour) + `H` : ``;
+  const durationM = durationMinute ? castTimeFormat(durationMinute) + `M` : ``;
+
+  return durationH + ` ` + durationM;
+};
+
+const getDataEvent = (start, end) => {
+  const startTime = formatTime(start);
+  const endTime = formatTime(end);
+  const duration = getDuration(start, end);
+  const date = start.getFullYear() + `-` + castTimeFormat(start.getMonth()) + `-` + castTimeFormat(start.getDay());
+
+  return {
+    startTime,
+    endTime,
+    duration,
+    date,
+  };
+};
 
 export const createTimeEvent = (timeStart, timeEnd) => {
-  const getDuration = (start, end) => {
-    const startValue = (start.getHours() * IN_HOUR) + start.getMinutes();
-    const endValue = (end.getHours() * IN_HOUR) + end.getMinutes();
-    const durationHour = Math.floor((endValue - startValue) / IN_HOUR);
-    const durationMinute = (endValue - startValue) % IN_HOUR;
-    const durationH = durationHour ? castTimeFormat(durationHour) + `H` : ``;
-    const durationM = durationMinute ? castTimeFormat(durationMinute) + `M` : ``;
-
-    return durationH + ` ` + durationM;
-  };
-
-  const getDataEvent = (start, end) => {
-    const startTime = formatTime(start);
-    const endTime = formatTime(end);
-    const duration = getDuration(start, end);
-    const date = start.getFullYear() + `-` + castTimeFormat(start.getMonth()) + `-` + castTimeFormat(start.getDay());
-
-    return {
-      startTime,
-      endTime,
-      duration,
-      date,
-    };
-  };
-
   const {startTime, endTime, duration, date} = getDataEvent(timeStart, timeEnd);
 
   return (

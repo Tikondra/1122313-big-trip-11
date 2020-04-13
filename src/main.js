@@ -7,7 +7,7 @@ import {createEventEdit} from "./components/event-edit";
 import {creatTripDaysCont} from "./components/days-container";
 import {generateEvent, generateEvents} from "./Mocks/event-mock";
 
-import {EVENT_COUNT, Place} from "./components/consts";
+import {EvenOption, Place} from "./components/consts";
 
 import {cleanContainer, render} from "./components/utils";
 
@@ -15,7 +15,7 @@ const tripInfoContainer = document.querySelector(`.trip-main`);
 const tripControls = document.querySelector(`.trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
 
-const events = generateEvents(EVENT_COUNT, generateEvent);
+const events = generateEvents(EvenOption.COUNT, generateEvent);
 
 const init = () => {
   render(tripInfoContainer, creatTripInfo(), Place.AFTERBEGIN);

@@ -1,14 +1,5 @@
 import {getRandomArrayItem, getRandomIntegerNumber} from "../components/utils";
-import {
-  TYPE_EVENT_TRANSPORT,
-  TYPE_EVENT,
-  CITIES,
-  OFFERS_DESCRIPTION,
-  HOURS_RANGE,
-  START_TIME,
-  MINUTES_RANGE,
-  DESTINATION
-} from "../components/consts";
+import {EvenOption, CITIES, OFFERS_DESCRIPTION, Format, DESTINATION} from "../components/consts";
 
 const MAX_PRICE = 1000;
 const MAX_PRICE_OFFERS = 300;
@@ -18,8 +9,8 @@ const MIN_OPTIONS = 1;
 const getRandomStartTime = () => {
   const targetDate = new Date();
 
-  targetDate.setHours(getRandomIntegerNumber(HOURS_RANGE, START_TIME));
-  targetDate.setMinutes(getRandomIntegerNumber(MINUTES_RANGE, START_TIME));
+  targetDate.setHours(getRandomIntegerNumber(Format.HOURS_RANGE, Format.START_TIME));
+  targetDate.setMinutes(getRandomIntegerNumber(Format.MINUTES_RANGE, Format.START_TIME));
 
   return targetDate;
 };
@@ -27,15 +18,15 @@ const getRandomStartTime = () => {
 const getEndTime = (startTime) => {
   const timeEnd = new Date(startTime.getTime());
 
-  timeEnd.setHours(timeEnd.getHours() + getRandomIntegerNumber(HOURS_RANGE, 1));
-  timeEnd.setMinutes(getRandomIntegerNumber(MINUTES_RANGE));
+  timeEnd.setHours(timeEnd.getHours() + getRandomIntegerNumber(Format.HOURS_RANGE, 1));
+  timeEnd.setMinutes(getRandomIntegerNumber(Format.MINUTES_RANGE));
 
   return timeEnd;
 };
 
 const generateOption = () => {
   return {
-    typeOptions: getRandomArrayItem(TYPE_EVENT_TRANSPORT),
+    typeOptions: getRandomArrayItem(EvenOption.TYPE_TRANSPORT),
     description: getRandomArrayItem(OFFERS_DESCRIPTION),
     price: getRandomIntegerNumber(MAX_PRICE_OFFERS)
   };
@@ -55,7 +46,7 @@ const generateEvent = () => {
   const timeEnd = getEndTime(timeStart);
 
   return {
-    typeEvent: getRandomArrayItem(TYPE_EVENT_TRANSPORT.concat(TYPE_EVENT)),
+    typeEvent: getRandomArrayItem(EvenOption.TYPE_TRANSPORT.concat(EvenOption.TYPE_ACTIVITY)),
     city: getRandomArrayItem(CITIES),
     timeStart,
     timeEnd,
