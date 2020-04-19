@@ -1,11 +1,25 @@
-import {createSort} from "./sort";
-import {createEventEdit} from "./event-edit";
-import {creatTripDaysCont} from "./days-container";
+import {createElement} from "./utils";
 
-export const createBoard = (events) => {
-  return (
-    `${createSort()}
-     ${createEventEdit(events[0])}
-     ${creatTripDaysCont()}`
-  );
-};
+const createBoard = () => `<ul class="trip-days"></ul>`;
+
+export default class Board {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createBoard();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
