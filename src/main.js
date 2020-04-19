@@ -7,7 +7,6 @@ import {EvenOption, Place} from "./components/consts";
 
 import {cleanContainer, render} from "./components/utils";
 
-
 const headerInfo = document.querySelector(`.trip-main`);
 const tripBoard = document.querySelector(`.trip-events`);
 

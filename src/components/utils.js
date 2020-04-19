@@ -32,4 +32,20 @@ export const renderEvents = (container, events, count) => {
   }
 };
 
-export const render = (container, template, place) => container.insertAdjacentHTML(place, template);
+export const render = (container, element, place) => {
+  switch (place) {
+    case Place.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case Place.BEFOREEND:
+      container.append(element);
+      break;
+  }
+};
+
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
+};
