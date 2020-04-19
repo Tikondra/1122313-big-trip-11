@@ -16,10 +16,6 @@ import {getRandomIntegerNumber, render} from "./components/utils";
 
 const renderEvent = (container, event) => {
   const replaceEventToEdit = () => {
-    if (openEvent) {
-      container.replaceChild(openEvent[0], openEvent[1]);
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    }
     openEvent = [eventComponent.getElement(), eventEditComponent.getElement()];
     container.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
   };
@@ -43,8 +39,10 @@ const renderEvent = (container, event) => {
   const editBtn = eventComponent.getElement().querySelector(`.event__rollup-btn`);
 
   editBtn.addEventListener(`click`, () => {
-    replaceEventToEdit();
-    document.addEventListener(`keydown`, onEscKeyDown);
+    if (!openEvent) {
+      replaceEventToEdit();
+      document.addEventListener(`keydown`, onEscKeyDown);
+    }
   });
 
   const eventEditComponent = new EventEditComponent(event);
