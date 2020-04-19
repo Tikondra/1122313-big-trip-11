@@ -1,22 +1,35 @@
 import {createTripInfo} from "./trip-info";
 import {createTripCost} from "./trip-cost";
-import {createMenu} from "./menu";
-import {createFilter} from "./filter";
-import {createNewEventBtn} from "./newEvent";
+import {createElement} from "./utils";
 
-export const createHeaderInfo = () => {
+const createHeaderInfo = () => {
 
   return (
     `<section class="trip-main__trip-info  trip-info">
             ${createTripInfo()}
             ${createTripCost()}
-     </section>
-
-     <div class="trip-main__trip-controls  trip-controls">
-            ${createMenu()}
-            ${createFilter()}
-     </div>
-     ${createNewEventBtn()}`
+     </section>`
   );
 };
 
+export default class HeaderInfo {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createHeaderInfo();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
