@@ -21,9 +21,11 @@ export const OFFERS_DESCRIPTION = [
   `Book tickets`,
   `Lunch in city`
 ];
+export const MONTH = [`JAN`, `FEB`, `MAR`, `APR`, `MAY`, `JUN`, `JUL`, `AUG`, `SEP`, `OCT`, `NOV`, `DEC`];
 
 export const EvenOption = {
-  COUNT: 3,
+  DAY_COUNT: 5,
+  COUNT: 15,
   TYPE_TRANSPORT: [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`],
   TYPE_ACTIVITY: [`Check-in`, `Sightseeing`, `Restaurant`],
 };
@@ -37,5 +39,6 @@ export const Format = {
 };
 export const Place = {
   AFTERBEGIN: `afterbegin`,
-  BEFOREEND: `beforeend`
+  BEFOREEND: `beforeend`,
+  AFTERNODE: `after`
 };
