@@ -1,5 +1,25 @@
-import {createEvent} from "./event";
+import {createElement} from "./utils";
 
-const getEventsList = (events) => events.map((it) => createEvent(it)).join(`\n`);
+const createEventsList = () => `<ul class="trip-events__list"></ul>`;
 
-export const createEvents = (events) => `<ul class="trip-events__list">${getEventsList(events)}</ul>`;
+export default class EventsList {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEventsList();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
