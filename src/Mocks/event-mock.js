@@ -1,10 +1,13 @@
-import {getRandomArrayItem, getRandomIntegerNumber} from "../components/utils";
-import {EvenOption, CITIES, OFFERS_DESCRIPTION, Format, DESTINATION} from "../components/consts";
+import {castTimeFormat, getRandomArrayItem, getRandomIntegerNumber, makeCounter} from "../components/utils";
+import {EvenOption, CITIES, OFFERS_DESCRIPTION, Format, DESTINATION, MONTH} from "../components/consts";
 
 const MAX_PRICE = 1000;
 const MAX_PRICE_OFFERS = 300;
 const MAX_OPTIONS = 6;
 const MIN_OPTIONS = 1;
+
+const dayCounter = makeCounter();
+const dateCounter = makeCounter();
 
 const getRandomStartTime = () => {
   const targetDate = new Date();
@@ -41,6 +44,15 @@ const getRandomPicture = () => {
   return pictures;
 };
 
+const getRandomDate = () => {
+  const targetDate = new Date();
+
+  const diffValue = dateCounter() + 1;
+  targetDate.setDate(targetDate.getDate() + diffValue);
+
+  return targetDate;
+};
+
 const generateEvent = () => {
   const timeStart = getRandomStartTime();
   const timeEnd = getEndTime(timeStart);
@@ -57,10 +69,24 @@ const generateEvent = () => {
   };
 };
 
+const generateDay = () => {
+  const date = getRandomDate();
+  const dateTime = date.getFullYear() + `-` + castTimeFormat(date.getMonth()) + `-` + castTimeFormat(date.getDay());
+  const dayNumber = date.getDate();
+  const month = MONTH[date.getMonth()];
+
+  return {
+    dayCounter: dayCounter() + 1,
+    dateTime,
+    dayNumber,
+    month
+  };
+};
+
 const generateEvents = (count, object) => {
   return new Array(count)
     .fill(``)
     .map(object);
 };
 
-export {generateEvent, generateEvents};
+export {generateEvent, generateEvents, generateDay};

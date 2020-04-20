@@ -1,8 +1,9 @@
 import {createTypeEvent} from "./type-event";
 import {createTimeEvent} from "./time-event";
 import {createOptions} from "./event-option";
+import {createElement} from "./utils";
 
-export const createEvent = (event) => {
+const createEvent = (event) => {
   const {typeEvent, city, timeStart, timeEnd, eventPrice, options} = event;
 
   return (
@@ -21,3 +22,29 @@ export const createEvent = (event) => {
     </li>`
   );
 };
+
+class Event {
+  constructor(event) {
+    this._event = event;
+    this._element = null;
+  }
+
+  getTemplate() {
+
+    return createEvent(this._event);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
+export default Event;

@@ -1,15 +1,15 @@
 import {createElement} from "./utils";
 
-const createEventsList = () => `<ul class="trip-events__list"></ul>`;
+const createBoard = () => `<ul class="trip-days"></ul>`;
 
-class EventsList {
+class Board {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
 
-    return createEventsList();
+    return createBoard();
   }
 
   getElement() {
@@ -25,4 +25,4 @@ class EventsList {
   }
 }
 
-export default EventsList;
+export default Board;

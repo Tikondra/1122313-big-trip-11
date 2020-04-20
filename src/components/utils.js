@@ -1,10 +1,12 @@
 import {Place, Format} from "./consts";
-import {createEvent} from "./event";
 
-export const isTrue = () => Math.random() > 0.5;
+export const makeCounter = () => {
+  function counter() {
+    return counter.currentCount++;
+  }
+  counter.currentCount = 0;
 
-export const cleanContainer = (container) => {
-  container.innerHTML = ``;
+  return counter;
 };
 
 export const getRandomIntegerNumber = (max, min = 0) => {
@@ -26,10 +28,23 @@ export const formatTime = (date) => {
   return `${hours}:${minutes}`;
 };
 
-export const renderEvents = (container, events, count) => {
-  for (let i = 0; i < count; i++) {
-    render(container, createEvent(events[i]), Place.BEFOREEND);
+export const render = (container, element, place) => {
+  switch (place) {
+    case Place.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case Place.BEFOREEND:
+      container.append(element);
+      break;
+    case Place.AFTERNODE:
+      container.after(element);
+      break;
   }
 };
 
-export const render = (container, template, place) => container.insertAdjacentHTML(place, template);
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
+};
