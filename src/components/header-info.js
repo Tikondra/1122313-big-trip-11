@@ -12,12 +12,13 @@ const createHeaderInfo = () => {
   );
 };
 
-export default class HeaderInfo {
+class HeaderInfo {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
+
     return createHeaderInfo();
   }
 
@@ -33,3 +34,5 @@ export default class HeaderInfo {
     this._element = null;
   }
 }
+
+export default HeaderInfo;

@@ -2,12 +2,13 @@ import {createElement} from "./utils";
 
 const createEventsList = () => `<ul class="trip-events__list"></ul>`;
 
-export default class EventsList {
+class EventsList {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
+
     return createEventsList();
   }
 
@@ -23,3 +24,5 @@ export default class EventsList {
     this._element = null;
   }
 }
+
+export default EventsList;

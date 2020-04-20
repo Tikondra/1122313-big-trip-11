@@ -5,6 +5,7 @@ const MAX_PRICE = 1000;
 const MAX_PRICE_OFFERS = 300;
 const MAX_OPTIONS = 6;
 const MIN_OPTIONS = 1;
+
 const dayCounter = makeCounter();
 const dateCounter = makeCounter();
 

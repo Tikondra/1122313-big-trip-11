@@ -36,12 +36,13 @@ const createSort = () => {
   );
 };
 
-export default class Sort {
+class Sort {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
+
     return createSort();
   }
 
@@ -57,3 +58,5 @@ export default class Sort {
     this._element = null;
   }
 }
+
+export default Sort;

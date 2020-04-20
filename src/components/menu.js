@@ -10,12 +10,13 @@ const createMenu = () => {
   );
 };
 
-export default class Menu {
+class Menu {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
+
     return createMenu();
   }
 
@@ -31,3 +32,5 @@ export default class Menu {
     this._element = null;
   }
 }
+
+export default Menu;

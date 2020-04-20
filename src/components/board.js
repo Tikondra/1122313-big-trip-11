@@ -2,12 +2,13 @@ import {createElement} from "./utils";
 
 const createBoard = () => `<ul class="trip-days"></ul>`;
 
-export default class Board {
+class Board {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
+
     return createBoard();
   }
 
@@ -23,3 +24,5 @@ export default class Board {
     this._element = null;
   }
 }
+
+export default Board;

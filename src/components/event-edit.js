@@ -17,13 +17,14 @@ const createEventEdit = (event) => {
   );
 };
 
-export default class EventEdit {
+class EventEdit {
   constructor(event) {
     this._event = event;
     this._element = null;
   }
 
   getTemplate() {
+
     return createEventEdit(this._event);
   }
 
@@ -39,3 +40,5 @@ export default class EventEdit {
     this._element = null;
   }
 }
+
+export default EventEdit;

@@ -23,13 +23,14 @@ const createEvent = (event) => {
   );
 };
 
-export default class Event {
+class Event {
   constructor(event) {
     this._event = event;
     this._element = null;
   }
 
   getTemplate() {
+
     return createEvent(this._event);
   }
 
@@ -45,3 +46,5 @@ export default class Event {
     this._element = null;
   }
 }
+
+export default Event;

@@ -23,7 +23,7 @@ const createFilter = () => {
   );
 };
 
-export default class Filter {
+class Filter {
   constructor() {
     this._element = null;
   }
@@ -44,3 +44,5 @@ export default class Filter {
     this._element = null;
   }
 }
+
+export default Filter;

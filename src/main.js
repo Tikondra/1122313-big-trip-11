@@ -14,44 +14,48 @@ import {EvenOption, Place} from "./components/consts";
 
 import {getRandomIntegerNumber, render} from "./components/utils";
 
+const replaceEventToEdit = (eventComponent, eventEditComponent, container) => {
+  openEvent = [eventComponent.getElement(), eventEditComponent.getElement()];
+  container.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
+};
+
+const replaceEditToTask = (eventComponent, eventEditComponent, container) => {
+  container.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
+  openEvent = null;
+};
+
 const renderEvent = (container, event) => {
-  const replaceEventToEdit = () => {
-    openEvent = [eventComponent.getElement(), eventEditComponent.getElement()];
-    container.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
-  };
-
-  const replaceEditToTask = () => {
-    container.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
-    openEvent = null;
-  };
-
   const onEscKeyDown = (evt) => {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
 
     if (isEscKey) {
-      replaceEditToTask();
+      replaceEditToTask(eventComponent, eventEditComponent, container);
       document.removeEventListener(`keydown`, onEscKeyDown);
       openEvent = null;
     }
   };
 
+  const onReplaceToEdit = () => {
+    if (!openEvent) {
+      replaceEventToEdit(eventComponent, eventEditComponent, container);
+      document.addEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
+  const onReplaceToEvent = (evt) => {
+    evt.preventDefault();
+    replaceEditToTask(eventComponent, eventEditComponent, container);
+    document.removeEventListener(`keydown`, onEscKeyDown);
+  };
+
   const eventComponent = new EventComponent(event);
   const editBtn = eventComponent.getElement().querySelector(`.event__rollup-btn`);
 
-  editBtn.addEventListener(`click`, () => {
-    if (!openEvent) {
-      replaceEventToEdit();
-      document.addEventListener(`keydown`, onEscKeyDown);
-    }
-  });
+  editBtn.addEventListener(`click`, onReplaceToEdit);
 
   const eventEditComponent = new EventEditComponent(event);
 
-  eventEditComponent.getElement().addEventListener(`submit`, (evt) => {
-    evt.preventDefault();
-    replaceEditToTask();
-    document.removeEventListener(`keydown`, onEscKeyDown);
-  });
+  eventEditComponent.getElement().addEventListener(`submit`, onReplaceToEvent);
 
   render(container, eventComponent.getElement(event), Place.BEFOREEND);
 };
@@ -74,6 +78,20 @@ const renderDay = (tripDays, day) => {
     });
 };
 
+const init = () => {
+  render(headerInfo, headerInfoComponent.getElement(), Place.AFTERBEGIN);
+  render(tripMenuTitle, menuComponent.getElement(), Place.AFTERNODE);
+  render(tripControls, filterComponent.getElement(), Place.BEFOREEND);
+  render(tripBoard, sortComponent.getElement(), Place.BEFOREEND);
+  render(tripBoard, boardComponent.getElement(), Place.BEFOREEND);
+
+  const tripDays = document.querySelector(`.trip-days`);
+
+  days.forEach((day) => {
+    renderDay(tripDays, day);
+  });
+};
+
 const headerInfo = document.querySelector(`.trip-main`);
 const tripControls = document.querySelector(`.trip-controls`);
 const tripMenuTitle = tripControls.querySelector(`h2`);
@@ -91,14 +109,4 @@ const boardComponent = new BoardComponent();
 
 let openEvent;
 
-render(headerInfo, headerInfoComponent.getElement(), Place.AFTERBEGIN);
-render(tripMenuTitle, menuComponent.getElement(), Place.AFTERNODE);
-render(tripControls, filterComponent.getElement(), Place.BEFOREEND);
-render(tripBoard, sortComponent.getElement(), Place.BEFOREEND);
-render(tripBoard, boardComponent.getElement(), Place.BEFOREEND);
-
-const tripDays = document.querySelector(`.trip-days`);
-
-days.forEach((day) => {
-  renderDay(tripDays, day);
-});
+init();

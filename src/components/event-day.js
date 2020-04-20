@@ -13,13 +13,14 @@ const createEventDay = (day) => {
   );
 };
 
-export default class Day {
+class Day {
   constructor(day) {
     this._day = day;
     this._element = null;
   }
 
   getTemplate() {
+
     return createEventDay(this._day);
   }
 
@@ -35,3 +36,5 @@ export default class Day {
     this._element = null;
   }
 }
+
+export default Day;
