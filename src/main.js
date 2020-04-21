@@ -7,6 +7,7 @@ import DayComponent from "./components/event-day";
 import EventsListComponent from "./components/events";
 import EventComponent from "./components/event";
 import EventEditComponent from "./components/event-edit";
+import NoEventComponent from "./components/no-event";
 
 import {generateDay, generateEvent, generateEvents} from "./Mocks/event-mock";
 
@@ -92,6 +93,13 @@ const init = () => {
   });
 };
 
+const noEventInit = () => {
+  render(headerInfo, headerInfoComponent.getElement(), Place.AFTERBEGIN);
+  render(tripMenuTitle, menuComponent.getElement(), Place.AFTERNODE);
+  render(tripControls, filterComponent.getElement(), Place.BEFOREEND);
+  render(tripBoard, new NoEventComponent().getElement(), Place.AFTERBEGIN);
+};
+
 const headerInfo = document.querySelector(`.trip-main`);
 const tripControls = document.querySelector(`.trip-controls`);
 const tripMenuTitle = tripControls.querySelector(`h2`);
@@ -109,4 +117,8 @@ const boardComponent = new BoardComponent();
 
 let openEvent;
 
-init();
+if (days.length === 0) {
+  noEventInit();
+} else {
+  init();
+}
