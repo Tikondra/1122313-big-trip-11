@@ -1,4 +1,4 @@
-import {castTimeFormat} from "./utils";
+import {castTimeFormat} from "../utils/common";
 import {Format} from "./consts";
 
 const getDate = (date) => {

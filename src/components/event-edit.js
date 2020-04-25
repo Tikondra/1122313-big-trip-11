@@ -1,7 +1,7 @@
 import {createOffers} from "./offers";
 import {createDestination} from "./destination";
 import {createHeader} from "./header-event";
-import {createElement} from "./utils";
+import {createElement} from "../utils/common";
 
 const createEventEdit = (event) => {
   const {typeEvent, timeStart, options, destinations, pictures} = event;

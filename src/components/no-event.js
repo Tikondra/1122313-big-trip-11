@@ -1,4 +1,4 @@
-import {createElement} from "./utils";
+import {createElement} from "../utils/common";
 
 const createNoEvent = () => `<p class="trip-events__msg">Click New Event to create your first point</p>`;
 

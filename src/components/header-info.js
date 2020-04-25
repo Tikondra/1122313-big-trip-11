@@ -1,6 +1,6 @@
 import {createTripInfo} from "./trip-info";
 import {createTripCost} from "./trip-cost";
-import {createElement} from "./utils";
+import {createElement} from "../utils/common";
 
 const createHeaderInfo = () => {
 

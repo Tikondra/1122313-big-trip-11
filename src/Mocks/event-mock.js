@@ -1,4 +1,4 @@
-import {castTimeFormat, getRandomArrayItem, getRandomIntegerNumber, makeCounter} from "../components/utils";
+import {castTimeFormat, getRandomArrayItem, getRandomIntegerNumber, makeCounter} from "../utils/common";
 import {EvenOption, CITIES, OFFERS_DESCRIPTION, Format, DESTINATION, MONTH} from "../components/consts";
 
 const MAX_PRICE = 1000;

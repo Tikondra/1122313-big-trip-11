@@ -1,4 +1,4 @@
-import {Place, Format} from "./consts";
+import {Place, Format} from "../components/consts";
 
 export const makeCounter = () => {
   function counter() {
