@@ -13,7 +13,8 @@ import {generateDay, generateEvent, generateEvents} from "./Mocks/event-mock";
 
 import {EvenOption, Place} from "./components/consts";
 
-import {getRandomIntegerNumber, render} from "./utils/common";
+import {getRandomIntegerNumber} from "./utils/common";
+import {render} from "./utils/render";
 
 const replaceEventToEdit = (eventComponent, eventEditComponent, container) => {
   openEvent = [eventComponent.getElement(), eventEditComponent.getElement()];

@@ -1,7 +1,7 @@
 import {createTypeEvent} from "./type-event";
 import {createTimeEvent} from "./time-event";
 import {createOptions} from "./event-option";
-import {createElement} from "../utils/common";
+import {createElement} from "../utils/render";
 
 const createEvent = (event) => {
   const {typeEvent, city, timeStart, timeEnd, eventPrice, options} = event;

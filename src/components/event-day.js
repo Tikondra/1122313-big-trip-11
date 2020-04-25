@@ -1,4 +1,4 @@
-import {createElement} from "../utils/common";
+import {createElement} from "../utils/render";
 
 const createEventDay = (day) => {
   const {dayCounter, dateTime, dayNumber, month} = day;

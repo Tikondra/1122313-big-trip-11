@@ -1,4 +1,4 @@
-import {Place, Format} from "../components/consts";
+import {Format} from "../components/consts";
 
 export const makeCounter = () => {
   function counter() {
@@ -26,25 +26,4 @@ export const formatTime = (date) => {
   const minutes = castTimeFormat(date.getMinutes());
 
   return `${hours}:${minutes}`;
-};
-
-export const render = (container, element, place) => {
-  switch (place) {
-    case Place.AFTERBEGIN:
-      container.prepend(element);
-      break;
-    case Place.BEFOREEND:
-      container.append(element);
-      break;
-    case Place.AFTERNODE:
-      container.after(element);
-      break;
-  }
-};
-
-export const createElement = (template) => {
-  const newElement = document.createElement(`div`);
-  newElement.innerHTML = template;
-
-  return newElement.firstChild;
 };
