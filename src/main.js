@@ -14,15 +14,15 @@ import {generateDay, generateEvent, generateEvents} from "./Mocks/event-mock";
 import {EvenOption, Place} from "./components/consts";
 
 import {getRandomIntegerNumber} from "./utils/common";
-import {render} from "./utils/render";
+import {render, replace} from "./utils/render";
 
-const replaceEventToEdit = (eventComponent, eventEditComponent, container) => {
-  openEvent = [eventComponent.getElement(), eventEditComponent.getElement()];
-  container.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
+const replaceEventToEdit = (eventComponent, eventEditComponent) => {
+  openEvent = true;
+  replace(eventEditComponent, eventComponent);
 };
 
-const replaceEditToTask = (eventComponent, eventEditComponent, container) => {
-  container.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
+const replaceEditToTask = (eventComponent, eventEditComponent) => {
+  replace(eventComponent, eventEditComponent);
   openEvent = null;
 };
 
@@ -31,7 +31,7 @@ const renderEvent = (container, event) => {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
 
     if (isEscKey) {
-      replaceEditToTask(eventComponent, eventEditComponent, container);
+      replaceEditToTask(eventComponent, eventEditComponent);
       document.removeEventListener(`keydown`, onEscKeyDown);
       openEvent = null;
     }
@@ -39,38 +39,36 @@ const renderEvent = (container, event) => {
 
   const onReplaceToEdit = () => {
     if (!openEvent) {
-      replaceEventToEdit(eventComponent, eventEditComponent, container);
+      replaceEventToEdit(eventComponent, eventEditComponent);
       document.addEventListener(`keydown`, onEscKeyDown);
     }
   };
 
   const onReplaceToEvent = (evt) => {
     evt.preventDefault();
-    replaceEditToTask(eventComponent, eventEditComponent, container);
+    replaceEditToTask(eventComponent, eventEditComponent);
     document.removeEventListener(`keydown`, onEscKeyDown);
   };
 
   const eventComponent = new EventComponent(event);
-  const editBtn = eventComponent.getElement().querySelector(`.event__rollup-btn`);
 
-  editBtn.addEventListener(`click`, onReplaceToEdit);
+  eventComponent.setEditBtnClickHandler(onReplaceToEdit);
 
   const eventEditComponent = new EventEditComponent(event);
 
-  eventEditComponent.getElement().addEventListener(`submit`, onReplaceToEvent);
+  eventEditComponent.setSaveClickHandler(onReplaceToEvent);
 
-  render(container, eventComponent.getElement(event), Place.BEFOREEND);
+  render(container, eventComponent, Place.BEFOREEND);
 };
 
 const renderDay = (tripDays, day) => {
-  const dayComponent = new DayComponent(day);
   const eventListComponent = new EventsListComponent();
 
-  render(tripDays, dayComponent.getElement(day), Place.BEFOREEND);
+  render(tripDays, new DayComponent(day), Place.BEFOREEND);
 
   const eventDay = tripDays.querySelector(`#day${day.dayCounter}`);
 
-  render(eventDay, eventListComponent.getElement(), Place.BEFOREEND);
+  render(eventDay, eventListComponent, Place.BEFOREEND);
 
   const eventList = eventDay.querySelector(`.trip-events__list`);
 
@@ -81,11 +79,11 @@ const renderDay = (tripDays, day) => {
 };
 
 const init = () => {
-  render(headerInfo, headerInfoComponent.getElement(), Place.AFTERBEGIN);
-  render(tripMenuTitle, menuComponent.getElement(), Place.AFTERNODE);
-  render(tripControls, filterComponent.getElement(), Place.BEFOREEND);
-  render(tripBoard, sortComponent.getElement(), Place.BEFOREEND);
-  render(tripBoard, boardComponent.getElement(), Place.BEFOREEND);
+  render(headerInfo, headerInfoComponent, Place.AFTERBEGIN);
+  render(tripMenuTitle, menuComponent, Place.AFTERNODE);
+  render(tripControls, filterComponent, Place.BEFOREEND);
+  render(tripBoard, sortComponent, Place.BEFOREEND);
+  render(tripBoard, boardComponent, Place.BEFOREEND);
 
   const tripDays = document.querySelector(`.trip-days`);
 
@@ -95,10 +93,10 @@ const init = () => {
 };
 
 const noEventInit = () => {
-  render(headerInfo, headerInfoComponent.getElement(), Place.AFTERBEGIN);
-  render(tripMenuTitle, menuComponent.getElement(), Place.AFTERNODE);
-  render(tripControls, filterComponent.getElement(), Place.BEFOREEND);
-  render(tripBoard, new NoEventComponent().getElement(), Place.AFTERBEGIN);
+  render(headerInfo, headerInfoComponent, Place.AFTERBEGIN);
+  render(tripMenuTitle, menuComponent, Place.AFTERNODE);
+  render(tripControls, filterComponent, Place.BEFOREEND);
+  render(tripBoard, new NoEventComponent(), Place.AFTERBEGIN);
 };
 
 const headerInfo = document.querySelector(`.trip-main`);

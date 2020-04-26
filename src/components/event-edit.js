@@ -28,6 +28,10 @@ class EventEdit extends AbstractComponent {
 
     return createEventEdit(this._event);
   }
+
+  setSaveClickHandler(handler) {
+    this.getElement().addEventListener(`submit`, handler);
+  }
 }
 
 export default EventEdit;

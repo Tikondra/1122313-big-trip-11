@@ -1,15 +1,15 @@
 import {Place} from "../components/consts";
 
-export const render = (container, element, place) => {
+export const render = (container, component, place) => {
   switch (place) {
     case Place.AFTERBEGIN:
-      container.prepend(element);
+      container.prepend(component.getElement());
       break;
     case Place.BEFOREEND:
-      container.append(element);
+      container.append(component.getElement());
       break;
     case Place.AFTERNODE:
-      container.after(element);
+      container.after(component.getElement());
       break;
   }
 };
