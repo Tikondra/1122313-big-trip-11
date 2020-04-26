@@ -13,7 +13,7 @@ const createEventDay = (day) => {
   );
 };
 
-class Day extends AbstractComponent{
+class Day extends AbstractComponent {
   constructor(day) {
     super();
 
