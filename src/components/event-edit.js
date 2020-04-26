@@ -1,7 +1,7 @@
+import AbstractComponent from "./abstract-component";
 import {createOffers} from "./offers";
 import {createDestination} from "./destination";
 import {createHeader} from "./header-event";
-import {createElement} from "../utils/render";
 
 const createEventEdit = (event) => {
   const {typeEvent, timeStart, options, destinations, pictures} = event;
@@ -17,27 +17,16 @@ const createEventEdit = (event) => {
   );
 };
 
-class EventEdit {
+class EventEdit extends AbstractComponent {
   constructor(event) {
+    super();
+
     this._event = event;
-    this._element = null;
   }
 
   getTemplate() {
 
     return createEventEdit(this._event);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 
