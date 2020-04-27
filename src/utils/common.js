@@ -1,4 +1,4 @@
-import {Format} from "../components/consts";
+import {Format, SortType} from "../components/consts";
 
 export const makeCounter = () => {
   function counter() {
@@ -26,4 +26,23 @@ export const formatTime = (date) => {
   const minutes = castTimeFormat(date.getMinutes());
 
   return `${hours}:${minutes}`;
+};
+
+export const getSortedEvents = (events, sortType) => {
+  let sortedEvents = [];
+  const copyEvents = events.slice();
+
+  switch (sortType) {
+    case SortType.TIME:
+      sortedEvents = copyEvents.sort((a, b) => a.timeStart - b.timeStart);
+      break;
+    case SortType.PRICE:
+      sortedEvents = copyEvents.sort((a, b) => a.eventPrice - b.eventPrice);
+      break;
+    case SortType.EVENT:
+      sortedEvents = copyEvents;
+      break;
+  }
+
+  return sortedEvents;
 };
