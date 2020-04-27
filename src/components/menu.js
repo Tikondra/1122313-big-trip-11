@@ -1,4 +1,4 @@
-import {createElement} from "./utils";
+import AbstractComponent from "./abstract-component";
 
 const createMenu = () => {
 
@@ -10,26 +10,10 @@ const createMenu = () => {
   );
 };
 
-class Menu {
-  constructor() {
-    this._element = null;
-  }
-
+class Menu extends AbstractComponent {
   getTemplate() {
 
     return createMenu();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

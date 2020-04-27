@@ -1,4 +1,4 @@
-import {formatTime, castTimeFormat} from "./utils";
+import {formatTime, castTimeFormat} from "../utils/common";
 import {Format} from "./consts";
 
 const getDuration = (start, end) => {

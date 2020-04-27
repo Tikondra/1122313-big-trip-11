@@ -1,6 +1,6 @@
 import {createTripInfo} from "./trip-info";
 import {createTripCost} from "./trip-cost";
-import {createElement} from "./utils";
+import AbstractComponent from "./abstract-component";
 
 const createHeaderInfo = () => {
 
@@ -12,26 +12,10 @@ const createHeaderInfo = () => {
   );
 };
 
-class HeaderInfo {
-  constructor() {
-    this._element = null;
-  }
-
+class HeaderInfo extends AbstractComponent {
   getTemplate() {
 
     return createHeaderInfo();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

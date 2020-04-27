@@ -1,4 +1,4 @@
-import {createElement} from "./utils";
+import AbstractComponent from "./abstract-component";
 
 const createEventDay = (day) => {
   const {dayCounter, dateTime, dayNumber, month} = day;
@@ -13,27 +13,16 @@ const createEventDay = (day) => {
   );
 };
 
-class Day {
+class Day extends AbstractComponent {
   constructor(day) {
+    super();
+
     this._day = day;
-    this._element = null;
   }
 
   getTemplate() {
 
     return createEventDay(this._day);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

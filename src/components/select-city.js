@@ -1,6 +1,6 @@
 import {CITIES} from "./consts";
 import {createOptionCity} from "./option-city";
-import {getRandomArrayItem} from "./utils";
+import {getRandomArrayItem} from "../utils/common";
 
 const getCities = () => CITIES.map((it) => createOptionCity(it)).join(`\n`);
 
