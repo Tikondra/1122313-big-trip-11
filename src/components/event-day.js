@@ -21,7 +21,6 @@ class Day extends AbstractComponent {
   }
 
   getTemplate() {
-
     return createEventDay(this._day);
   }
 }

@@ -66,7 +66,6 @@ class Sort extends AbstractComponent {
 
     return createSort();
   }
-
   getSortType() {
 
     return this._currentSortType;
