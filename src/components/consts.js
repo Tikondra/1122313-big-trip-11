@@ -40,5 +40,12 @@ export const Format = {
 export const Place = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`,
-  AFTERNODE: `after`
+  AFTERNODE: `after`,
+  BEFORENODE: `before`
+};
+
+export const SortType = {
+  EVENT: `event`,
+  TIME: `time`,
+  PRICE: `price`
 };
