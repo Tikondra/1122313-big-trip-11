@@ -1,105 +1,74 @@
 import DayComponent from "../components/event-day";
 import EmptyDayComponent from "../components/empty-day";
 import EventsListComponent from "../components/events";
-import EventComponent from "../components/event";
-import EventEditComponent from "../components/event-edit";
-
-import {generateEvents, generateEvent} from "../Mocks/event-mock";
+import SortComponent from "../components/sort";
+import PointController from "./point-controller";
 
 import {Place, EvenOption, SortType} from "../components/consts";
 
+import {generateEvents, generateEvent} from "../Mocks/event-mock";
 import {getRandomIntegerNumber, getSortedEvents} from "../utils/common";
-import {replace, render} from "../utils/render";
-import SortComponent from "../components/sort";
+import {render} from "../utils/render";
 
-const replaceEventToEdit = (eventComponent, eventEditComponent) => {
-  openEvent = true;
-  replace(eventEditComponent, eventComponent);
-};
+const renderEventsForDay = (eventListComponent, events) => {
+  events.splice(0, getRandomIntegerNumber(5, 1))
+    .map((event) => {
+      const pointController = new PointController(eventListComponent);
 
-const replaceEditToTask = (eventComponent, eventEditComponent) => {
-  replace(eventComponent, eventEditComponent);
-  openEvent = null;
-};
+      pointController.render(event);
 
-const eventRender = (container, events) => {
-  events.forEach((event) => {
-    renderEvent(container, event);
-  });
-};
-
-const dayRender = (container, days, events) => {
-  days.forEach((day) => {
-    renderDay(container, day, events);
-  });
-};
-
-const renderEvent = (container, event) => {
-  const onEscKeyDown = (evt) => {
-    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
-
-    if (isEscKey) {
-      replaceEditToTask(eventComponent, eventEditComponent);
-      document.removeEventListener(`keydown`, onEscKeyDown);
-      openEvent = null;
-    }
-  };
-
-  const onReplaceToEdit = () => {
-    if (!openEvent) {
-      replaceEventToEdit(eventComponent, eventEditComponent);
-      document.addEventListener(`keydown`, onEscKeyDown);
-    }
-  };
-
-  const onReplaceToEvent = (evt) => {
-    evt.preventDefault();
-    replaceEditToTask(eventComponent, eventEditComponent);
-    document.removeEventListener(`keydown`, onEscKeyDown);
-  };
-
-  const eventComponent = new EventComponent(event);
-
-  eventComponent.setEditBtnClickHandler(onReplaceToEdit);
-
-  const eventEditComponent = new EventEditComponent(event);
-
-  eventEditComponent.setSaveClickHandler(onReplaceToEvent);
-
-  render(container, eventComponent, Place.BEFOREEND);
-};
-
-const renderDay = (tripDays, day, eventsCopy) => {
-  const eventListComponent = new EventsListComponent();
-
-  render(tripDays, new DayComponent(day), Place.BEFOREEND);
-
-  const eventDay = tripDays.querySelector(`#day${day.dayCounter}`);
-
-  render(eventDay, eventListComponent, Place.BEFOREEND);
-
-  const eventList = eventDay.querySelector(`.trip-events__list`);
-
-  eventsCopy.splice(0, getRandomIntegerNumber(5, 1))
-    .forEach((event) => {
-      renderEvent(eventList, event);
+      return pointController;
     });
 };
 
-let openEvent;
+const renderOnlyEvents = (eventListComponent, events) => {
+  events.map((event) => {
+    const pointController = new PointController(eventListComponent);
+
+    pointController.render(event);
+
+    return pointController;
+  });
+};
 
 class TripController {
   constructor(container) {
     this._container = container;
+    this._days = [];
+    this._events = [];
+    this._showedEventControllers = [];
 
     this._sortComponent = new SortComponent();
     this._emptyDay = new EmptyDayComponent();
     this._eventListComponent = new EventsListComponent();
-    this.onSortRender = this.onSortRender.bind(this);
+
+    this._onSortRender = this._onSortRender.bind(this);
+
+    this._sortComponent.setSortTypeChangeHandler(this._onSortRender);
   }
 
-  onSortRender(tripDays, events, days, sortType) {
-    const sortedEvents = getSortedEvents(events, sortType);
+  _renderDays(container, events) {
+    this._days.forEach((day) => {
+      this._renderDay(container, day, events);
+    });
+  }
+
+  _renderDay(container, day, eventsCopy) {
+    const eventListComponent = new EventsListComponent();
+    const eventDay = new DayComponent(day);
+
+    render(container, eventDay, Place.BEFOREEND);
+
+    render(eventDay.getElement(), eventListComponent, Place.BEFOREEND);
+
+    const newEvents = renderEventsForDay(eventListComponent, eventsCopy);
+    this._showedEventControllers = this._showedEventControllers.concat(newEvents);
+  }
+
+  _onSortRender(sortType) {
+    const tripDays = this._container.getElement();
+
+    const sortedEvents = getSortedEvents(this._events, sortType);
 
     tripDays.innerHTML = ``;
 
@@ -110,27 +79,23 @@ class TripController {
 
       render(eventDay, this._eventListComponent, Place.BEFOREEND);
 
-      const eventList = eventDay.querySelector(`.trip-events__list`);
+      this._eventListComponent.getElement().innerHTML = ``;
 
-      eventList.innerHTML = ``;
-
-      eventRender(eventList, sortedEvents);
+      renderOnlyEvents(this._eventListComponent, sortedEvents);
     } else {
-      dayRender(tripDays, days, sortedEvents);
+      this._renderDays(tripDays, sortedEvents);
     }
   }
 
   render(days) {
+    this._days = days;
+    this._events = generateEvents(EvenOption.COUNT, generateEvent);
+    const eventsCopy = this._events.slice();
     const container = this._container.getElement();
-    const tripDays = document.querySelector(`.trip-days`);
-    const events = generateEvents(EvenOption.COUNT, generateEvent);
-    const eventsCopy = events.slice();
 
     render(container, this._sortComponent, Place.BEFORENODE);
 
-    dayRender(tripDays, days, eventsCopy);
-
-    this._sortComponent.setSortTypeChangeHandler(this.onSortRender.bind(this, tripDays, events, days));
+    this._renderDays(container, eventsCopy);
   }
 }
 
