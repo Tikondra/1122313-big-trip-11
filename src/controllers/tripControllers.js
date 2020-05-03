@@ -10,14 +10,14 @@ import {generateEvents, generateEvent} from "../Mocks/event-mock";
 import {getRandomIntegerNumber, getSortedEvents} from "../utils/common";
 import {render} from "../utils/render";
 
-const renderEventsForDay = (eventListComponent, events, onDataChange) => {
+const renderEventsForDay = (eventListComponent, events, onDataChange, onViewChange) => {
   const eventsForDay = events.splice(0, getRandomIntegerNumber(5, 1));
-  renderOnlyEvents(eventListComponent, eventsForDay, onDataChange);
+  return renderOnlyEvents(eventListComponent, eventsForDay, onDataChange, onViewChange);
 };
 
-const renderOnlyEvents = (eventListComponent, events, onDataChange) => {
-  events.map((event) => {
-    const pointController = new PointController(eventListComponent, onDataChange);
+const renderOnlyEvents = (eventListComponent, events, onDataChange, onViewChange) => {
+  return events.map((event) => {
+    const pointController = new PointController(eventListComponent, onDataChange, onViewChange);
 
     pointController.render(event);
 
@@ -37,6 +37,7 @@ class TripController {
     this._eventListComponent = new EventsListComponent();
 
     this._onDataChange = this._onDataChange.bind(this);
+    this._onViewChange = this._onViewChange.bind(this);
     this._onSortRender = this._onSortRender.bind(this);
 
     this._sortComponent.setSortTypeChangeHandler(this._onSortRender);
@@ -67,7 +68,7 @@ class TripController {
 
     render(eventDay.getElement(), eventListComponent, Place.BEFOREEND);
 
-    const newEvents = renderEventsForDay(eventListComponent, eventsCopy, this._onDataChange);
+    const newEvents = renderEventsForDay(eventListComponent, eventsCopy, this._onDataChange, this._onViewChange);
     this._showedEventControllers = this._showedEventControllers.concat(newEvents);
   }
 
@@ -81,6 +82,10 @@ class TripController {
     this._events = [].concat(this._events.slice(0, index), newData, this._events.slice(index + 1));
 
     pointController.render(this._events[index]);
+  }
+
+  _onViewChange() {
+    this._showedEventControllers.forEach((event) => event.setDefaultView());
   }
 
   _onSortRender(sortType) {
@@ -99,9 +104,10 @@ class TripController {
 
       this._eventListComponent.getElement().innerHTML = ``;
 
-      renderOnlyEvents(this._eventListComponent, sortedEvents, this._onDataChange);
+      const newEvents = renderOnlyEvents(this._eventListComponent, sortedEvents, this._onDataChange, this._onViewChange);
+      this._showedEventControllers = this._showedEventControllers.concat(newEvents);
     } else {
-      this._renderDays(tripDays, sortedEvents, this._onDataChange);
+      this._renderDays(tripDays, sortedEvents, this._onDataChange, this._onViewChange);
     }
   }
 }

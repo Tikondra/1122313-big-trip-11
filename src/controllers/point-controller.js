@@ -2,12 +2,14 @@ import EventComponent from "../components/event";
 import EventEditComponent from "../components/event-edit";
 
 import {render, replace} from "../utils/render";
-import {Place} from "../components/consts";
+import {Place, Mode} from "../components/consts";
 
 class PointController {
-  constructor(container, onDataChange) {
+  constructor(container, onDataChange, onViewChange) {
     this._container = container.getElement();
     this._onDataChange = onDataChange;
+    this._onViewChange = onViewChange;
+    this._mode = Mode.DEFAULT;
 
     this._eventComponent = null;
     this._eventEditComponent = null;
@@ -32,6 +34,12 @@ class PointController {
     }
   }
 
+  setDefaultView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._onReplaceToEvent();
+    }
+  }
+
   _addListeners() {
     this._eventComponent.setEditBtnClickHandler(() => {
       this._onReplaceToEdit();
@@ -46,13 +54,16 @@ class PointController {
   }
 
   _onReplaceToEdit() {
+    this._onViewChange();
     replace(this._eventEditComponent, this._eventComponent);
+    this._mode = Mode.EDIT;
   }
 
   _onReplaceToEvent() {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
     this._eventEditComponent.reset();
     replace(this._eventComponent, this._eventEditComponent);
+    this._mode = Mode.DEFAULT;
   }
 
   _onEscKeyDown(evt) {
