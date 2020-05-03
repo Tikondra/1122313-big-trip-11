@@ -1,4 +1,4 @@
-import {createImg} from "./img-markup";
+const createImg = (img) => `<img class="event__photo" src="${img.src}" alt="${img.description}">`;
 
 const getImages = (pictures) => pictures.map((it) => createImg(it)).join(`\n`);
 

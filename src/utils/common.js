@@ -39,7 +39,7 @@ export const getSortedEvents = (events, sortType) => {
       sortedEvents = copyEvents.sort((a, b) => a.timeStart - b.timeStart);
       break;
     case SortType.PRICE:
-      sortedEvents = copyEvents.sort((a, b) => a.eventPrice - b.eventPrice);
+      sortedEvents = copyEvents.sort((a, b) => a.basePrice - b.basePrice);
       break;
     case SortType.EVENT:
       sortedEvents = copyEvents;

@@ -4,17 +4,17 @@ import {createTimeEvent} from "./time-event";
 import {createOptions} from "./event-option";
 
 const createEvent = (event) => {
-  const {typeEvent, city, timeStart, timeEnd, eventPrice, options} = event;
+  const {basePrice, type, destinations, timeStart, timeEnd, offers} = event;
 
   return (
     `<li class="trip-events__item">
       <div class="event">
-        ${createTypeEvent(typeEvent, city)}
+        ${createTypeEvent(type, destinations.name)}
         ${createTimeEvent(timeStart, timeEnd)}
         <p class="event__price">
-          &euro;&nbsp;<span class="event__price-value">${eventPrice}</span>
+          &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
         </p>
-        ${createOptions(options)}
+        ${createOptions(offers)}
         <button class="event__rollup-btn" type="button">
           <span class="visually-hidden">Open event</span>
         </button>

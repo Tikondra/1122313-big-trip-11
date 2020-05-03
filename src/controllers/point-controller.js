@@ -16,12 +16,20 @@ class PointController {
   }
 
   render(event) {
+    const oldEventComponent = this._eventComponent;
+    const oldEventEditComponent = this._eventEditComponent;
+
     this._eventComponent = new EventComponent(event);
     this._eventEditComponent = new EventEditComponent(event);
 
     this._addListeners(event);
 
-    render(this._container, this._eventComponent, Place.BEFOREEND);
+    if (oldEventEditComponent && oldEventComponent) {
+      replace(this._eventComponent, oldEventComponent);
+      replace(this._eventEditComponent, oldEventEditComponent);
+    } else {
+      render(this._container, this._eventComponent, Place.BEFOREEND);
+    }
   }
 
   _addListeners(event) {

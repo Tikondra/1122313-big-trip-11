@@ -3,12 +3,12 @@ import {createEventType} from "./select-type";
 import {createSelectTime} from "./selectTime";
 import {createSelectPrice} from "./select-price";
 
-export const createHeader = (typeEvent, timeStart, isFavorite) => {
+export const createHeader = (typeEvent, timeStart, isFavorite, destinations) => {
 
   return (
     `<header class="event__header">
       ${createEventType(typeEvent)}
-      ${createCitySelect(typeEvent)}
+      ${createCitySelect(typeEvent, destinations.name)}
       ${createSelectTime(timeStart)}
       ${createSelectPrice()}
 

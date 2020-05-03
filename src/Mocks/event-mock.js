@@ -8,6 +8,7 @@ const MIN_OPTIONS = 1;
 
 const dayCounter = makeCounter();
 const dateCounter = makeCounter();
+const id = makeCounter();
 
 const getRandomStartTime = () => {
   const targetDate = new Date();
@@ -27,21 +28,36 @@ const getEndTime = (startTime) => {
   return timeEnd;
 };
 
-const generateOption = () => {
-  return {
-    typeOptions: getRandomArrayItem(EvenOption.TYPE_TRANSPORT),
-    description: getRandomArrayItem(OFFERS_DESCRIPTION),
-    price: getRandomIntegerNumber(MAX_PRICE_OFFERS)
-  };
-};
-
 const getRandomPicture = () => {
   const pictures = [];
   for (let i = 0; i < getRandomIntegerNumber(MAX_OPTIONS, MIN_OPTIONS); i++) {
-    pictures.push(`http://picsum.photos/248/152?r=${Math.random()}`);
+    const picturesInfo = {
+      src: `http://picsum.photos/248/152?r=${Math.random()}`,
+      description: getRandomArrayItem(DESTINATION)
+    };
+
+    pictures.push(picturesInfo);
   }
 
   return pictures;
+};
+
+const getRandomOffers = () => {
+  const offers = [];
+  for (let i = 0; i < getRandomIntegerNumber(MAX_OPTIONS, MIN_OPTIONS); i++) {
+    const offersInfo = {
+      title: getRandomArrayItem(OFFERS_DESCRIPTION),
+      price: getRandomIntegerNumber(MAX_PRICE_OFFERS)
+    };
+
+    offers.push(offersInfo);
+  }
+
+  return offers;
+};
+
+const getDescription = () => {
+  return DESTINATION.slice(getRandomIntegerNumber(DESTINATION.length)).slice(0, 5).join(` `);
 };
 
 const getRandomDate = () => {
@@ -53,20 +69,52 @@ const getRandomDate = () => {
   return targetDate;
 };
 
+const generateDestination = () => {
+
+  return {
+    description: getDescription(),
+    name: getRandomArrayItem(CITIES),
+    pictures: getRandomPicture(),
+  };
+};
+
+const generateOffer = () => {
+  return EvenOption.TYPE_TRANSPORT.concat(EvenOption.TYPE_ACTIVITY)
+    .reduce((offersList, type) => {
+      const offer = {
+        type,
+        offers: getRandomOffers()
+      };
+      offersList.push(offer);
+
+      return offersList;
+    }, []);
+};
+
+export const getOffersForType = (type) => {
+  const typeOffers = generateOffer();
+
+  const currentOffers = typeOffers.filter((it) => {
+    return it.type === type;
+  });
+
+  return currentOffers[0].offers;
+};
+
 const generateEvent = () => {
   const timeStart = getRandomStartTime();
   const timeEnd = getEndTime(timeStart);
+  const type = getRandomArrayItem(EvenOption.TYPE_TRANSPORT.concat(EvenOption.TYPE_ACTIVITY));
 
   return {
-    typeEvent: getRandomArrayItem(EvenOption.TYPE_TRANSPORT.concat(EvenOption.TYPE_ACTIVITY)),
-    city: getRandomArrayItem(CITIES),
+    basePrice: getRandomIntegerNumber(MAX_PRICE),
     timeStart,
     timeEnd,
-    eventPrice: getRandomIntegerNumber(MAX_PRICE),
-    pictures: getRandomPicture(),
-    options: generateEvents(getRandomIntegerNumber(MAX_OPTIONS, MIN_OPTIONS), generateOption),
-    destinations: DESTINATION.slice(getRandomIntegerNumber(DESTINATION.length)).slice(0, 5),
+    destinations: generateDestination(),
+    id: id() + 1,
     isFavorite: isTrue(),
+    offers: getOffersForType(type),
+    type,
   };
 };
 
