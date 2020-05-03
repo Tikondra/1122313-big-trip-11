@@ -1,4 +1,4 @@
-import {castTimeFormat, getRandomArrayItem, getRandomIntegerNumber, makeCounter} from "../utils/common";
+import {castTimeFormat, getRandomArrayItem, getRandomIntegerNumber, makeCounter, isTrue} from "../utils/common";
 import {EvenOption, CITIES, OFFERS_DESCRIPTION, Format, DESTINATION, MONTH} from "../components/consts";
 
 const MAX_PRICE = 1000;
@@ -65,7 +65,8 @@ const generateEvent = () => {
     eventPrice: getRandomIntegerNumber(MAX_PRICE),
     pictures: getRandomPicture(),
     options: generateEvents(getRandomIntegerNumber(MAX_OPTIONS, MIN_OPTIONS), generateOption),
-    destinations: DESTINATION.slice(getRandomIntegerNumber(DESTINATION.length)).slice(0, 5)
+    destinations: DESTINATION.slice(getRandomIntegerNumber(DESTINATION.length)).slice(0, 5),
+    isFavorite: isTrue(),
   };
 };
 

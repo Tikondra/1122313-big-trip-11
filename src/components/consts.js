@@ -25,7 +25,7 @@ export const MONTH = [`JAN`, `FEB`, `MAR`, `APR`, `MAY`, `JUN`, `JUL`, `AUG`, `S
 
 export const EvenOption = {
   DAY_COUNT: 5,
-  COUNT: 15,
+  COUNT: 2,
   TYPE_TRANSPORT: [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`],
   TYPE_ACTIVITY: [`Check-in`, `Sightseeing`, `Restaurant`],
 };

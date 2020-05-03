@@ -10,20 +10,14 @@ import {generateEvents, generateEvent} from "../Mocks/event-mock";
 import {getRandomIntegerNumber, getSortedEvents} from "../utils/common";
 import {render} from "../utils/render";
 
-const renderEventsForDay = (eventListComponent, events) => {
-  events.splice(0, getRandomIntegerNumber(5, 1))
-    .map((event) => {
-      const pointController = new PointController(eventListComponent);
-
-      pointController.render(event);
-
-      return pointController;
-    });
+const renderEventsForDay = (eventListComponent, events, onDataChange) => {
+  const eventsForDay = events.splice(0, getRandomIntegerNumber(5, 1));
+  renderOnlyEvents(eventListComponent, eventsForDay, onDataChange);
 };
 
-const renderOnlyEvents = (eventListComponent, events) => {
+const renderOnlyEvents = (eventListComponent, events, onDataChange) => {
   events.map((event) => {
-    const pointController = new PointController(eventListComponent);
+    const pointController = new PointController(eventListComponent, onDataChange);
 
     pointController.render(event);
 
@@ -42,9 +36,21 @@ class TripController {
     this._emptyDay = new EmptyDayComponent();
     this._eventListComponent = new EventsListComponent();
 
+    this._onDataChange = this._onDataChange.bind(this);
     this._onSortRender = this._onSortRender.bind(this);
 
     this._sortComponent.setSortTypeChangeHandler(this._onSortRender);
+  }
+
+  render(days) {
+    this._days = days;
+    this._events = generateEvents(EvenOption.COUNT, generateEvent);
+    const eventsCopy = this._events.slice();
+    const container = this._container.getElement();
+
+    render(container, this._sortComponent, Place.BEFORENODE);
+
+    this._renderDays(container, eventsCopy);
   }
 
   _renderDays(container, events) {
@@ -61,8 +67,20 @@ class TripController {
 
     render(eventDay.getElement(), eventListComponent, Place.BEFOREEND);
 
-    const newEvents = renderEventsForDay(eventListComponent, eventsCopy);
+    const newEvents = renderEventsForDay(eventListComponent, eventsCopy, this._onDataChange);
     this._showedEventControllers = this._showedEventControllers.concat(newEvents);
+  }
+
+  _onDataChange(pointController, oldData, newData) {
+    const index = this._events.findIndex((it) => it === oldData);
+
+    if (index === -1) {
+      return;
+    }
+
+    this._events = [].concat(this._events.slice(0, index), newData, this._events.slice(index + 1));
+
+    pointController.render(this._events[index]);
   }
 
   _onSortRender(sortType) {
@@ -81,21 +99,10 @@ class TripController {
 
       this._eventListComponent.getElement().innerHTML = ``;
 
-      renderOnlyEvents(this._eventListComponent, sortedEvents);
+      renderOnlyEvents(this._eventListComponent, sortedEvents, this._onDataChange);
     } else {
-      this._renderDays(tripDays, sortedEvents);
+      this._renderDays(tripDays, sortedEvents, this._onDataChange);
     }
-  }
-
-  render(days) {
-    this._days = days;
-    this._events = generateEvents(EvenOption.COUNT, generateEvent);
-    const eventsCopy = this._events.slice();
-    const container = this._container.getElement();
-
-    render(container, this._sortComponent, Place.BEFORENODE);
-
-    this._renderDays(container, eventsCopy);
   }
 }
 

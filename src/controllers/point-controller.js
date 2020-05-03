@@ -5,13 +5,42 @@ import {render, replace} from "../utils/render";
 import {Place} from "../components/consts";
 
 class PointController {
-  constructor(container) {
+  constructor(container, onDataChange) {
     this._container = container.getElement();
+    this._onDataChange = onDataChange;
 
     this._eventComponent = null;
     this._eventEditComponent = null;
 
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
+  }
+
+  render(event) {
+    this._eventComponent = new EventComponent(event);
+    this._eventEditComponent = new EventEditComponent(event);
+
+    this._addListeners(event);
+
+    render(this._container, this._eventComponent, Place.BEFOREEND);
+  }
+
+  _addListeners(event) {
+    this._eventComponent.setEditBtnClickHandler(() => {
+      this._onReplaceToEdit();
+      document.addEventListener(`keydown`, this._onEscKeyDown);
+    });
+
+    this._eventEditComponent.setSaveClickHandler((evt) => {
+      evt.preventDefault();
+      this._onReplaceToEvent();
+      document.removeEventListener(`keydown`, this._onEscKeyDown);
+    });
+
+    this._eventEditComponent.setFavoriteClickHandler(() => {
+      this._onDataChange(this, event, Object.assign({}, event, {
+        isFavorite: !event.isFavorite
+      }));
+    });
   }
 
   _onReplaceToEdit() {
@@ -30,23 +59,6 @@ class PointController {
       this._onReplaceToEvent(evt);
       document.removeEventListener(`keydown`, this._onEscKeyDown);
     }
-  }
-
-  render(event) {
-    this._eventComponent = new EventComponent(event);
-    this._eventEditComponent = new EventEditComponent(event);
-
-    this._eventComponent.setEditBtnClickHandler(() => {
-      this._onReplaceToEdit();
-      document.addEventListener(`keydown`, this._onEscKeyDown);
-    });
-    this._eventEditComponent.setSaveClickHandler((evt) => {
-      evt.preventDefault();
-      this._onReplaceToEvent();
-      document.removeEventListener(`keydown`, this._onEscKeyDown);
-    });
-
-    render(this._container, this._eventComponent, Place.BEFOREEND);
   }
 }
 

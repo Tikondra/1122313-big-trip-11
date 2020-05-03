@@ -9,6 +9,8 @@ export const makeCounter = () => {
   return counter;
 };
 
+export const isTrue = () => Math.random() > 0.5;
+
 export const getRandomIntegerNumber = (max, min = 0) => {
   return min + Math.floor(Math.random() * (max - min));
 };
