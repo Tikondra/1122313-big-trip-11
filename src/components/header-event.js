@@ -3,14 +3,14 @@ import {createEventType} from "./select-type";
 import {createSelectTime} from "./selectTime";
 import {createSelectPrice} from "./select-price";
 
-export const createHeader = (typeEvent, timeStart, isFavorite, destinations) => {
+export const createHeader = (typeEvent, timeStart, timeEnd, isFavorite, destinations, basePrice) => {
 
   return (
     `<header class="event__header">
       ${createEventType(typeEvent)}
       ${createCitySelect(typeEvent, destinations.name)}
-      ${createSelectTime(timeStart)}
-      ${createSelectPrice()}
+      ${createSelectTime(timeStart, timeEnd)}
+      ${createSelectPrice(basePrice)}
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
 

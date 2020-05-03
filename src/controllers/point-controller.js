@@ -32,7 +32,7 @@ class PointController {
     }
   }
 
-  _addListeners(event) {
+  _addListeners() {
     this._eventComponent.setEditBtnClickHandler(() => {
       this._onReplaceToEdit();
       document.addEventListener(`keydown`, this._onEscKeyDown);
@@ -43,12 +43,6 @@ class PointController {
       this._onReplaceToEvent();
       document.removeEventListener(`keydown`, this._onEscKeyDown);
     });
-
-    this._eventEditComponent.setFavoriteClickHandler(() => {
-      this._onDataChange(this, event, Object.assign({}, event, {
-        isFavorite: !event.isFavorite
-      }));
-    });
   }
 
   _onReplaceToEdit() {
@@ -57,6 +51,7 @@ class PointController {
 
   _onReplaceToEvent() {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
+    this._eventEditComponent.reset();
     replace(this._eventComponent, this._eventEditComponent);
   }
 

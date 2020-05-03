@@ -69,13 +69,27 @@ const getRandomDate = () => {
   return targetDate;
 };
 
-const generateDestination = () => {
+const generateDestinations = () => {
+  return CITIES.reduce((destinationList, name) => {
+    const destination = {
+      description: getDescription(),
+      name,
+      pictures: getRandomPicture(),
+    };
+    destinationList.push(destination);
 
-  return {
-    description: getDescription(),
-    name: getRandomArrayItem(CITIES),
-    pictures: getRandomPicture(),
-  };
+    return destinationList;
+  }, []);
+};
+
+export const getDestinationForCity = (city) => {
+  const destinations = generateDestinations();
+
+  const currentDestination = destinations.filter((it) => {
+    return it.name === city;
+  });
+
+  return currentDestination[0];
 };
 
 const generateOffer = () => {
@@ -105,12 +119,13 @@ const generateEvent = () => {
   const timeStart = getRandomStartTime();
   const timeEnd = getEndTime(timeStart);
   const type = getRandomArrayItem(EvenOption.TYPE_TRANSPORT.concat(EvenOption.TYPE_ACTIVITY));
+  const cityDestination = getRandomArrayItem(CITIES);
 
   return {
     basePrice: getRandomIntegerNumber(MAX_PRICE),
     timeStart,
     timeEnd,
-    destinations: generateDestination(),
+    destinations: getDestinationForCity(cityDestination),
     id: id() + 1,
     isFavorite: isTrue(),
     offers: getOffersForType(type),
