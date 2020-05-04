@@ -3,6 +3,10 @@ import {createOffers} from "./offers";
 import {createDestination} from "./destination";
 import {createHeader} from "./header-event";
 import {getDestinationForCity, getOffersForType} from "../Mocks/event-mock";
+import flatpickr from "flatpickr";
+
+import "flatpickr/dist/flatpickr.min.css";
+import {Format} from "./consts";
 
 const createEventEdit = (event, options = {}) => {
   const {timeStart, timeEnd, basePrice} = event;
@@ -28,13 +32,15 @@ class EventEdit extends AbstractSmartComponent {
     this._offers = event.offers;
     this._isFavorite = event.isFavorite;
     this._destinations = event.destinations;
-    this._saveHandler = null;
     this._isDestination = !!event.destinations;
+    this._saveHandler = null;
+    this._flatpickr = null;
 
     this._onChangeType = this._onChangeType.bind(this);
     this._onChangeCity = this._onChangeCity.bind(this);
     this._onFavoriteToggle = this._onFavoriteToggle.bind(this);
 
+    this._applyFlatpickr();
     this._subscribeOnEvents();
   }
 
@@ -55,6 +61,8 @@ class EventEdit extends AbstractSmartComponent {
 
   rerender() {
     super.rerender();
+
+    this._applyFlatpickr();
   }
 
   reset() {
@@ -72,6 +80,35 @@ class EventEdit extends AbstractSmartComponent {
   setSaveClickHandler(handler) {
     this.getElement().addEventListener(`submit`, handler);
     this._saveHandler = handler;
+  }
+
+  _applyFlatpickr() {
+    const startTimeElement = this.getElement().querySelector(`#event-start-time-1`);
+    const endTimeElement = this.getElement().querySelector(`#event-end-time-1`);
+
+    if (this._flatpickr) {
+      this._dellFlatpickr();
+    }
+
+    this._initFlatpickr(startTimeElement, this._event.timeStart);
+    this._initFlatpickr(endTimeElement, this._event.timeEnd);
+  }
+
+  _initFlatpickr(element, date) {
+    this._flatpickr = flatpickr(element, this._optionsFlatpickr(date));
+  }
+
+  _optionsFlatpickr(date) {
+    return {
+      enableTime: true,
+      dateFormat: Format.DATE,
+      defaultDate: date || ``,
+    };
+  }
+
+  _dellFlatpickr() {
+    this._flatpickr.destroy();
+    this._flatpickr = null;
   }
 
   _subscribeOnEvents() {

@@ -36,6 +36,7 @@ export const Format = {
   START_TIME: 6,
   IN_HOUR: 60,
   YEAR: 2,
+  DATE: `d/m/y H:i`,
 };
 export const Place = {
   AFTERBEGIN: `afterbegin`,
