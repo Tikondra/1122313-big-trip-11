@@ -87,6 +87,16 @@ class EventEdit extends AbstractSmartComponent {
       .addEventListener(`change`, this._onChangeCity);
   }
 
+  _toggleDestination(evt, currentDestination) {
+    if (currentDestination) {
+      this._destinations = currentDestination;
+      this._isDestination = true;
+    } else {
+      this._destinations.name = evt.target.value;
+      this._isDestination = false;
+    }
+  }
+
   _onChangeType(evt) {
     if (evt.target.tagName === `INPUT`) {
       this._type = evt.target.value;
@@ -98,13 +108,7 @@ class EventEdit extends AbstractSmartComponent {
 
   _onChangeCity(evt) {
     const currentDestination = getDestinationForCity(evt.target.value);
-    if (currentDestination) {
-      this._destinations = currentDestination;
-      this._isDestination = true;
-    } else {
-      this._destinations.name = evt.target.value;
-      this._isDestination = false;
-    }
+    this._toggleDestination(evt, currentDestination);
     this.rerender();
   }
 

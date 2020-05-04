@@ -74,12 +74,13 @@ class TripController {
 
   _onDataChange(pointController, oldData, newData) {
     const index = this._events.findIndex((it) => it === oldData);
+    const from = this._events.slice(0, index);
+    const to = this._events.slice(index + 1);
 
     if (index === -1) {
       return;
     }
-
-    this._events = [].concat(this._events.slice(0, index), newData, this._events.slice(index + 1));
+    this._events = [...from, newData, ...to];
 
     pointController.render(this._events[index]);
   }

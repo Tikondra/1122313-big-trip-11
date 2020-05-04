@@ -1,10 +1,18 @@
-import {castTimeFormat, getRandomArrayItem, getRandomIntegerNumber, makeCounter, isTrue} from "../utils/common";
+import {
+  castTimeFormat,
+  getRandomArrayItem,
+  getRandomIntegerNumber,
+  makeCounter,
+  isTrue,
+  shuffle
+} from "../utils/common";
 import {EvenOption, CITIES, OFFERS_DESCRIPTION, Format, DESTINATION, MONTH} from "../components/consts";
 
 const MAX_PRICE = 1000;
 const MAX_PRICE_OFFERS = 300;
 const MAX_OPTIONS = 6;
 const MIN_OPTIONS = 1;
+const RANDOM_PIC = `http://picsum.photos/248/152?r=`;
 
 const dayCounter = makeCounter();
 const dateCounter = makeCounter();
@@ -32,7 +40,7 @@ const getRandomPicture = () => {
   const pictures = [];
   for (let i = 0; i < getRandomIntegerNumber(MAX_OPTIONS, MIN_OPTIONS); i++) {
     const picturesInfo = {
-      src: `http://picsum.photos/248/152?r=${Math.random()}`,
+      src: RANDOM_PIC + `${Math.random()}`,
       description: getRandomArrayItem(DESTINATION)
     };
 
@@ -57,7 +65,7 @@ const getRandomOffers = () => {
 };
 
 const getDescription = () => {
-  return DESTINATION.slice(getRandomIntegerNumber(DESTINATION.length)).slice(0, 5).join(` `);
+  return shuffle(DESTINATION).slice(0, getRandomIntegerNumber(MAX_OPTIONS, MIN_OPTIONS)).join(` `);
 };
 
 const getRandomDate = () => {
@@ -69,48 +77,45 @@ const getRandomDate = () => {
   return targetDate;
 };
 
-const generateDestinations = () => {
-  return CITIES.reduce((destinationList, name) => {
-    const destination = {
-      description: getDescription(),
-      name,
-      pictures: getRandomPicture(),
-    };
-    destinationList.push(destination);
+const getDestination = (destinationList, name) => {
+  const destination = {
+    description: getDescription(),
+    name,
+    pictures: getRandomPicture(),
+  };
+  destinationList.push(destination);
 
-    return destinationList;
-  }, []);
+  return destinationList;
+};
+
+const generateDestinations = () => {
+  return CITIES.reduce(getDestination, []);
 };
 
 export const getDestinationForCity = (city) => {
   const destinations = generateDestinations();
-
-  const currentDestination = destinations.filter((it) => {
-    return it.name === city;
-  });
+  const currentDestination = destinations.filter((it) => it.name === city);
 
   return currentDestination[0];
 };
 
-const generateOffer = () => {
-  return EvenOption.TYPE_TRANSPORT.concat(EvenOption.TYPE_ACTIVITY)
-    .reduce((offersList, type) => {
-      const offer = {
-        type,
-        offers: getRandomOffers()
-      };
-      offersList.push(offer);
+const getOffer = (offersList, type) => {
+  const offer = {
+    type,
+    offers: getRandomOffers()
+  };
+  offersList.push(offer);
 
-      return offersList;
-    }, []);
+  return offersList;
+};
+
+const generateOffer = () => {
+  return EvenOption.TYPE_TRANSPORT.concat(EvenOption.TYPE_ACTIVITY).reduce(getOffer, []);
 };
 
 export const getOffersForType = (type) => {
   const typeOffers = generateOffer();
-
-  const currentOffers = typeOffers.filter((it) => {
-    return it.type === type;
-  });
+  const currentOffers = typeOffers.filter((it) => it.type === type);
 
   return currentOffers[0].offers;
 };
