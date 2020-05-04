@@ -8,7 +8,7 @@ export const createSelect = (type) => {
         class="event__type-input  visually-hidden"
         type="radio"
         name="event-type"
-        value="${typeLowerCase}">
+        value="${type}">
        <label class="event__type-label  event__type-label--${typeLowerCase}" for="event-type-${typeLowerCase}-1">${type}</label>
      </div>`
   );

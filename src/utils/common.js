@@ -9,6 +9,8 @@ export const makeCounter = () => {
   return counter;
 };
 
+export const isTrue = () => Math.random() > 0.5;
+
 export const getRandomIntegerNumber = (max, min = 0) => {
   return min + Math.floor(Math.random() * (max - min));
 };
@@ -37,7 +39,7 @@ export const getSortedEvents = (events, sortType) => {
       sortedEvents = copyEvents.sort((a, b) => a.timeStart - b.timeStart);
       break;
     case SortType.PRICE:
-      sortedEvents = copyEvents.sort((a, b) => a.eventPrice - b.eventPrice);
+      sortedEvents = copyEvents.sort((a, b) => a.basePrice - b.basePrice);
       break;
     case SortType.EVENT:
       sortedEvents = copyEvents;
@@ -45,4 +47,16 @@ export const getSortedEvents = (events, sortType) => {
   }
 
   return sortedEvents;
+};
+
+export const shuffle = function (array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = array[j];
+
+    array[j] = array[i];
+    array[i] = temp;
+  }
+
+  return array;
 };

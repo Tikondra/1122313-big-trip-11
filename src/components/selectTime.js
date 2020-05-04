@@ -7,7 +7,7 @@ const getDate = (date) => {
   return dateValue + ` ` + timeValue;
 };
 
-export const createSelectTime = (timeStart) => {
+export const createSelectTime = (timeStart, timeEnd) => {
 
   return (
     `<div class="event__field-group  event__field-group--time">
@@ -19,7 +19,7 @@ export const createSelectTime = (timeStart) => {
       <label class="visually-hidden" for="event-end-time-1">
         To
       </label>
-      <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${getDate(timeStart)}">
+      <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${getDate(timeEnd)}">
     </div>`
   );
 };
