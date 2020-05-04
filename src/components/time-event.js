@@ -1,11 +1,14 @@
-import {formatTime, castTimeFormat} from "../utils/common";
+import {formatTime, castTimeFormat, getIsoDate} from "../utils/common";
 import {Format} from "./consts";
+import moment from "moment";
 
 const getDuration = (start, end) => {
-  const startValue = (start.getHours() * Format.IN_HOUR) + start.getMinutes();
-  const endValue = (end.getHours() * Format.IN_HOUR) + end.getMinutes();
-  const durationHour = Math.floor((endValue - startValue) / Format.IN_HOUR);
-  const durationMinute = (endValue - startValue) % Format.IN_HOUR;
+  const startTime = moment(start);
+  const endTime = moment(end);
+  const duration = endTime.diff(startTime, `minutes`);
+
+  const durationHour = Math.floor(duration / Format.IN_HOUR);
+  const durationMinute = (duration) % Format.IN_HOUR;
   const durationH = durationHour ? castTimeFormat(durationHour) + `H` : ``;
   const durationM = durationMinute ? castTimeFormat(durationMinute) + `M` : ``;
 
@@ -16,25 +19,23 @@ const getDataEvent = (start, end) => {
   const startTime = formatTime(start);
   const endTime = formatTime(end);
   const duration = getDuration(start, end);
-  const date = start.getFullYear() + `-` + castTimeFormat(start.getMonth()) + `-` + castTimeFormat(start.getDay());
 
   return {
     startTime,
     endTime,
-    duration,
-    date,
+    duration
   };
 };
 
 export const createTimeEvent = (timeStart, timeEnd) => {
-  const {startTime, endTime, duration, date} = getDataEvent(timeStart, timeEnd);
+  const {startTime, endTime, duration} = getDataEvent(timeStart, timeEnd);
 
   return (
     `<div class="event__schedule">
       <p class="event__time">
-        <time class="event__start-time" datetime="${date}T${startTime}">${startTime}</time>
+        <time class="event__start-time" datetime="${getIsoDate(timeStart)}">${startTime}</time>
         &mdash;
-        <time class="event__end-time" datetime="${date}T${endTime}">${endTime}</time>
+        <time class="event__end-time" datetime="${getIsoDate(timeEnd)}">${endTime}</time>
       </p>
       <p class="event__duration">${duration}</p>
     </div>`
