@@ -1,4 +1,5 @@
 import {Format, SortType} from "../components/consts";
+import moment from "moment";
 
 export const makeCounter = () => {
   function counter() {
@@ -23,12 +24,9 @@ export const getRandomArrayItem = (array) => {
 
 export const castTimeFormat = (value) => value < Format.LESS_TEN ? `0${value}` : String(value);
 
-export const formatTime = (date) => {
-  const hours = castTimeFormat(date.getHours());
-  const minutes = castTimeFormat(date.getMinutes());
+export const formatTime = (date) => moment(date).format(`hh:mm`);
 
-  return `${hours}:${minutes}`;
-};
+export const getIsoDate = (date) => moment(date).format(`YYYY-MM-DDTHH:mm`);
 
 export const getSortedEvents = (events, sortType) => {
   let sortedEvents = [];
