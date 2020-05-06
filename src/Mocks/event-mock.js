@@ -1,12 +1,12 @@
 import {
-  castTimeFormat,
   getRandomArrayItem,
   getRandomIntegerNumber,
   makeCounter,
   isTrue,
   shuffle
 } from "../utils/common";
-import {EvenOption, CITIES, OFFERS_DESCRIPTION, Format, DESTINATION, MONTH} from "../components/consts";
+import {EvenOption, CITIES, OFFERS_DESCRIPTION, Format, DESTINATION} from "../components/consts";
+import moment from "moment";
 
 const MAX_PRICE = 1000;
 const MAX_PRICE_OFFERS = 300;
@@ -23,6 +23,7 @@ const getRandomStartTime = () => {
 
   targetDate.setHours(getRandomIntegerNumber(Format.HOURS_RANGE, Format.START_TIME));
   targetDate.setMinutes(getRandomIntegerNumber(Format.MINUTES_RANGE, Format.START_TIME));
+  targetDate.setDate(getRandomIntegerNumber(Format.MINUTES_RANGE, Format.START_TIME));
 
   return targetDate;
 };
@@ -140,15 +141,13 @@ const generateEvent = () => {
 
 const generateDay = () => {
   const date = getRandomDate();
-  const dateTime = date.getFullYear() + `-` + castTimeFormat(date.getMonth()) + `-` + castTimeFormat(date.getDay());
-  const dayNumber = date.getDate();
-  const month = MONTH[date.getMonth()];
+  const dateTime = moment(date).format(Format.DATE_TIME);
+  const dayDate = moment(date).format(Format.DAY_DATE);
 
   return {
     dayCounter: dayCounter() + 1,
     dateTime,
-    dayNumber,
-    month
+    dayDate
   };
 };
 

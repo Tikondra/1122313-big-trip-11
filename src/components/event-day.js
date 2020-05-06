@@ -1,13 +1,13 @@
 import AbstractComponent from "./abstract-component";
 
 const createEventDay = (day) => {
-  const {dayCounter, dateTime, dayNumber, month} = day;
+  const {dayCounter, dateTime, dayDate} = day;
 
   return (
     `<li class="trip-days__item  day" id="day${dayCounter}">
         <div class="day__info">
           <span class="day__counter">${dayCounter}</span>
-          <time class="day__date" datetime="${dateTime}">${month} ${dayNumber}</time>
+          <time class="day__date" datetime="${dateTime}">${dayDate}</time>
         </div>
      </li>`
   );

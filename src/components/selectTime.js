@@ -1,10 +1,8 @@
-import {castTimeFormat} from "../utils/common";
 import {Format} from "./consts";
+import moment from "moment";
 
 const getDate = (date) => {
-  const dateValue = castTimeFormat(date.getDate()) + `/` + castTimeFormat(date.getMonth()) + `/` + castTimeFormat(date.getFullYear()).slice(Format.YEAR);
-  const timeValue = castTimeFormat(date.getHours()) + `:` + castTimeFormat(date.getMinutes());
-  return dateValue + ` ` + timeValue;
+  return moment(date).format(Format.DATE_TIME_REVERS);
 };
 
 export const createSelectTime = (timeStart, timeEnd) => {

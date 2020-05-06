@@ -87,7 +87,7 @@ class EventEdit extends AbstractSmartComponent {
     const endTimeElement = this.getElement().querySelector(`#event-end-time-1`);
 
     if (this._flatpickr) {
-      this._dellFlatpickr();
+      this._delleteFlatpickr();
     }
 
     this._initFlatpickr(startTimeElement, this._event.timeStart);
@@ -106,7 +106,7 @@ class EventEdit extends AbstractSmartComponent {
     };
   }
 
-  _dellFlatpickr() {
+  _delleteFlatpickr() {
     this._flatpickr.destroy();
     this._flatpickr = null;
   }

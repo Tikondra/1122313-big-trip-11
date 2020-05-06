@@ -21,7 +21,6 @@ export const OFFERS_DESCRIPTION = [
   `Book tickets`,
   `Lunch in city`
 ];
-export const MONTH = [`JAN`, `FEB`, `MAR`, `APR`, `MAY`, `JUN`, `JUL`, `AUG`, `SEP`, `OCT`, `NOV`, `DEC`];
 
 export const EvenOption = {
   DAY_COUNT: 5,
@@ -33,10 +32,16 @@ export const Format = {
   LESS_TEN: 10,
   HOURS_RANGE: 10,
   MINUTES_RANGE: 60,
+  DAY_RANGE: 28,
   START_TIME: 6,
   IN_HOUR: 60,
   YEAR: 2,
   DATE: `d/m/y H:i`,
+  TIME: `hh:mm`,
+  ISO_DATE: `YYYY-MM-DDTHH:mm`,
+  DATE_TIME: `YYYY-MM-DD`,
+  DATE_TIME_REVERS: `DD/MM/YY hh:mm`,
+  DAY_DATE: `MMM DD`
 };
 export const Place = {
   AFTERBEGIN: `afterbegin`,

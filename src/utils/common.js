@@ -24,9 +24,9 @@ export const getRandomArrayItem = (array) => {
 
 export const castTimeFormat = (value) => value < Format.LESS_TEN ? `0${value}` : String(value);
 
-export const formatTime = (date) => moment(date).format(`hh:mm`);
+export const formatTime = (date) => moment(date).format(Format.TIME);
 
-export const getIsoDate = (date) => moment(date).format(`YYYY-MM-DDTHH:mm`);
+export const getIsoDate = (date) => moment(date).format(Format.ISO_DATE);
 
 export const getSortedEvents = (events, sortType) => {
   let sortedEvents = [];
