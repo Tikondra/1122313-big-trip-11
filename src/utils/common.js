@@ -28,16 +28,27 @@ export const formatTime = (date) => moment(date).format(Format.TIME);
 
 export const getIsoDate = (date) => moment(date).format(Format.ISO_DATE);
 
+export const getSortByTime = (events) => {
+  events.map((event) => {
+    const startTime = moment(event.timeStart);
+    const endTime = moment(event.timeEnd);
+    event.duration = endTime.diff(startTime, `minutes`);
+  });
+
+  return events;
+};
+
 export const getSortedEvents = (events, sortType) => {
   let sortedEvents = [];
   const copyEvents = events.slice();
 
   switch (sortType) {
     case SortType.TIME:
-      sortedEvents = copyEvents.sort((a, b) => a.timeStart - b.timeStart);
+      const durationEvents = getSortByTime(copyEvents);
+      sortedEvents = durationEvents.sort((a, b) => b.duration - a.duration);
       break;
     case SortType.PRICE:
-      sortedEvents = copyEvents.sort((a, b) => a.basePrice - b.basePrice);
+      sortedEvents = copyEvents.sort((a, b) => b.basePrice - a.basePrice);
       break;
     case SortType.EVENT:
       sortedEvents = copyEvents;
