@@ -5,7 +5,7 @@ import BoardComponent from "./components/board";
 import NoEventComponent from "./components/no-event";
 import TripController from "./controllers/tripControllers";
 
-import {generateDay, generateEvents} from "./Mocks/event-mock";
+import {generateEvent, generateEvents} from "./Mocks/event-mock";
 
 import {EvenOption, Place} from "./components/consts";
 
@@ -16,12 +16,12 @@ const init = () => {
   render(tripMenuTitle, menuComponent, Place.AFTERNODE);
   render(tripControls, filterComponent, Place.BEFOREEND);
 
-  if (days.length === 0) {
+  if (events.length === 0) {
     render(tripBoard, new NoEventComponent(), Place.AFTERBEGIN);
   } else {
     render(tripBoard, boardComponent, Place.BEFOREEND);
 
-    tripController.render(days);
+    tripController.render(events);
   }
 };
 
@@ -30,7 +30,7 @@ const tripControls = document.querySelector(`.trip-controls`);
 const tripMenuTitle = tripControls.querySelector(`h2`);
 const tripBoard = document.querySelector(`.trip-events`);
 
-const days = generateEvents(EvenOption.DAY_COUNT, generateDay);
+const events = generateEvents(EvenOption.COUNT, generateEvent);
 
 const headerInfoComponent = new HeaderInfoComponent();
 const menuComponent = new MenuComponent();

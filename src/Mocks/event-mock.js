@@ -15,7 +15,6 @@ const MIN_OPTIONS = 1;
 const RANDOM_PIC = `http://picsum.photos/248/152?r=`;
 
 const dayCounter = makeCounter();
-const dateCounter = makeCounter();
 const id = makeCounter();
 
 const getRandomStartTime = () => {
@@ -23,7 +22,7 @@ const getRandomStartTime = () => {
 
   targetDate.setHours(getRandomIntegerNumber(Format.HOURS_RANGE, Format.START_TIME));
   targetDate.setMinutes(getRandomIntegerNumber(Format.MINUTES_RANGE, Format.START_TIME));
-  targetDate.setDate(getRandomIntegerNumber(Format.MINUTES_RANGE, Format.START_TIME));
+  targetDate.setDate(getRandomIntegerNumber(Format.DAY_RANGE, Format.DAY_MIN));
 
   return targetDate;
 };
@@ -67,15 +66,6 @@ const getRandomOffers = () => {
 
 const getDescription = () => {
   return shuffle(DESTINATION).slice(0, getRandomIntegerNumber(MAX_OPTIONS, MIN_OPTIONS)).join(` `);
-};
-
-const getRandomDate = () => {
-  const targetDate = new Date();
-
-  const diffValue = dateCounter() + 1;
-  targetDate.setDate(targetDate.getDate() + diffValue);
-
-  return targetDate;
 };
 
 const getDestination = (destinationList, name) => {
@@ -139,8 +129,22 @@ const generateEvent = () => {
   };
 };
 
-const generateDay = () => {
-  const date = getRandomDate();
+export const getDays = (events) => {
+  const dayDates = [];
+  const days = [];
+  const sortedEvents = events.sort((a, b) => a.timeStart - b.timeStart);
+
+  sortedEvents.map((event) => {
+    if (!dayDates.includes(moment(event.timeStart).format(Format.DAY_DATE))) {
+      dayDates.push(moment(event.timeStart).format(Format.DAY_DATE));
+      days.push(generateDay(event.timeStart));
+    }
+  });
+
+  return days;
+};
+
+const generateDay = (date) => {
   const dateTime = moment(date).format(Format.DATE_TIME);
   const dayDate = moment(date).format(Format.DAY_DATE);
 

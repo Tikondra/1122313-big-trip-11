@@ -4,14 +4,14 @@ import EventsListComponent from "../components/events";
 import SortComponent from "../components/sort";
 import PointController from "./point-controller";
 
-import {Place, EvenOption, SortType} from "../components/consts";
-
-import {generateEvents, generateEvent} from "../Mocks/event-mock";
-import {getRandomIntegerNumber, getSortedEvents} from "../utils/common";
+import {Format, Place, SortType} from "../components/consts";
+import moment from "moment";
+import {getDays} from "../Mocks/event-mock";
+import {getSortedEvents} from "../utils/common";
 import {render} from "../utils/render";
 
-const renderEventsForDay = (eventListComponent, events, onDataChange, onViewChange) => {
-  const eventsForDay = events.splice(0, getRandomIntegerNumber(5, 1));
+const renderEventsForDay = (eventListComponent, events, onDataChange, onViewChange, day) => {
+  const eventsForDay = events.filter((event) => moment(event.timeStart).format(Format.DAY_DATE) === day.dayDate);
   return renderOnlyEvents(eventListComponent, eventsForDay, onDataChange, onViewChange);
 };
 
@@ -43,9 +43,9 @@ class TripController {
     this._sortComponent.setSortTypeChangeHandler(this._onSortRender);
   }
 
-  render(days) {
-    this._days = days;
-    this._events = generateEvents(EvenOption.COUNT, generateEvent);
+  render(events) {
+    this._events = events;
+    this._days = getDays(this._events);
     const eventsCopy = this._events.slice();
     const container = this._container.getElement();
 
@@ -68,7 +68,7 @@ class TripController {
 
     render(eventDay.getElement(), eventListComponent, Place.BEFOREEND);
 
-    const newEvents = renderEventsForDay(eventListComponent, eventsCopy, this._onDataChange, this._onViewChange);
+    const newEvents = renderEventsForDay(eventListComponent, eventsCopy, this._onDataChange, this._onViewChange, day);
     this._showedEventControllers = this._showedEventControllers.concat(newEvents);
   }
 
