@@ -1,7 +1,7 @@
 import EventComponent from "../components/event";
 import EventEditComponent from "../components/event-edit";
 
-import {render, replace} from "../utils/render";
+import {render, replace, remove} from "../utils/render";
 import {Place, Mode} from "../components/consts";
 
 class PointController {
@@ -38,6 +38,12 @@ class PointController {
     if (this._mode !== Mode.DEFAULT) {
       this._onReplaceToEvent();
     }
+  }
+
+  destroy() {
+    remove(this._eventEditComponent);
+    remove(this._eventComponent);
+    document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
   _addListeners() {

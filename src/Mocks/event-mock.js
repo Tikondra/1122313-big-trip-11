@@ -133,6 +133,7 @@ export const getDays = (events) => {
   const dayDates = [];
   const days = [];
   const sortedEvents = events.sort((a, b) => a.timeStart - b.timeStart);
+  dayCounter.currentCount = 0;
 
   sortedEvents.map((event) => {
     if (!dayDates.includes(moment(event.timeStart).format(Format.DAY_DATE))) {
