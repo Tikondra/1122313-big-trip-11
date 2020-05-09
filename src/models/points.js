@@ -23,6 +23,22 @@ class Points {
     this._callHandlers(this._dataChangeHandlers);
   }
 
+  removePoint(id) {
+    const index = this._points.findIndex((it) => it.id === id);
+    const from = this._points.slice(0, index);
+    const to = this._points.slice(index + 1);
+
+    if (index === -1) {
+      return false;
+    }
+
+    this._points = [...from, ...to];
+
+    this._callHandlers(this._dataChangeHandlers);
+
+    return true;
+  }
+
   updatePoint(id, point) {
     const index = this._points.findIndex((it) => it.id === id);
     const from = this._points.slice(0, index);
@@ -37,6 +53,11 @@ class Points {
     this._callHandlers(this._dataChangeHandlers);
 
     return true;
+  }
+
+  addPoint(point) {
+    this._points = [point, ...this._points];
+    this._callHandlers(this._dataChangeHandlers);
   }
 
   setFilter(filterType) {

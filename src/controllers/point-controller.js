@@ -17,9 +17,10 @@ class PointController {
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
 
-  render(event) {
+  render(event, mode) {
     const oldEventComponent = this._eventComponent;
     const oldEventEditComponent = this._eventEditComponent;
+    this._mode = mode;
 
     this._eventComponent = new EventComponent(event);
     this._eventEditComponent = new EventEditComponent(event);
@@ -29,6 +30,7 @@ class PointController {
     if (oldEventEditComponent && oldEventComponent) {
       replace(this._eventComponent, oldEventComponent);
       replace(this._eventEditComponent, oldEventEditComponent);
+      this._onReplaceToEvent();
     } else {
       render(this._container, this._eventComponent, Place.BEFOREEND);
     }
@@ -46,7 +48,7 @@ class PointController {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
-  _addListeners() {
+  _addListeners(event) {
     this._eventComponent.setEditBtnClickHandler(() => {
       this._onReplaceToEdit();
       document.addEventListener(`keydown`, this._onEscKeyDown);
@@ -54,9 +56,11 @@ class PointController {
 
     this._eventEditComponent.setSaveClickHandler((evt) => {
       evt.preventDefault();
-      this._onReplaceToEvent();
-      document.removeEventListener(`keydown`, this._onEscKeyDown);
+      const data = this._eventEditComponent.getData();
+      this._onDataChange(this, event, data);
     });
+
+    this._eventEditComponent.setDeleteButtonClickHandler(() => this._onDataChange(this, event, null));
   }
 
   _onReplaceToEdit() {
@@ -68,7 +72,11 @@ class PointController {
   _onReplaceToEvent() {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
     this._eventEditComponent.reset();
-    replace(this._eventComponent, this._eventEditComponent);
+
+    if (document.contains(this._eventEditComponent.getElement())) {
+      replace(this._eventComponent, this._eventEditComponent);
+    }
+
     this._mode = Mode.DEFAULT;
   }
 

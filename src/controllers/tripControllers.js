@@ -4,7 +4,7 @@ import EventsListComponent from "../components/events";
 import SortComponent from "../components/sort";
 import PointController from "./point-controller";
 
-import {EvenOption, Format, Place, SortType} from "../components/consts";
+import {emptyPoint, EvenOption, Format, Place, SortType, Mode as PointControllerMode} from "../components/consts";
 import moment from "moment";
 import {getDays} from "../Mocks/event-mock";
 import {getSortedEvents} from "../utils/common";
@@ -19,7 +19,7 @@ const renderOnlyEvents = (eventListComponent, events, onDataChange, onViewChange
   return events.map((event) => {
     const pointController = new PointController(eventListComponent, onDataChange, onViewChange);
 
-    pointController.render(event);
+    pointController.render(event, PointControllerMode.DEFAULT);
 
     return pointController;
   });
@@ -103,11 +103,39 @@ class TripController {
     this._showedEventControllers = this._showedEventControllers.concat(newEvents);
   }
 
-  _onDataChange(pointController, oldData, newData) {
+  _addPoint(pointController, oldData, newData) {
+    this._creatingEvent = null;
+    if (newData === null) {
+      pointController.destroy();
+      this._updateEvents();
+    } else {
+      this._pointsModel.addPoint(newData);
+      pointController.render(newData, PointControllerMode.DEFAULT);
+
+      this._showedEventControllers = [pointController, ...this._showedEventControllers];
+    }
+  }
+
+  _deletePoint(pointController, oldData) {
+    this._pointsModel.removePoint(oldData.id);
+    this._updateEvents();
+  }
+
+  _changePoint(pointController, oldData, newData) {
     const isSuccess = this._pointsModel.updatePoint(oldData.id, newData);
 
     if (isSuccess) {
       pointController.render(newData);
+    }
+  }
+
+  _onDataChange(pointController, oldData, newData) {
+    if (oldData === emptyPoint) {
+      this._addPoint(pointController, oldData, newData);
+    } else if (newData === null) {
+      this._deletePoint(pointController, oldData);
+    } else {
+      this._changePoint(pointController, oldData, newData);
     }
   }
 

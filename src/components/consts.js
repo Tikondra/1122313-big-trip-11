@@ -38,11 +38,11 @@ export const Format = {
   START_TIME: 6,
   IN_HOUR: 60,
   YEAR: 2,
-  DATE: `d/m/y H:i`,
+  DATE: `m/d/y H:i`,
   TIME: `hh:mm`,
   ISO_DATE: `YYYY-MM-DDTHH:mm`,
   DATE_TIME: `YYYY-MM-DD`,
-  DATE_TIME_REVERS: `DD/MM/YY hh:mm`,
+  DATE_TIME_REVERS: `MM/DD/YY hh:mm`,
   DAY_DATE: `MMM DD`
 };
 
@@ -68,4 +68,11 @@ export const FilterType = {
   EVERYTHING: `everything`,
   FUTURE: `future`,
   PAST: `past`
+};
+
+export const emptyPoint = {
+  basePrice: ``,
+  timeStart: null,
+  timeEnd: null,
+  type: null,
 };

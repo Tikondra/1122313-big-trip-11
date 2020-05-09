@@ -14,13 +14,32 @@ const createEventEdit = (event, options = {}) => {
 
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
-      ${createHeader(type, timeStart, timeEnd, isFavorite, destinations, basePrice)}
+      ${createHeader(type, timeStart, timeEnd, isFavorite, destinations.name, basePrice)}
       <section class="event__details">
         ${createOffers(offers, type)}
         ${createDestination(destinations, isDestination)}
       </section>
      </form>`
   );
+};
+
+const parseFormData = (formData, id) => {
+  const dateStart = formData.get(`event-start-time`);
+  const dateEnd = formData.get(`event-end-time`);
+  const isFavorite = !!formData.get(`event-favorite`);
+  const city = formData.get(`event-destination`);
+  const destination = getDestinationForCity(city);
+
+  return {
+    basePrice: formData.get(`event-price`),
+    timeStart: dateStart ? new Date(dateStart) : null,
+    timeEnd: dateEnd ? new Date(dateEnd) : null,
+    destinations: destination ? destination : {name: city, description: ``, pictures: []},
+    id,
+    type: formData.get(`event-type`),
+    offers: getOffersForType(formData.get(`event-type`)),
+    isFavorite,
+  };
 };
 
 class EventEdit extends AbstractSmartComponent {
@@ -34,6 +53,7 @@ class EventEdit extends AbstractSmartComponent {
     this._destinations = event.destinations;
     this._isDestination = !!event.destinations;
     this._saveHandler = null;
+    this._deleteButtonClickHandler = null;
     this._flatpickr = null;
 
     this._onChangeType = this._onChangeType.bind(this);
@@ -54,9 +74,19 @@ class EventEdit extends AbstractSmartComponent {
     });
   }
 
+  removeElement() {
+    if (this._flatpickr) {
+      this._flatpickr.destroy();
+      this._flatpickr = null;
+    }
+
+    super.removeElement();
+  }
+
   recoveryListeners() {
     this.setSaveClickHandler(this._saveHandler);
     this._subscribeOnEvents();
+    this.setDeleteButtonClickHandler(this._deleteButtonClickHandler);
   }
 
   rerender() {
@@ -77,9 +107,23 @@ class EventEdit extends AbstractSmartComponent {
     this.rerender();
   }
 
+  getData() {
+    const form = this.getElement();
+    const formData = new FormData(form);
+
+    return parseFormData(formData, this._event.id);
+  }
+
   setSaveClickHandler(handler) {
     this.getElement().addEventListener(`submit`, handler);
     this._saveHandler = handler;
+  }
+
+  setDeleteButtonClickHandler(handler) {
+    this.getElement().querySelector(`.event__reset-btn`)
+      .addEventListener(`click`, handler);
+
+    this._deleteButtonClickHandler = handler;
   }
 
   _applyFlatpickr() {
