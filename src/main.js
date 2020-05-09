@@ -4,6 +4,7 @@ import FilterComponent from "./components/filter";
 import BoardComponent from "./components/board";
 import NoEventComponent from "./components/no-event";
 import TripController from "./controllers/tripControllers";
+import PointsModel from "./models/points";
 
 import {generateEvent, generateEvents} from "./Mocks/event-mock";
 
@@ -21,7 +22,7 @@ const init = () => {
   } else {
     render(tripBoard, boardComponent, Place.BEFOREEND);
 
-    tripController.render(events);
+    tripController.render();
   }
 };
 
@@ -30,12 +31,15 @@ const tripControls = document.querySelector(`.trip-controls`);
 const tripMenuTitle = tripControls.querySelector(`h2`);
 const tripBoard = document.querySelector(`.trip-events`);
 
-const events = generateEvents(EvenOption.COUNT, generateEvent);
-
 const headerInfoComponent = new HeaderInfoComponent();
 const menuComponent = new MenuComponent();
 const filterComponent = new FilterComponent();
 const boardComponent = new BoardComponent();
-const tripController = new TripController(boardComponent);
+const pointsModel = new PointsModel();
+const tripController = new TripController(boardComponent, pointsModel);
+
+const events = generateEvents(EvenOption.COUNT, generateEvent);
+
+pointsModel.setPoints(events);
 
 init();

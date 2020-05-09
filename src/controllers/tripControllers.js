@@ -26,8 +26,10 @@ const renderOnlyEvents = (eventListComponent, events, onDataChange, onViewChange
 };
 
 class TripController {
-  constructor(container) {
+  constructor(container, pointsModel) {
     this._container = container;
+    this._pointsModel = pointsModel;
+
     this._days = [];
     this._events = [];
     this._showedEventControllers = [];
@@ -43,8 +45,8 @@ class TripController {
     this._sortComponent.setSortTypeChangeHandler(this._onSortRender);
   }
 
-  render(events) {
-    this._events = events;
+  render() {
+    this._events = this._pointsModel.getPoints();
     this._days = getDays(this._events);
     const eventsCopy = this._events.slice();
     const container = this._container.getElement();
@@ -73,16 +75,11 @@ class TripController {
   }
 
   _onDataChange(pointController, oldData, newData) {
-    const index = this._events.findIndex((it) => it === oldData);
-    const from = this._events.slice(0, index);
-    const to = this._events.slice(index + 1);
+    const isSuccess = this._pointsModel.updatePoint(oldData.id, newData);
 
-    if (index === -1) {
-      return;
+    if (isSuccess) {
+      pointController.render(newData);
     }
-    this._events = [...from, newData, ...to];
-
-    pointController.render(this._events[index]);
   }
 
   _onViewChange() {
@@ -92,7 +89,7 @@ class TripController {
   _onSortRender(sortType) {
     const tripDays = this._container.getElement();
 
-    const sortedEvents = getSortedEvents(this._events, sortType);
+    const sortedEvents = getSortedEvents(this._pointsModel.getPoints(), sortType);
 
     tripDays.innerHTML = ``;
 
