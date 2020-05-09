@@ -28,6 +28,7 @@ export const EvenOption = {
   TYPE_TRANSPORT: [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`],
   TYPE_ACTIVITY: [`Check-in`, `Sightseeing`, `Restaurant`],
 };
+
 export const Format = {
   LESS_TEN: 10,
   HOURS_RANGE: 10,
@@ -44,6 +45,7 @@ export const Format = {
   DATE_TIME_REVERS: `DD/MM/YY hh:mm`,
   DAY_DATE: `MMM DD`
 };
+
 export const Place = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`,
@@ -60,4 +62,10 @@ export const SortType = {
 export const Mode = {
   DEFAULT: `default`,
   EDIT: `edit`,
+};
+
+export const FilterType = {
+  EVERYTHING: `everything`,
+  FUTURE: `future`,
+  PAST: `past`
 };
