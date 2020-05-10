@@ -2,7 +2,7 @@ import {createCitySelect} from "./select-city";
 import {createEventType} from "./select-type";
 import {createSelectTime} from "./selectTime";
 import {createSelectPrice} from "./select-price";
-import {Mode} from "./consts";
+import {Mode, CITIES} from "./consts";
 
 const createFavoriteBtn = (isFavorite) => {
   return (
@@ -20,6 +20,8 @@ export const createHeader = (typeEvent, timeStart, timeEnd, isFavorite, city, ba
   const resetBtn = mode === Mode.ADDING ? `Cancel` : `Delete`;
   const favoriteBtn = mode !== Mode.ADDING ? createFavoriteBtn(isFavorite) : ``;
 
+  const isBlockSaveBtn = !CITIES.includes(city);
+
   return (
     `<header class="event__header">
       ${createEventType(typeEvent)}
@@ -27,7 +29,7 @@ export const createHeader = (typeEvent, timeStart, timeEnd, isFavorite, city, ba
       ${createSelectTime(timeStart, timeEnd)}
       ${createSelectPrice(basePrice)}
 
-      <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
+      <button class="event__save-btn  btn  btn--blue" type="submit" ${isBlockSaveBtn ? `disabled` : ``}>Save</button>
       <button class="event__reset-btn" type="reset">${resetBtn}</button>
       ${favoriteBtn}
      </header>`

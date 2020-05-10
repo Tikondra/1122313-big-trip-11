@@ -4,6 +4,7 @@ import {createDestination} from "./destination";
 import {createHeader} from "./header-event";
 import {getDestinationForCity, getOffersForType} from "../Mocks/event-mock";
 import flatpickr from "flatpickr";
+import {encode} from "he";
 
 import "flatpickr/dist/flatpickr.min.css";
 import {Format} from "./consts";
@@ -27,7 +28,7 @@ const parseFormData = (formData, id) => {
   const dateStart = formData.get(`event-start-time`);
   const dateEnd = formData.get(`event-end-time`);
   const isFavorite = !!formData.get(`event-favorite`);
-  const city = formData.get(`event-destination`);
+  const city = encode(formData.get(`event-destination`));
   const destination = getDestinationForCity(city);
 
   return {

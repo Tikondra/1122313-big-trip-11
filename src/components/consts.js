@@ -26,7 +26,7 @@ export const OFFERS_DESCRIPTION = [
 
 export const EvenOption = {
   DAY_COUNT: 5,
-  COUNT: 2,
+  COUNT: 15,
   TYPE_TRANSPORT: [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`],
   TYPE_ACTIVITY: [`Check-in`, `Sightseeing`, `Restaurant`],
 };
