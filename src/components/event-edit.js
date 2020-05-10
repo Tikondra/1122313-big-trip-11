@@ -8,13 +8,13 @@ import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import {Format} from "./consts";
 
-const createEventEdit = (event, options = {}) => {
+const createEventEdit = (event, mode, options = {}) => {
   const {timeStart, timeEnd, basePrice} = event;
   const {type, offers, isFavorite, destinations, isDestination} = options;
 
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
-      ${createHeader(type, timeStart, timeEnd, isFavorite, destinations.name, basePrice)}
+      ${createHeader(type, timeStart, timeEnd, isFavorite, destinations.name, basePrice, mode)}
       <section class="event__details">
         ${createOffers(offers, type)}
         ${createDestination(destinations, isDestination)}
@@ -43,7 +43,7 @@ const parseFormData = (formData, id) => {
 };
 
 class EventEdit extends AbstractSmartComponent {
-  constructor(event) {
+  constructor(event, mode) {
     super();
 
     this._event = event;
@@ -52,6 +52,7 @@ class EventEdit extends AbstractSmartComponent {
     this._isFavorite = event.isFavorite;
     this._destinations = event.destinations;
     this._isDestination = !!event.destinations;
+    this._mode = mode;
     this._saveHandler = null;
     this._deleteButtonClickHandler = null;
     this._flatpickr = null;
@@ -65,7 +66,7 @@ class EventEdit extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    return createEventEdit(this._event, {
+    return createEventEdit(this._event, this._mode, {
       type: this._type,
       offers: this._offers,
       isFavorite: this._isFavorite,
@@ -157,9 +158,11 @@ class EventEdit extends AbstractSmartComponent {
 
   _subscribeOnEvents() {
     const element = this.getElement();
+    const favoriteBtn = element.querySelector(`.event__favorite-btn`);
 
-    element.querySelector(`.event__favorite-btn`)
-      .addEventListener(`click`, this._onFavoriteToggle);
+    if (favoriteBtn) {
+      favoriteBtn.addEventListener(`click`, this._onFavoriteToggle);
+    }
 
     element.querySelector(`.event__type-list`)
       .addEventListener(`click`, this._onChangeType);

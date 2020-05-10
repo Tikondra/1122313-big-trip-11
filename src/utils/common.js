@@ -1,4 +1,4 @@
-import {Format, SortType} from "../components/consts";
+import {Format, SortType, EvtKey} from "../components/consts";
 import moment from "moment";
 
 export const makeCounter = () => {
@@ -11,6 +11,8 @@ export const makeCounter = () => {
 };
 
 export const isTrue = () => Math.random() > 0.5;
+
+export const isEscKey = (currentKey) => currentKey === EvtKey.ESC;
 
 export const getRandomIntegerNumber = (max, min = 0) => {
   return min + Math.floor(Math.random() * (max - min));

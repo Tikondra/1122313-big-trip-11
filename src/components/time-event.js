@@ -9,10 +9,12 @@ const getDuration = (start, end) => {
 
   const durationHour = Math.floor(duration / Format.IN_HOUR);
   const durationMinute = (duration) % Format.IN_HOUR;
-  const durationH = durationHour ? castTimeFormat(durationHour) + `H` : ``;
+  const durationDay = Math.floor(durationHour / Format.IN_DAY);
+  const durationH = durationHour ? castTimeFormat(durationHour % Format.IN_DAY) + `H` : ``;
   const durationM = durationMinute ? castTimeFormat(durationMinute) + `M` : ``;
+  const durationD = durationDay ? castTimeFormat(durationDay) + `D` : ``;
 
-  return durationH + ` ` + durationM;
+  return `${durationD} ${durationH} ${durationM}`;
 };
 
 const getDataEvent = (start, end) => {

@@ -2,6 +2,7 @@ import DayComponent from "../components/event-day";
 import EmptyDayComponent from "../components/empty-day";
 import EventsListComponent from "../components/events";
 import SortComponent from "../components/sort";
+import NoEventComponent from "../components/no-event";
 import PointController from "./point-controller";
 
 import {emptyPoint, EvenOption, Format, Place, SortType, Mode as PointControllerMode} from "../components/consts";
@@ -29,6 +30,7 @@ class TripController {
   constructor(container, pointsModel) {
     this._container = container;
     this._pointsModel = pointsModel;
+    this._creatingEvent = null;
 
     this._events = [];
     this._showedEventControllers = [];
@@ -37,6 +39,7 @@ class TripController {
     this._sortComponent = new SortComponent();
     this._emptyDay = new EmptyDayComponent();
     this._eventListComponent = new EventsListComponent();
+    this._noEventComponent = new NoEventComponent();
 
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
@@ -51,10 +54,18 @@ class TripController {
     this._events = this._pointsModel.getPoints();
     const eventsCopy = this._events.slice();
     const container = this._container.getElement();
+    const addPointBtn = document.querySelector(`.trip-main__event-add-btn`);
+    addPointBtn.addEventListener(`click`, () => {
+      this._onViewChange();
+      this.createPoint();
+    });
+    if (this._events.length === 0) {
+      render(container, this._noEventComponent, Place.AFTERBEGIN);
+    } else {
+      render(container, this._sortComponent, Place.BEFORENODE);
 
-    render(container, this._sortComponent, Place.BEFORENODE);
-
-    this._renderDays(container, eventsCopy);
+      this._renderDays(container, eventsCopy);
+    }
   }
 
   _removeEvents() {
@@ -103,29 +114,52 @@ class TripController {
     this._showedEventControllers = this._showedEventControllers.concat(newEvents);
   }
 
+  createPoint() {
+    if (this._creatingEvent) {
+      return;
+    }
+
+    const newDay = new EmptyDayComponent();
+    const newListEvents = new EventsListComponent();
+    const tripDays = this._container.getElement();
+    render(tripDays, newDay, Place.AFTERBEGIN);
+    const eventDay = tripDays.querySelector(`.day`);
+    render(eventDay, newListEvents, Place.BEFOREEND);
+    this._creatingEvent = new PointController(newListEvents, this._onDataChange, this._onViewChange);
+    this._creatingEvent.render(emptyPoint, PointControllerMode.ADDING);
+  }
+
   _addPoint(pointController, oldData, newData) {
     this._creatingEvent = null;
     if (newData === null) {
       pointController.destroy();
       this._updateEvents();
     } else {
+      if (this._pointsModel.getPoints().length === 0) {
+        this._noEventComponent.getElement().remove();
+        render(this._container.getElement(), this._sortComponent, Place.BEFORENODE);
+      }
       this._pointsModel.addPoint(newData);
-      pointController.render(newData, PointControllerMode.DEFAULT);
-
-      this._showedEventControllers = [pointController, ...this._showedEventControllers];
+      pointController.destroy();
+      this._container.getElement().querySelector(`.day`).remove();
+      this._updateEvents();
     }
   }
 
   _deletePoint(pointController, oldData) {
     this._pointsModel.removePoint(oldData.id);
     this._updateEvents();
+    if (this._pointsModel.getPoints().length === 0) {
+      this._sortComponent.getElement().remove();
+      render(this._container.getElement(), this._noEventComponent, Place.AFTERBEGIN);
+    }
   }
 
   _changePoint(pointController, oldData, newData) {
     const isSuccess = this._pointsModel.updatePoint(oldData.id, newData);
 
     if (isSuccess) {
-      pointController.render(newData);
+      pointController.render(newData, PointControllerMode.DEFAULT);
     }
   }
 
@@ -146,6 +180,10 @@ class TripController {
 
   _onViewChange() {
     this._showedEventControllers.forEach((event) => event.setDefaultView());
+    if (this._creatingEvent) {
+      this._creatingEvent.destroy();
+      this._creatingEvent = null;
+    }
   }
 
   _onSortRender(sortType) {

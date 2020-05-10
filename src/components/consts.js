@@ -1,3 +1,5 @@
+import {getOffersForType} from "../Mocks/event-mock";
+
 export const CITIES = [`Amsterdam`, `Geneva`, `Venice`, `Tokyo`, `Los Angeles`, `Ottawa`];
 export const DESTINATION = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
@@ -24,7 +26,7 @@ export const OFFERS_DESCRIPTION = [
 
 export const EvenOption = {
   DAY_COUNT: 5,
-  COUNT: 15,
+  COUNT: 2,
   TYPE_TRANSPORT: [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`],
   TYPE_ACTIVITY: [`Check-in`, `Sightseeing`, `Restaurant`],
 };
@@ -37,6 +39,7 @@ export const Format = {
   DAY_MIN: 1,
   START_TIME: 6,
   IN_HOUR: 60,
+  IN_DAY: 24,
   YEAR: 2,
   DATE: `m/d/y H:i`,
   TIME: `hh:mm`,
@@ -60,6 +63,7 @@ export const SortType = {
 };
 
 export const Mode = {
+  ADDING: `adding`,
   DEFAULT: `default`,
   EDIT: `edit`,
 };
@@ -72,7 +76,20 @@ export const FilterType = {
 
 export const emptyPoint = {
   basePrice: ``,
-  timeStart: null,
-  timeEnd: null,
-  type: null,
+  timeStart: new Date(),
+  timeEnd: new Date(),
+  destinations: {name: ``, description: ``, pictures: []},
+  id: new Date() + Math.random(),
+  isFavorite: false,
+  offers: getOffersForType(`Taxi`),
+  type: `Taxi`,
+};
+
+export const MenuItem = {
+  TABLE: `table`,
+  STATS: `stats`,
+};
+
+export const EvtKey = {
+  ESC: `Escape`
 };

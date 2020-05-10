@@ -2,7 +2,8 @@ import EventComponent from "../components/event";
 import EventEditComponent from "../components/event-edit";
 
 import {render, replace, remove} from "../utils/render";
-import {Place, Mode} from "../components/consts";
+import {Place, Mode, emptyPoint} from "../components/consts";
+import {isEscKey} from "../utils/common";
 
 class PointController {
   constructor(container, onDataChange, onViewChange) {
@@ -21,18 +22,29 @@ class PointController {
     const oldEventComponent = this._eventComponent;
     const oldEventEditComponent = this._eventEditComponent;
     this._mode = mode;
-
     this._eventComponent = new EventComponent(event);
-    this._eventEditComponent = new EventEditComponent(event);
+    this._eventEditComponent = new EventEditComponent(event, mode);
 
     this._addListeners(event);
 
-    if (oldEventEditComponent && oldEventComponent) {
-      replace(this._eventComponent, oldEventComponent);
-      replace(this._eventEditComponent, oldEventEditComponent);
-      this._onReplaceToEvent();
-    } else {
-      render(this._container, this._eventComponent, Place.BEFOREEND);
+    switch (mode) {
+      case Mode.DEFAULT:
+        if (oldEventEditComponent && oldEventComponent) {
+          replace(this._eventComponent, oldEventComponent);
+          replace(this._eventEditComponent, oldEventEditComponent);
+          this._onReplaceToEvent();
+        } else {
+          render(this._container, this._eventComponent, Place.BEFOREEND);
+        }
+        break;
+      case Mode.ADDING:
+        if (oldEventEditComponent && oldEventComponent) {
+          remove(oldEventEditComponent);
+          remove(oldEventComponent);
+        }
+        document.addEventListener(`keydown`, this._onEscKeyDown);
+        render(this._container, this._eventEditComponent, Place.AFTERBEGIN);
+        break;
     }
   }
 
@@ -60,7 +72,12 @@ class PointController {
       this._onDataChange(this, event, data);
     });
 
-    this._eventEditComponent.setDeleteButtonClickHandler(() => this._onDataChange(this, event, null));
+    this._eventEditComponent.setDeleteButtonClickHandler(() => {
+      if (this._mode === Mode.ADDING) {
+        document.querySelector(`.day`).remove();
+      }
+      this._onDataChange(this, event, null);
+    });
   }
 
   _onReplaceToEdit() {
@@ -81,10 +98,12 @@ class PointController {
   }
 
   _onEscKeyDown(evt) {
-    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
-
-    if (isEscKey) {
-      this._onReplaceToEvent(evt);
+    if (isEscKey(evt.key)) {
+      if (this._mode === Mode.ADDING) {
+        this._onDataChange(this, emptyPoint, null);
+        document.querySelector(`.day`).remove();
+      }
+      this._onReplaceToEvent();
       document.removeEventListener(`keydown`, this._onEscKeyDown);
     }
   }

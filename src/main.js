@@ -1,7 +1,6 @@
 import HeaderInfoComponent from "./components/header-info";
 import MenuComponent from "./components/menu";
 import BoardComponent from "./components/board";
-import NoEventComponent from "./components/no-event";
 import TripController from "./controllers/tripControllers";
 import FilterController from "./controllers/filter-controller";
 import PointsModel from "./models/points";
@@ -16,14 +15,8 @@ const init = () => {
   render(headerInfo, headerInfoComponent, Place.AFTERBEGIN);
   render(tripMenuTitle, menuComponent, Place.AFTERNODE);
   filterController.render();
-
-  if (events.length === 0) {
-    render(tripBoard, new NoEventComponent(), Place.AFTERBEGIN);
-  } else {
-    render(tripBoard, boardComponent, Place.BEFOREEND);
-
-    tripController.render();
-  }
+  render(tripBoard, boardComponent, Place.BEFOREEND);
+  tripController.render();
 };
 
 const headerInfo = document.querySelector(`.trip-main`);
