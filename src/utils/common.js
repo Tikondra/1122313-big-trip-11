@@ -1,4 +1,4 @@
-import {Format, SortType} from "../components/consts";
+import {Format, SortType, EvtKey} from "../components/consts";
 import moment from "moment";
 
 export const makeCounter = () => {
@@ -12,6 +12,8 @@ export const makeCounter = () => {
 
 export const isTrue = () => Math.random() > 0.5;
 
+export const isEscKey = (currentKey) => currentKey === EvtKey.ESC;
+
 export const getRandomIntegerNumber = (max, min = 0) => {
   return min + Math.floor(Math.random() * (max - min));
 };
@@ -24,9 +26,19 @@ export const getRandomArrayItem = (array) => {
 
 export const castTimeFormat = (value) => value < Format.LESS_TEN ? `0${value}` : String(value);
 
-export const formatTime = (date) => moment(date).format(`hh:mm`);
+export const formatTime = (date) => moment(date).format(Format.TIME);
 
-export const getIsoDate = (date) => moment(date).format(`YYYY-MM-DDTHH:mm`);
+export const getIsoDate = (date) => moment(date).format(Format.ISO_DATE);
+
+export const getSortByTime = (events) => {
+  events.map((event) => {
+    const startTime = moment(event.timeStart);
+    const endTime = moment(event.timeEnd);
+    event.duration = endTime.diff(startTime, `minutes`);
+  });
+
+  return events;
+};
 
 export const getSortedEvents = (events, sortType) => {
   let sortedEvents = [];
@@ -34,10 +46,11 @@ export const getSortedEvents = (events, sortType) => {
 
   switch (sortType) {
     case SortType.TIME:
-      sortedEvents = copyEvents.sort((a, b) => a.timeStart - b.timeStart);
+      const durationEvents = getSortByTime(copyEvents);
+      sortedEvents = durationEvents.sort((a, b) => b.duration - a.duration);
       break;
     case SortType.PRICE:
-      sortedEvents = copyEvents.sort((a, b) => a.basePrice - b.basePrice);
+      sortedEvents = copyEvents.sort((a, b) => b.basePrice - a.basePrice);
       break;
     case SortType.EVENT:
       sortedEvents = copyEvents;

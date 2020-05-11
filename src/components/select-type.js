@@ -13,8 +13,8 @@ export const createEventType = (typeEvent) => {
       <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
       <div class="event__type-list">
-        ${createTransfer()}
-        ${createActivity()}
+        ${createTransfer(typeEvent)}
+        ${createActivity(typeEvent)}
       </div>
     </div>`
   );

@@ -1,3 +1,5 @@
+import {getOffersForType} from "../Mocks/event-mock";
+
 export const CITIES = [`Amsterdam`, `Geneva`, `Venice`, `Tokyo`, `Los Angeles`, `Ottawa`];
 export const DESTINATION = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
@@ -21,7 +23,6 @@ export const OFFERS_DESCRIPTION = [
   `Book tickets`,
   `Lunch in city`
 ];
-export const MONTH = [`JAN`, `FEB`, `MAR`, `APR`, `MAY`, `JUN`, `JUL`, `AUG`, `SEP`, `OCT`, `NOV`, `DEC`];
 
 export const EvenOption = {
   DAY_COUNT: 5,
@@ -29,15 +30,25 @@ export const EvenOption = {
   TYPE_TRANSPORT: [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`],
   TYPE_ACTIVITY: [`Check-in`, `Sightseeing`, `Restaurant`],
 };
+
 export const Format = {
   LESS_TEN: 10,
   HOURS_RANGE: 10,
   MINUTES_RANGE: 60,
+  DAY_RANGE: 6,
+  DAY_MIN: 1,
   START_TIME: 6,
   IN_HOUR: 60,
+  IN_DAY: 24,
   YEAR: 2,
-  DATE: `d/m/y H:i`,
+  DATE: `m/d/y H:i`,
+  TIME: `hh:mm`,
+  ISO_DATE: `YYYY-MM-DDTHH:mm`,
+  DATE_TIME: `YYYY-MM-DD`,
+  DATE_TIME_REVERS: `MM/DD/YY hh:mm`,
+  DAY_DATE: `MMM DD`
 };
+
 export const Place = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`,
@@ -52,6 +63,46 @@ export const SortType = {
 };
 
 export const Mode = {
+  ADDING: `adding`,
   DEFAULT: `default`,
   EDIT: `edit`,
+};
+
+export const FilterType = {
+  EVERYTHING: `everything`,
+  FUTURE: `future`,
+  PAST: `past`
+};
+
+export const emptyPoint = {
+  basePrice: ``,
+  timeStart: new Date(),
+  timeEnd: new Date(),
+  destinations: {name: ``, description: ``, pictures: []},
+  id: new Date() + Math.random(),
+  isFavorite: false,
+  offers: getOffersForType(`Taxi`),
+  type: `Taxi`,
+};
+
+export const MenuItem = {
+  TABLE: `table`,
+  STATS: `stats`,
+};
+
+export const EvtKey = {
+  ESC: `Escape`
+};
+
+export const ButtonsText = {
+  CANCEL: `Cancel`,
+  DELETE: `Delete`,
+};
+
+export const TagName = {
+  A: `A`,
+};
+
+export const ClassName = {
+  DAY: `.day`
 };

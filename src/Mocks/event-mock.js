@@ -1,12 +1,12 @@
 import {
-  castTimeFormat,
   getRandomArrayItem,
   getRandomIntegerNumber,
   makeCounter,
   isTrue,
   shuffle
 } from "../utils/common";
-import {EvenOption, CITIES, OFFERS_DESCRIPTION, Format, DESTINATION, MONTH} from "../components/consts";
+import {EvenOption, CITIES, OFFERS_DESCRIPTION, Format, DESTINATION} from "../components/consts";
+import moment from "moment";
 
 const MAX_PRICE = 1000;
 const MAX_PRICE_OFFERS = 300;
@@ -15,7 +15,6 @@ const MIN_OPTIONS = 1;
 const RANDOM_PIC = `http://picsum.photos/248/152?r=`;
 
 const dayCounter = makeCounter();
-const dateCounter = makeCounter();
 const id = makeCounter();
 
 const getRandomStartTime = () => {
@@ -23,6 +22,7 @@ const getRandomStartTime = () => {
 
   targetDate.setHours(getRandomIntegerNumber(Format.HOURS_RANGE, Format.START_TIME));
   targetDate.setMinutes(getRandomIntegerNumber(Format.MINUTES_RANGE, Format.START_TIME));
+  targetDate.setDate(getRandomIntegerNumber(Format.DAY_RANGE, Format.DAY_MIN));
 
   return targetDate;
 };
@@ -66,15 +66,6 @@ const getRandomOffers = () => {
 
 const getDescription = () => {
   return shuffle(DESTINATION).slice(0, getRandomIntegerNumber(MAX_OPTIONS, MIN_OPTIONS)).join(` `);
-};
-
-const getRandomDate = () => {
-  const targetDate = new Date();
-
-  const diffValue = dateCounter() + 1;
-  targetDate.setDate(targetDate.getDate() + diffValue);
-
-  return targetDate;
 };
 
 const getDestination = (destinationList, name) => {
@@ -138,17 +129,30 @@ const generateEvent = () => {
   };
 };
 
-const generateDay = () => {
-  const date = getRandomDate();
-  const dateTime = date.getFullYear() + `-` + castTimeFormat(date.getMonth()) + `-` + castTimeFormat(date.getDay());
-  const dayNumber = date.getDate();
-  const month = MONTH[date.getMonth()];
+export const getDays = (events) => {
+  const dayDates = [];
+  const days = [];
+  const sortedEvents = events.sort((current, previous) => current.timeStart - previous.timeStart);
+  dayCounter.currentCount = 0;
+
+  sortedEvents.map((event) => {
+    if (!dayDates.includes(moment(event.timeStart).format(Format.DAY_DATE))) {
+      dayDates.push(moment(event.timeStart).format(Format.DAY_DATE));
+      days.push(generateDay(event.timeStart));
+    }
+  });
+
+  return days;
+};
+
+const generateDay = (date) => {
+  const dateTime = moment(date).format(Format.DATE_TIME);
+  const dayDate = moment(date).format(Format.DAY_DATE);
 
   return {
     dayCounter: dayCounter() + 1,
     dateTime,
-    dayNumber,
-    month
+    dayDate
   };
 };
 

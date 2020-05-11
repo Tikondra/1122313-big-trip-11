@@ -1,14 +1,14 @@
 import {EvenOption} from "./consts";
 import {createSelect} from "./select-markup";
 
-const getActivity = () => EvenOption.TYPE_ACTIVITY.map((it) => createSelect(it)).join(`\n`);
+const getActivity = (type) => EvenOption.TYPE_ACTIVITY.map((it) => createSelect(it, it === type)).join(`\n`);
 
-export const createActivity = () => {
+export const createActivity = (type) => {
 
   return (
     `<fieldset class="event__type-group">
        <legend class="visually-hidden">Activity</legend>
-       ${getActivity()}
+       ${getActivity(type)}
     </fieldset>`
   );
 };
