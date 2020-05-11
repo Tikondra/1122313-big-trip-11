@@ -11,7 +11,6 @@ import {generateEvent, generateEvents} from "./Mocks/event-mock";
 import {EvenOption, Place} from "./components/consts";
 
 import {render} from "./utils/render";
-import {getDateFrom} from "./utils/common";
 
 const getStateTable = (tripController, statisticsComponent) => {
   statisticsComponent.hide();
@@ -60,10 +59,8 @@ const menuState = {
   table: getStateTable,
   stats: getStateStats,
 };
-const dateTo = new Date();
-const dateFrom = getDateFrom(dateTo);
 
-const statisticsComponent = new StatisticsComponent({events: pointsModel, dateFrom, dateTo});
+const statisticsComponent = new StatisticsComponent(pointsModel);
 
 pointsModel.setPoints(events);
 

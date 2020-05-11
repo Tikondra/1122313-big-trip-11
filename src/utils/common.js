@@ -1,4 +1,4 @@
-import {Format, SortType, EvtKey} from "../components/consts";
+import {EvtKey, Format, SortType} from "../components/consts";
 import moment from "moment";
 
 export const makeCounter = () => {
@@ -72,8 +72,13 @@ export const shuffle = function (array) {
   return array;
 };
 
-export const getDateFrom = (dateTo) => {
-  const dateFrom = new Date(dateTo);
-  dateFrom.setDate(dateFrom.getDate() - Format.DAY_RANGE);
-  return dateFrom;
+export const getUniqItems = (item, index, array) => {
+  return array.indexOf(item) === index;
+};
+
+export const getDurationMinutes = (start, end) => {
+  const startTime = moment(start);
+  const endTime = moment(end);
+
+  return endTime.diff(startTime, `minutes`);
 };

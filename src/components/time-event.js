@@ -1,11 +1,8 @@
-import {formatTime, castTimeFormat, getIsoDate} from "../utils/common";
+import {formatTime, castTimeFormat, getIsoDate, getDurationMinutes} from "../utils/common";
 import {Format} from "./consts";
-import moment from "moment";
 
 const getDuration = (start, end) => {
-  const startTime = moment(start);
-  const endTime = moment(end);
-  const duration = endTime.diff(startTime, `minutes`);
+  const duration = getDurationMinutes(start, end);
 
   const durationHour = Math.floor(duration / Format.IN_HOUR);
   const durationMinute = (duration) % Format.IN_HOUR;
