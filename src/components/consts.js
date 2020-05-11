@@ -23,10 +23,11 @@ export const OFFERS_DESCRIPTION = [
   `Book tickets`,
   `Lunch in city`
 ];
+export const HIDDEN_CLASS = `visually-hidden`;
 
 export const EvenOption = {
   DAY_COUNT: 5,
-  COUNT: 15,
+  COUNT: 2,
   TYPE_TRANSPORT: [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`],
   TYPE_ACTIVITY: [`Check-in`, `Sightseeing`, `Restaurant`],
 };
@@ -103,6 +104,6 @@ export const TagName = {
   A: `A`,
 };
 
-export const ClassName = {
+export const Selector = {
   DAY: `.day`
 };

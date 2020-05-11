@@ -12,7 +12,7 @@ import {
   Place,
   SortType,
   Mode as PointControllerMode,
-  ClassName
+  Selector
 } from "../components/consts";
 import moment from "moment";
 import {getDays} from "../Mocks/event-mock";
@@ -60,6 +60,14 @@ class TripController {
     this._pointsModel.setFilterChangeHandler(this._onFilterChange);
   }
 
+  hide() {
+    this._container.hide();
+  }
+
+  show() {
+    this._container.show();
+  }
+
   render() {
     this._events = this._pointsModel.getPoints();
     const eventsCopy = this._events.slice();
@@ -88,7 +96,7 @@ class TripController {
 
     render(tripDays, newDay, Place.AFTERBEGIN);
 
-    const eventDay = tripDays.querySelector(ClassName.DAY);
+    const eventDay = tripDays.querySelector(Selector.DAY);
 
     render(eventDay, newListEvents, Place.BEFOREEND);
 
@@ -160,7 +168,7 @@ class TripController {
 
       this._pointsModel.addPoint(newData);
       pointController.destroy();
-      this._container.getElement().querySelector(ClassName.DAY).remove();
+      this._container.getElement().querySelector(Selector.DAY).remove();
       this._updateEvents();
     }
   }
