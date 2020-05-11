@@ -2,7 +2,7 @@ import EventComponent from "../components/event";
 import EventEditComponent from "../components/event-edit";
 
 import {render, replace, remove} from "../utils/render";
-import {Place, Mode, emptyPoint} from "../components/consts";
+import {Place, Mode, emptyPoint, ClassName} from "../components/consts";
 import {isEscKey} from "../utils/common";
 
 class PointController {
@@ -74,7 +74,7 @@ class PointController {
 
     this._eventEditComponent.setDeleteButtonClickHandler(() => {
       if (this._mode === Mode.ADDING) {
-        document.querySelector(`.day`).remove();
+        document.querySelector(ClassName.DAY).remove();
       }
       this._onDataChange(this, event, null);
     });
@@ -101,7 +101,7 @@ class PointController {
     if (isEscKey(evt.key)) {
       if (this._mode === Mode.ADDING) {
         this._onDataChange(this, emptyPoint, null);
-        document.querySelector(`.day`).remove();
+        document.querySelector(ClassName.DAY).remove();
       }
       this._onReplaceToEvent();
       document.removeEventListener(`keydown`, this._onEscKeyDown);

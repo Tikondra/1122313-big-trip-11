@@ -1,4 +1,5 @@
 import AbstractComponent from "./abstract-component";
+import {TagName} from "./consts";
 
 const createMenu = () => {
 
@@ -26,7 +27,7 @@ class Menu extends AbstractComponent {
 
   setOnChange(handler) {
     this.getElement().addEventListener(`change`, (evt) => {
-      if (evt.target.tagName !== `A`) {
+      if (evt.target.tagName !== TagName.A) {
         return;
       }
 

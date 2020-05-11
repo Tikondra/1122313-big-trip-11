@@ -93,3 +93,16 @@ export const MenuItem = {
 export const EvtKey = {
   ESC: `Escape`
 };
+
+export const ButtonsText = {
+  CANCEL: `Cancel`,
+  DELETE: `Delete`,
+};
+
+export const TagName = {
+  A: `A`,
+};
+
+export const ClassName = {
+  DAY: `.day`
+};

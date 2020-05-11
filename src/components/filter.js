@@ -6,8 +6,8 @@ const getFilterNameById = (id) => {
   return id.substring(FILTER_ID_PREFIX.length);
 };
 
-const createFilterButton = (filter, isChecked) => {
-  const {name} = filter;
+const createFilterButton = (filter) => {
+  const {name, checked} = filter;
 
   return (
     `<div class="trip-filters__filter">
@@ -17,14 +17,14 @@ const createFilterButton = (filter, isChecked) => {
         type="radio"
         name="trip-filter"
         value="${name}"
-        ${isChecked ? `checked` : ``}>
+        ${checked ? `checked` : ``}>
       <label class="trip-filters__filter-label" for="filter-${name}">${name}</label>
     </div>`
   );
 };
 
 const createFilter = (filters) => {
-  const filtersMarkup = filters.map((filter) => createFilterButton(filter, filter.checked)).join(`\n`);
+  const filtersMarkup = filters.map((filter) => createFilterButton(filter)).join(`\n`);
 
   return (
     `<form class="trip-filters" action="#" method="get">

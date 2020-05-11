@@ -132,7 +132,7 @@ const generateEvent = () => {
 export const getDays = (events) => {
   const dayDates = [];
   const days = [];
-  const sortedEvents = events.sort((a, b) => a.timeStart - b.timeStart);
+  const sortedEvents = events.sort((current, previous) => current.timeStart - previous.timeStart);
   dayCounter.currentCount = 0;
 
   sortedEvents.map((event) => {

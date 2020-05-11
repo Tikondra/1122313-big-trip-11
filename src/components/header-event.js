@@ -2,7 +2,7 @@ import {createCitySelect} from "./select-city";
 import {createEventType} from "./select-type";
 import {createSelectTime} from "./selectTime";
 import {createSelectPrice} from "./select-price";
-import {Mode, CITIES} from "./consts";
+import {Mode, CITIES, ButtonsText} from "./consts";
 
 const createFavoriteBtn = (isFavorite) => {
   return (
@@ -17,7 +17,7 @@ const createFavoriteBtn = (isFavorite) => {
 };
 
 export const createHeader = (typeEvent, timeStart, timeEnd, isFavorite, city, basePrice, mode) => {
-  const resetBtn = mode === Mode.ADDING ? `Cancel` : `Delete`;
+  const resetBtn = mode === Mode.ADDING ? ButtonsText.CANCEL : ButtonsText.DELETE;
   const favoriteBtn = mode !== Mode.ADDING ? createFavoriteBtn(isFavorite) : ``;
 
   const isBlockSaveBtn = !CITIES.includes(city);
