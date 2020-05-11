@@ -71,3 +71,9 @@ export const shuffle = function (array) {
 
   return array;
 };
+
+export const getDateFrom = (dateTo) => {
+  const dateFrom = new Date(dateTo);
+  dateFrom.setDate(dateFrom.getDate() - Format.DAY_RANGE);
+  return dateFrom;
+};

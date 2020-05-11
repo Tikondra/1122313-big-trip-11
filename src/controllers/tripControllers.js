@@ -12,7 +12,7 @@ import {
   Place,
   SortType,
   Mode as PointControllerMode,
-  Selector
+  Selector, MenuItem
 } from "../components/consts";
 import moment from "moment";
 import {getDays} from "../Mocks/event-mock";
@@ -36,7 +36,7 @@ const renderOnlyEvents = (eventListComponent, events, onDataChange, onViewChange
 };
 
 class TripController {
-  constructor(container, pointsModel) {
+  constructor(container, pointsModel, menuComponent) {
     this._container = container;
     this._pointsModel = pointsModel;
     this._creatingEvent = null;
@@ -49,6 +49,7 @@ class TripController {
     this._emptyDay = new EmptyDayComponent();
     this._eventListComponent = new EventsListComponent();
     this._noEventComponent = new NoEventComponent();
+    this._menuComponent = menuComponent;
 
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
@@ -241,6 +242,8 @@ class TripController {
   _onAddNewEvent() {
     this._onViewChange();
     this.createPoint();
+    this.show();
+    this._menuComponent.setActiveItem(MenuItem.TABLE);
   }
 }
 
