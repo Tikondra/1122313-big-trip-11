@@ -19,19 +19,22 @@ class Menu extends AbstractComponent {
 
   setActiveItem(menuItem) {
     const item = this.getElement().querySelector(`#${menuItem}`);
+    this.getElement().querySelectorAll(`.trip-tabs__btn`)
+      .forEach((btn) => btn.classList.remove(`trip-tabs__btn--active`));
 
-    if (item) {
-      item.checked = true;
-    }
+    item.classList.add(`trip-tabs__btn--active`);
   }
 
   setOnChange(handler) {
-    this.getElement().addEventListener(`change`, (evt) => {
+    this.getElement().addEventListener(`click`, (evt) => {
+
       if (evt.target.tagName !== TagName.A) {
         return;
       }
 
       const menuItem = evt.target.id;
+
+      this.setActiveItem(menuItem);
 
       handler(menuItem);
     });

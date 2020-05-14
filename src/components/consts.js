@@ -23,10 +23,12 @@ export const OFFERS_DESCRIPTION = [
   `Book tickets`,
   `Lunch in city`
 ];
+export const HIDDEN_CLASS = `visually-hidden`;
+export const BAR_HEIGHT = 55;
 
 export const EvenOption = {
   DAY_COUNT: 5,
-  COUNT: 15,
+  COUNT: 25,
   TYPE_TRANSPORT: [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`],
   TYPE_ACTIVITY: [`Check-in`, `Sightseeing`, `Restaurant`],
 };
@@ -35,7 +37,7 @@ export const Format = {
   LESS_TEN: 10,
   HOURS_RANGE: 10,
   MINUTES_RANGE: 60,
-  DAY_RANGE: 6,
+  DAY_RANGE: 7,
   DAY_MIN: 1,
   START_TIME: 6,
   IN_HOUR: 60,
@@ -103,6 +105,25 @@ export const TagName = {
   A: `A`,
 };
 
-export const ClassName = {
+export const Selector = {
   DAY: `.day`
+};
+
+export const TypeChart = {
+  MONEY: `MONEY`,
+  TRANSPORT: `TRANSPORT`,
+  TIME_SPENT: `TIME SPENT`
+};
+
+export const TypeIcon = {
+  'Taxi': `🚕`,
+  'Bus': `🚌`,
+  'Train': `🚂`,
+  'Ship': `🚢`,
+  'Transport': `🚙`,
+  'Drive': `🚗`,
+  'Flight': `✈️`,
+  'Check-in': `🏨`,
+  'Sightseeing': `🏛️`,
+  'Restaurant': `🍴`
 };
