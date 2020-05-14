@@ -115,15 +115,15 @@ export const TypeChart = {
   TIME_SPENT: `TIME SPENT`
 };
 
-export const TypeIcon = {
-  'Taxi': `🚕`,
-  'Bus': `🚌`,
-  'Train': `🚂`,
-  'Ship': `🚢`,
-  'Transport': `🚙`,
-  'Drive': `🚗`,
-  'Flight': `✈️`,
-  'Check-in': `🏨`,
-  'Sightseeing': `🏛️`,
-  'Restaurant': `🍴`
+export const typeIcon = {
+  'taxi': `🚕`,
+  'bus': `🚌`,
+  'train': `🚂`,
+  'ship': `🚢`,
+  'transport': `🚙`,
+  'drive': `🚗`,
+  'flight': `✈️`,
+  'check-in': `🏨`,
+  'sightseeing': `🏛️`,
+  'restaurant': `🍴`
 };
