@@ -28,7 +28,7 @@ export const BAR_HEIGHT = 55;
 
 export const EvenOption = {
   DAY_COUNT: 5,
-  COUNT: 7,
+  COUNT: 25,
   TYPE_TRANSPORT: [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`],
   TYPE_ACTIVITY: [`Check-in`, `Sightseeing`, `Restaurant`],
 };
@@ -107,4 +107,23 @@ export const TagName = {
 
 export const Selector = {
   DAY: `.day`
+};
+
+export const TypeChart = {
+  MONEY: `MONEY`,
+  TRANSPORT: `TRANSPORT`,
+  TIME_SPENT: `TIME SPENT`
+};
+
+export const TypeIcon = {
+  'Taxi': `🚕`,
+  'Bus': `🚌`,
+  'Train': `🚂`,
+  'Ship': `🚢`,
+  'Transport': `🚙`,
+  'Drive': `🚗`,
+  'Flight': `✈️`,
+  'Check-in': `🏨`,
+  'Sightseeing': `🏛️`,
+  'Restaurant': `🍴`
 };

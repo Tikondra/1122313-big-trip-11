@@ -2,22 +2,24 @@ import AbstractSmartComponent from "./abstract-smart-component";
 import Chart from "chart.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-import {BAR_HEIGHT} from "./consts";
+import {BAR_HEIGHT, TypeChart, TypeIcon} from "./consts";
 import {getUniqItems} from "../utils/common";
 import {getCountByTypes, getDurationByTypes, getMoneyByTypes} from "../utils/statistics";
 
-const renderMoneyChart = (moneyCtx, events, types) => {
-  const moneyByTypes = getMoneyByTypes(types, events);
+const GetFormat = {
+  "MONEY": (val) => `€ ${val}`,
+  "TRANSPORT": (val) => `${val}x`,
+  "TIME SPENT": (val) => `${val}H`
+};
 
-  moneyCtx.height = BAR_HEIGHT * types.length;
-
-  return new Chart(moneyCtx, {
+const configChart = (types, data, typeChart) => {
+  return {
     plugins: [ChartDataLabels],
     type: `horizontalBar`,
     data: {
       labels: types,
       datasets: [{
-        data: moneyByTypes,
+        data,
         backgroundColor: `#ffffff`,
         hoverBackgroundColor: `#ffffff`,
         anchor: `start`,
@@ -34,12 +36,12 @@ const renderMoneyChart = (moneyCtx, events, types) => {
           color: `#000000`,
           anchor: `end`,
           align: `start`,
-          formatter: (val) => `€ ${val}`
+          formatter: GetFormat[typeChart]
         }
       },
       title: {
         display: true,
-        text: `MONEY`,
+        text: typeChart,
         fontColor: `#000000`,
         fontSize: 23,
         position: `left`
@@ -50,6 +52,9 @@ const renderMoneyChart = (moneyCtx, events, types) => {
             fontColor: `#000000`,
             padding: 5,
             fontSize: 13,
+            callback: (type) => {
+              return `${TypeIcon[type]} ${type}`;
+            }
           },
           gridLines: {
             display: false,
@@ -74,7 +79,15 @@ const renderMoneyChart = (moneyCtx, events, types) => {
         enabled: false,
       }
     }
-  });
+  };
+};
+
+const renderMoneyChart = (moneyCtx, events, types) => {
+  const moneyByTypes = getMoneyByTypes(types, events);
+
+  moneyCtx.height = BAR_HEIGHT * types.length;
+
+  return new Chart(moneyCtx, configChart(types, moneyByTypes, TypeChart.MONEY));
 };
 
 const renderTransportChart = (transportCtx, events, types) => {
@@ -82,70 +95,7 @@ const renderTransportChart = (transportCtx, events, types) => {
 
   const countByTypes = getCountByTypes(types, events);
 
-  return new Chart(transportCtx, {
-    plugins: [ChartDataLabels],
-    type: `horizontalBar`,
-    data: {
-      labels: types,
-      datasets: [{
-        data: countByTypes,
-        backgroundColor: `#ffffff`,
-        hoverBackgroundColor: `#ffffff`,
-        anchor: `start`,
-        minBarLength: 50,
-        barThickness: 44,
-      }]
-    },
-    options: {
-      plugins: {
-        datalabels: {
-          font: {
-            size: 13
-          },
-          color: `#000000`,
-          anchor: `end`,
-          align: `start`,
-          formatter: (val) => `${val}x`
-        }
-      },
-      title: {
-        display: true,
-        text: `TRANSPORT`,
-        fontColor: `#000000`,
-        fontSize: 23,
-        position: `left`
-      },
-      scales: {
-        yAxes: [{
-          ticks: {
-            fontColor: `#000000`,
-            padding: 5,
-            fontSize: 13,
-          },
-          gridLines: {
-            display: false,
-            drawBorder: false
-          },
-        }],
-        xAxes: [{
-          ticks: {
-            display: false,
-            beginAtZero: true,
-          },
-          gridLines: {
-            display: false,
-            drawBorder: false
-          },
-        }],
-      },
-      legend: {
-        display: false
-      },
-      tooltips: {
-        enabled: false,
-      }
-    }
-  });
+  return new Chart(transportCtx, configChart(types, countByTypes, TypeChart.TRANSPORT));
 };
 
 const timeSpentChart = (timeSpentCtx, events, types) => {
@@ -153,70 +103,7 @@ const timeSpentChart = (timeSpentCtx, events, types) => {
 
   const durationByTypes = getDurationByTypes(types, events);
 
-  return new Chart(timeSpentCtx, {
-    plugins: [ChartDataLabels],
-    type: `horizontalBar`,
-    data: {
-      labels: types,
-      datasets: [{
-        data: durationByTypes,
-        backgroundColor: `#ffffff`,
-        hoverBackgroundColor: `#ffffff`,
-        anchor: `start`,
-        minBarLength: 50,
-        barThickness: 44,
-      }]
-    },
-    options: {
-      plugins: {
-        datalabels: {
-          font: {
-            size: 13
-          },
-          color: `#000000`,
-          anchor: `end`,
-          align: `start`,
-          formatter: (val) => `${val}H`
-        }
-      },
-      title: {
-        display: true,
-        text: `TIME SPENT`,
-        fontColor: `#000000`,
-        fontSize: 23,
-        position: `left`
-      },
-      scales: {
-        yAxes: [{
-          ticks: {
-            fontColor: `#000000`,
-            padding: 5,
-            fontSize: 13,
-          },
-          gridLines: {
-            display: false,
-            drawBorder: false
-          },
-        }],
-        xAxes: [{
-          ticks: {
-            display: false,
-            beginAtZero: true,
-          },
-          gridLines: {
-            display: false,
-            drawBorder: false
-          },
-        }],
-      },
-      legend: {
-        display: false
-      },
-      tooltips: {
-        enabled: false,
-      }
-    }
-  });
+  return new Chart(timeSpentCtx, configChart(types, durationByTypes, TypeChart.TIME_SPENT));
 };
 
 const createStatistics = () => {
