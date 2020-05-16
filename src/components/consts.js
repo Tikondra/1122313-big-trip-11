@@ -51,6 +51,14 @@ export const Format = {
   DAY_DATE: `MMM DD`
 };
 
+export const ApiOption = {
+  AUTHORIZATION: `Basic hgdjfh786kjdsfsldjfls`,
+  END_POINT: `https://11.ecmascript.pages.academy/big-trip`,
+  POINTS: `points`,
+  DESTINATIONS: `destinations`,
+  OFFERS: `offers`,
+};
+
 export const Place = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`,
@@ -126,4 +134,11 @@ export const typeIcon = {
   'check-in': `🏨`,
   'sightseeing': `🏛️`,
   'restaurant': `🍴`
+};
+
+export const Method = {
+  GET: `GET`,
+  POST: `POST`,
+  PUT: `PUT`,
+  DELETE: `DELETE`
 };

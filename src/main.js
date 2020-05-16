@@ -1,3 +1,4 @@
+import API from "./api";
 import HeaderInfoComponent from "./components/header-info";
 import MenuComponent from "./components/menu";
 import BoardComponent from "./components/board";
@@ -6,9 +7,7 @@ import TripController from "./controllers/tripControllers";
 import FilterController from "./controllers/filter-controller";
 import PointsModel from "./models/points";
 
-import {generateEvent, generateEvents} from "./Mocks/event-mock";
-
-import {EvenOption, Place} from "./components/consts";
+import {Place, ApiOption} from "./components/consts";
 
 import {render} from "./utils/render";
 
@@ -33,19 +32,26 @@ const init = () => {
   filterController.render();
 
   render(tripBoard, boardComponent, Place.BEFOREEND);
-
-  tripController.render();
-
   render(tripBoard, statisticsComponent, Place.AFTERNODE);
 
   statisticsComponent.hide();
   menuComponent.setOnChange(menuSwitch);
+
+  api.getPoints()
+    .then((points) => {
+      pointsModel.setPoints(points);
+      tripController.render();
+    });
 };
 
 const headerInfo = document.querySelector(`.trip-main`);
 const tripControls = document.querySelector(`.trip-controls`);
 const tripMenuTitle = tripControls.querySelector(`h2`);
 const tripBoard = document.querySelector(`.trip-events`);
+const menuState = {
+  table: getStateTable,
+  stats: getStateStats,
+};
 
 const headerInfoComponent = new HeaderInfoComponent();
 const menuComponent = new MenuComponent();
@@ -53,15 +59,7 @@ const boardComponent = new BoardComponent();
 const pointsModel = new PointsModel();
 const tripController = new TripController(boardComponent, pointsModel, menuComponent);
 const filterController = new FilterController(tripControls, pointsModel);
-
-const events = generateEvents(EvenOption.COUNT, generateEvent);
-const menuState = {
-  table: getStateTable,
-  stats: getStateStats,
-};
-
 const statisticsComponent = new StatisticsComponent(pointsModel);
-
-pointsModel.setPoints(events);
+const api = new API(ApiOption.END_POINT, ApiOption.AUTHORIZATION);
 
 init();
