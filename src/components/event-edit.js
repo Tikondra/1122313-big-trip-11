@@ -11,13 +11,13 @@ import {Format} from "./consts";
 
 const createEventEdit = (event, mode, options = {}) => {
   const {timeStart, timeEnd, basePrice} = event;
-  const {type, offers, isFavorite, destinations, isDestination} = options;
+  const {type, offers, isFavorite, destinations, isDestination, pointsModel, isOffers} = options;
 
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
-      ${createHeader(type, timeStart, timeEnd, isFavorite, destinations.name, basePrice, mode)}
+      ${createHeader(type, timeStart, timeEnd, isFavorite, destinations.name, basePrice, mode, pointsModel)}
       <section class="event__details">
-        ${createOffers(offers, type)}
+        ${createOffers(offers, type, isOffers)}
         ${createDestination(destinations, isDestination)}
       </section>
      </form>`
@@ -44,16 +44,18 @@ const parseFormData = (formData, id) => {
 };
 
 class EventEdit extends AbstractSmartComponent {
-  constructor(event, mode) {
+  constructor(event, mode, pointsModel) {
     super();
 
     this._event = event;
     this._type = event.type;
     this._offers = event.offers;
+    this._isOffers = event.offers.length > 0;
     this._isFavorite = event.isFavorite;
     this._destinations = event.destinations;
     this._isDestination = !!event.destinations;
     this._mode = mode;
+    this._pointsModel = pointsModel;
     this._saveHandler = null;
     this._deleteButtonClickHandler = null;
     this._flatpickr = null;
@@ -72,7 +74,9 @@ class EventEdit extends AbstractSmartComponent {
       offers: this._offers,
       isFavorite: this._isFavorite,
       destinations: this._destinations,
-      isDestination: this._isDestination
+      isDestination: this._isDestination,
+      isOffers: this._isOffers,
+      pointsModel: this._pointsModel,
     });
   }
 
@@ -192,7 +196,7 @@ class EventEdit extends AbstractSmartComponent {
   }
 
   _onChangeCity(evt) {
-    const currentDestination = getDestinationForCity(evt.target.value);
+    const currentDestination = this._pointsModel.getDestinationForCity(evt.target.value)[0];
     this._toggleDestination(evt, currentDestination);
     this.rerender();
   }

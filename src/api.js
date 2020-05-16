@@ -21,6 +21,11 @@ const API = class {
       .then(Point.parsePoints);
   }
 
+  getDestinations() {
+    return this._load({url: ApiOption.DESTINATIONS})
+      .then((response) => response.json());
+  }
+
   createPoint(point) {
     return this._load({
       url: ApiOption.POINTS,

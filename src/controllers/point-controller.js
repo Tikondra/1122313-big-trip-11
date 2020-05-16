@@ -6,11 +6,12 @@ import {Place, Mode, emptyPoint, Selector} from "../components/consts";
 import {isEscKey} from "../utils/common";
 
 class PointController {
-  constructor(container, onDataChange, onViewChange) {
+  constructor(container, onDataChange, onViewChange, pointsModel) {
     this._container = container.getElement();
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
     this._mode = Mode.DEFAULT;
+    this._pointsModel = pointsModel;
 
     this._eventComponent = null;
     this._eventEditComponent = null;
@@ -23,7 +24,7 @@ class PointController {
     const oldEventEditComponent = this._eventEditComponent;
     this._mode = mode;
     this._eventComponent = new EventComponent(event);
-    this._eventEditComponent = new EventEditComponent(event, mode);
+    this._eventEditComponent = new EventEditComponent(event, mode, this._pointsModel);
 
     this._addListeners(event);
 

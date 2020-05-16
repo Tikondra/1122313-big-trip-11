@@ -19,15 +19,15 @@ import {getDays} from "../Mocks/event-mock";
 import {getSortedEvents} from "../utils/common";
 import {remove, render} from "../utils/render";
 
-const renderEventsForDay = (eventListComponent, events, onDataChange, onViewChange, day) => {
+const renderEventsForDay = (eventListComponent, events, onDataChange, onViewChange, day, pointsModel) => {
   const eventsForDay = events.filter((event) => moment(event.timeStart).format(Format.DAY_DATE) === day.dayDate);
 
-  return renderOnlyEvents(eventListComponent, eventsForDay, onDataChange, onViewChange);
+  return renderOnlyEvents(eventListComponent, eventsForDay, onDataChange, onViewChange, pointsModel);
 };
 
-const renderOnlyEvents = (eventListComponent, events, onDataChange, onViewChange) => {
+const renderOnlyEvents = (eventListComponent, events, onDataChange, onViewChange, pointsModel) => {
   return events.map((event) => {
-    const pointController = new PointController(eventListComponent, onDataChange, onViewChange);
+    const pointController = new PointController(eventListComponent, onDataChange, onViewChange, pointsModel);
 
     pointController.render(event, PointControllerMode.DEFAULT);
 
@@ -150,7 +150,7 @@ class TripController {
 
     render(eventDay.getElement(), eventListComponent, Place.BEFOREEND);
 
-    const newEvents = renderEventsForDay(eventListComponent, eventsCopy, this._onDataChange, this._onViewChange, day);
+    const newEvents = renderEventsForDay(eventListComponent, eventsCopy, this._onDataChange, this._onViewChange, day, this._pointsModel);
     this._showedEventControllers = this._showedEventControllers.concat(newEvents);
   }
 
@@ -232,7 +232,7 @@ class TripController {
 
       this._eventListComponent.getElement().innerHTML = ``;
 
-      const newEvents = renderOnlyEvents(this._eventListComponent, sortedEvents, this._onDataChange, this._onViewChange);
+      const newEvents = renderOnlyEvents(this._eventListComponent, sortedEvents, this._onDataChange, this._onViewChange, this._pointsModel);
       this._showedEventControllers = this._showedEventControllers.concat(newEvents);
     } else {
       this._renderDays(tripDays, sortedEvents, this._onDataChange, this._onViewChange);

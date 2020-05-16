@@ -8,19 +8,35 @@ class Points {
 
     this._dataChangeHandlers = [];
     this._filterChangeHandlers = [];
+
+    this._destinations = [];
+    this._cities = [];
   }
 
   getPoints() {
     return getPointsByFilter(this._points, this._activeFilterType);
   }
 
-  getPointsAll() {
-    return this._points;
-  }
-
   setPoints(points) {
     this._points = Array.from(points);
     this._callHandlers(this._dataChangeHandlers);
+  }
+
+  setDestinations(data) {
+    this._destinations = data;
+    this.setCities(data);
+  }
+
+  getDestinationForCity(city) {
+    return this._destinations.filter((it) => it.name === city);
+  }
+
+  setCities(data) {
+    data.forEach((it) => this._cities.push(it.name));
+  }
+
+  getCities() {
+    return this._cities;
   }
 
   removePoint(id) {
