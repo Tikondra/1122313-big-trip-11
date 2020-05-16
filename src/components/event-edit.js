@@ -188,9 +188,9 @@ class EventEdit extends AbstractSmartComponent {
 
   _onChangeType(evt) {
     if (evt.target.tagName === `INPUT`) {
-      this._type = evt.target.value;
-      this._offers = getOffersForType(evt.target.value);
-
+      this._type = (evt.target.value).toLowerCase();
+      this._offers = this._pointsModel.getOffersForType(this._type);
+      this._isOffers = this._offers.length > 0;
       this.rerender();
     }
   }

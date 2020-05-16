@@ -37,6 +37,9 @@ const init = () => {
   statisticsComponent.hide();
   menuComponent.setOnChange(menuSwitch);
 
+  api.getOffers()
+    .then((offers) => pointsModel.setOffers(offers));
+
   api.getDestinations()
     .then((destinations) => pointsModel.setDestinations(destinations));
 

@@ -11,6 +11,7 @@ class Points {
 
     this._destinations = [];
     this._cities = [];
+    this._offers = [];
   }
 
   getPoints() {
@@ -37,6 +38,16 @@ class Points {
 
   getCities() {
     return this._cities;
+  }
+
+  setOffers(data) {
+    this._offers = data;
+  }
+
+  getOffersForType(type) {
+    const currentOffers = this._offers.filter((it) => it.type === type);
+
+    return currentOffers[0].offers;
   }
 
   removePoint(id) {

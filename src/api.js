@@ -26,6 +26,11 @@ const API = class {
       .then((response) => response.json());
   }
 
+  getOffers() {
+    return this._load({url: ApiOption.OFFERS})
+      .then((response) => response.json());
+  }
+
   createPoint(point) {
     return this._load({
       url: ApiOption.POINTS,
