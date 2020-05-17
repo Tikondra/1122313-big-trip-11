@@ -57,6 +57,7 @@ class TripController {
     this._onSortRender = this._onSortRender.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
     this._onAddNewEvent = this._onAddNewEvent.bind(this);
+    this._changeApiPoint = this._changeApiPoint.bind(this);
 
     this._sortComponent.setSortTypeChangeHandler(this._onSortRender);
     this._pointsModel.setFilterChangeHandler(this._onFilterChange);
@@ -185,16 +186,18 @@ class TripController {
     }
   }
 
+  _changeApiPoint(pointModel, id, pointController) {
+    const isSuccess = this._pointsModel.updatePoint(id, pointModel);
+
+    if (isSuccess) {
+      pointController.render(pointModel, PointControllerMode.DEFAULT);
+      this._updateEvents();
+    }
+  }
+
   _changePoint(pointController, oldData, newData) {
     this._api.updatePoint(oldData.id, newData)
-      .then((pointModel) => {
-        const isSuccess = this._pointsModel.updatePoint(oldData.id, pointModel);
-
-        if (isSuccess) {
-          pointController.render(pointModel, PointControllerMode.DEFAULT);
-          this._updateEvents();
-        }
-      });
+      .then((response) => this._changeApiPoint(response, oldData.id, pointController));
   }
 
   _onDataChange(pointController, oldData, newData) {

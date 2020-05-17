@@ -1,12 +1,21 @@
 import Point from "./models/point";
-import {ApiOption, Method} from "./components/consts";
+import {ApiOption, Method, Code} from "./components/consts";
 
 const checkStatus = (response) => {
-  if (response.status >= 200 && response.status < 300) {
+  if (response.status >= Code.OK && response.status < Code.NOT_OK) {
     return response;
   } else {
     throw new Error(`${response.status}: ${response.statusText}`);
   }
+};
+
+const getConfigFetch = (data, url, method) => {
+  return {
+    url,
+    method,
+    body: JSON.stringify(data.toRAW()),
+    headers: new Headers(ApiOption.CONTENT_TYPE)
+  };
 };
 
 const API = class {
@@ -18,37 +27,39 @@ const API = class {
   getPoints() {
     return this._load({url: ApiOption.POINTS})
       .then((response) => response.json())
-      .then(Point.parsePoints);
+      .then(Point.parsePoints)
+      .catch((err) => {
+        throw err;
+      });
   }
 
   getDestinations() {
     return this._load({url: ApiOption.DESTINATIONS})
-      .then((response) => response.json());
+      .then((response) => response.json())
+      .catch((err) => {
+        throw err;
+      });
   }
 
   getOffers() {
     return this._load({url: ApiOption.OFFERS})
-      .then((response) => response.json());
+      .then((response) => response.json())
+      .catch((err) => {
+        throw err;
+      });
   }
 
   createPoint(point) {
-    return this._load({
-      url: ApiOption.POINTS,
-      method: Method.POST,
-      body: JSON.stringify(point.toRAW()),
-      headers: new Headers({"Content-Type": `application/json`})
-    })
+    return this._load(getConfigFetch(point, ApiOption.POINTS, Method.POST))
       .then((response) => response.json())
-      .then(Point.parsePoint);
+      .then(Point.parsePoint)
+      .catch((err) => {
+        throw err;
+      });
   }
 
   updatePoint(id, data) {
-    return this._load({
-      url: `${ApiOption.POINTS}/${id}`,
-      method: Method.PUT,
-      body: JSON.stringify(data.toRAW()),
-      headers: new Headers({"Content-Type": `application/json`})
-    })
+    return this._load(getConfigFetch(data, `${ApiOption.POINTS}/${id}`, Method.PUT))
       .then((response) => response.json())
       .then(Point.parsePoint)
       .catch((err) => {

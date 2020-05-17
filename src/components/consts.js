@@ -1,28 +1,3 @@
-import {getOffersForType} from "../Mocks/event-mock";
-
-export const CITIES = [`Amsterdam`, `Geneva`, `Venice`, `Tokyo`, `Los Angeles`, `Ottawa`];
-export const DESTINATION = [
-  `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
-  `Cras aliquet varius magna, non porta ligula feugiat eget.`,
-  `Fusce tristique felis at fermentum pharetra.`,
-  `Aliquam id orci ut lectus varius viverra.`,
-  `Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.`,
-  `Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.`,
-  `Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.`,
-  `Sed sed nisi sed augue convallis suscipit in sed felis.`,
-  `Aliquam erat volutpat.`,
-  `Nunc fermentum tortor ac porta dapibus.`,
-  `In rutrum ac purus sit amet tempus.`
-];
-export const OFFERS_DESCRIPTION = [
-  `Order Uber`,
-  `Add luggage`,
-  `Rent a car`,
-  `Add breakfast`,
-  `Switch to comfort`,
-  `Book tickets`,
-  `Lunch in city`
-];
 export const HIDDEN_CLASS = `visually-hidden`;
 export const BAR_HEIGHT = 55;
 
@@ -54,6 +29,7 @@ export const Format = {
 export const ApiOption = {
   AUTHORIZATION: `Basic hgdjfh786kjdsfsldjfls`,
   END_POINT: `https://11.ecmascript.pages.academy/big-trip`,
+  CONTENT_TYPE: {"Content-Type": `application/json`},
   POINTS: `points`,
   DESTINATIONS: `destinations`,
   OFFERS: `offers`,
@@ -91,7 +67,7 @@ export const emptyPoint = {
   destinations: {name: ``, description: ``, pictures: []},
   id: new Date() + Math.random(),
   isFavorite: false,
-  offers: getOffersForType(`Taxi`),
+  offers: [],
   type: `Taxi`,
 };
 
@@ -141,4 +117,14 @@ export const Method = {
   POST: `POST`,
   PUT: `PUT`,
   DELETE: `DELETE`
+};
+
+export const Code = {
+  OK: 200,
+  NOT_OK: 300
+};
+
+export const DefaultData = {
+  DELETE_BTN: `Delete`,
+  SAVE_BTN: `Save`,
 };
