@@ -1,14 +1,15 @@
-import {CITIES} from "./consts";
 import {createOptionCity} from "./option-city";
+import {toNormalCase} from "../utils/common";
 
-const getCities = () => CITIES.map((it) => createOptionCity(it)).join(`\n`);
+const getCities = (CITIES) => CITIES.map((it) => createOptionCity(it)).join(`\n`);
 
-export const createCitySelect = (typeEvent, city) => {
+export const createCitySelect = (typeEvent, city, CITIES) => {
+  const type = toNormalCase(typeEvent);
 
   return (
     `<div class="event__field-group  event__field-group--destination">
       <label class="event__label  event__type-output" for="event-destination-1">
-        ${typeEvent} to
+        ${type} to
       </label>
       <input
         class="event__input  event__input--destination"
@@ -18,7 +19,7 @@ export const createCitySelect = (typeEvent, city) => {
         value="${city}"
         list="destination-list-1">
       <datalist id="destination-list-1">
-        ${getCities()}
+        ${getCities(CITIES)}
       </datalist>
     </div>`
   );

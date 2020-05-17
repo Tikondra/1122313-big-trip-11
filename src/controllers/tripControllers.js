@@ -15,19 +15,47 @@ import {
   Selector, MenuItem
 } from "../components/consts";
 import moment from "moment";
-import {getDays} from "../Mocks/event-mock";
-import {getSortedEvents} from "../utils/common";
+import {getSortedEvents, makeCounter} from "../utils/common";
 import {remove, render} from "../utils/render";
 
-const renderEventsForDay = (eventListComponent, events, onDataChange, onViewChange, day) => {
-  const eventsForDay = events.filter((event) => moment(event.timeStart).format(Format.DAY_DATE) === day.dayDate);
+const dayCounter = makeCounter();
 
-  return renderOnlyEvents(eventListComponent, eventsForDay, onDataChange, onViewChange);
+const getDays = (events) => {
+  const dayDates = [];
+  const days = [];
+  const sortedEvents = events.sort((current, previous) => current.timeStart - previous.timeStart);
+  dayCounter.currentCount = 0;
+
+  sortedEvents.map((event) => {
+    if (!dayDates.includes(moment(event.timeStart).format(Format.DAY_DATE))) {
+      dayDates.push(moment(event.timeStart).format(Format.DAY_DATE));
+      days.push(generateDay(event.timeStart));
+    }
+  });
+
+  return days;
 };
 
-const renderOnlyEvents = (eventListComponent, events, onDataChange, onViewChange) => {
+const generateDay = (date) => {
+  const dateTime = moment(date).format(Format.DATE_TIME);
+  const dayDate = moment(date).format(Format.DAY_DATE);
+
+  return {
+    dayCounter: dayCounter() + 1,
+    dateTime,
+    dayDate
+  };
+};
+
+const renderEventsForDay = (eventListComponent, events, onDataChange, onViewChange, day, pointsModel) => {
+  const eventsForDay = events.filter((event) => moment(event.timeStart).format(Format.DAY_DATE) === day.dayDate);
+
+  return renderOnlyEvents(eventListComponent, eventsForDay, onDataChange, onViewChange, pointsModel);
+};
+
+const renderOnlyEvents = (eventListComponent, events, onDataChange, onViewChange, pointsModel) => {
   return events.map((event) => {
-    const pointController = new PointController(eventListComponent, onDataChange, onViewChange);
+    const pointController = new PointController(eventListComponent, onDataChange, onViewChange, pointsModel);
 
     pointController.render(event, PointControllerMode.DEFAULT);
 
@@ -36,9 +64,10 @@ const renderOnlyEvents = (eventListComponent, events, onDataChange, onViewChange
 };
 
 class TripController {
-  constructor(container, pointsModel, menuComponent) {
+  constructor(container, pointsModel, menuComponent, api) {
     this._container = container;
     this._pointsModel = pointsModel;
+    this._api = api;
     this._creatingEvent = null;
 
     this._events = [];
@@ -56,6 +85,7 @@ class TripController {
     this._onSortRender = this._onSortRender.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
     this._onAddNewEvent = this._onAddNewEvent.bind(this);
+    this._changeApiPoint = this._changeApiPoint.bind(this);
 
     this._sortComponent.setSortTypeChangeHandler(this._onSortRender);
     this._pointsModel.setFilterChangeHandler(this._onFilterChange);
@@ -150,7 +180,7 @@ class TripController {
 
     render(eventDay.getElement(), eventListComponent, Place.BEFOREEND);
 
-    const newEvents = renderEventsForDay(eventListComponent, eventsCopy, this._onDataChange, this._onViewChange, day);
+    const newEvents = renderEventsForDay(eventListComponent, eventsCopy, this._onDataChange, this._onViewChange, day, this._pointsModel);
     this._showedEventControllers = this._showedEventControllers.concat(newEvents);
   }
 
@@ -184,12 +214,18 @@ class TripController {
     }
   }
 
-  _changePoint(pointController, oldData, newData) {
-    const isSuccess = this._pointsModel.updatePoint(oldData.id, newData);
+  _changeApiPoint(pointModel, id, pointController) {
+    const isSuccess = this._pointsModel.updatePoint(id, pointModel);
 
     if (isSuccess) {
-      pointController.render(newData, PointControllerMode.DEFAULT);
+      pointController.render(pointModel, PointControllerMode.DEFAULT);
+      this._updateEvents();
     }
+  }
+
+  _changePoint(pointController, oldData, newData) {
+    this._api.updatePoint(oldData.id, newData)
+      .then((response) => this._changeApiPoint(response, oldData.id, pointController));
   }
 
   _onDataChange(pointController, oldData, newData) {
@@ -232,7 +268,7 @@ class TripController {
 
       this._eventListComponent.getElement().innerHTML = ``;
 
-      const newEvents = renderOnlyEvents(this._eventListComponent, sortedEvents, this._onDataChange, this._onViewChange);
+      const newEvents = renderOnlyEvents(this._eventListComponent, sortedEvents, this._onDataChange, this._onViewChange, this._pointsModel);
       this._showedEventControllers = this._showedEventControllers.concat(newEvents);
     } else {
       this._renderDays(tripDays, sortedEvents, this._onDataChange, this._onViewChange);

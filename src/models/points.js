@@ -8,19 +8,54 @@ class Points {
 
     this._dataChangeHandlers = [];
     this._filterChangeHandlers = [];
+
+    this._destinations = [];
+    this._cities = [];
+    this._offers = [];
   }
 
   getPoints() {
     return getPointsByFilter(this._points, this._activeFilterType);
   }
 
-  getPointsAll() {
-    return this._points;
-  }
-
   setPoints(points) {
     this._points = Array.from(points);
     this._callHandlers(this._dataChangeHandlers);
+  }
+
+  setDestinations(data) {
+    this._destinations = data;
+    this.setCities(data);
+  }
+
+  getDestinationForCity(city) {
+    return this._destinations.filter((it) => it.name === city);
+  }
+
+  getDestinations() {
+    return this._destinations;
+  }
+
+  setCities(data) {
+    data.forEach((it) => this._cities.push(it.name));
+  }
+
+  getCities() {
+    return this._cities;
+  }
+
+  setOffers(data) {
+    this._offers = data;
+  }
+
+  getOffersForType(type) {
+    const currentOffers = this._offers.filter((it) => it.type === type.toLowerCase());
+
+    return currentOffers[0].offers;
+  }
+
+  getOffers() {
+    return this._offers;
   }
 
   removePoint(id) {

@@ -2,7 +2,7 @@ import AbstractSmartComponent from "./abstract-smart-component";
 import Chart from "chart.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-import {BAR_HEIGHT, TypeChart, TypeIcon} from "./consts";
+import {BAR_HEIGHT, TypeChart, typeIcon} from "./consts";
 import {getUniqItems} from "../utils/common";
 import {getCountByTypes, getDurationByTypes, getMoneyByTypes} from "../utils/statistics";
 
@@ -53,7 +53,7 @@ const configChart = (types, data, typeChart) => {
             padding: 5,
             fontSize: 13,
             callback: (type) => {
-              return `${TypeIcon[type]} ${type}`;
+              return `${typeIcon[type.toLowerCase()]} ${type}`;
             }
           },
           gridLines: {

@@ -2,58 +2,39 @@ import AbstractSmartComponent from "./abstract-smart-component";
 import {createOffers} from "./offers";
 import {createDestination} from "./destination";
 import {createHeader} from "./header-event";
-import {getDestinationForCity, getOffersForType} from "../Mocks/event-mock";
 import flatpickr from "flatpickr";
-import {encode} from "he";
 
 import "flatpickr/dist/flatpickr.min.css";
 import {Format} from "./consts";
 
 const createEventEdit = (event, mode, options = {}) => {
   const {timeStart, timeEnd, basePrice} = event;
-  const {type, offers, isFavorite, destinations, isDestination} = options;
+  const {type, offers, isFavorite, destinations, isDestination, pointsModel, isOffers} = options;
 
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
-      ${createHeader(type, timeStart, timeEnd, isFavorite, destinations.name, basePrice, mode)}
+      ${createHeader(type, timeStart, timeEnd, isFavorite, destinations.name, basePrice, mode, pointsModel)}
       <section class="event__details">
-        ${createOffers(offers, type)}
+        ${createOffers(offers, type, isOffers)}
         ${createDestination(destinations, isDestination)}
       </section>
      </form>`
   );
 };
 
-const parseFormData = (formData, id) => {
-  const dateStart = formData.get(`event-start-time`);
-  const dateEnd = formData.get(`event-end-time`);
-  const isFavorite = !!formData.get(`event-favorite`);
-  const city = encode(formData.get(`event-destination`));
-  const destination = getDestinationForCity(city);
-
-  return {
-    basePrice: formData.get(`event-price`),
-    timeStart: dateStart ? new Date(dateStart) : null,
-    timeEnd: dateEnd ? new Date(dateEnd) : null,
-    destinations: destination ? destination : {name: city, description: ``, pictures: []},
-    id,
-    type: formData.get(`event-type`),
-    offers: getOffersForType(formData.get(`event-type`)),
-    isFavorite,
-  };
-};
-
 class EventEdit extends AbstractSmartComponent {
-  constructor(event, mode) {
+  constructor(event, mode, pointsModel) {
     super();
 
     this._event = event;
     this._type = event.type;
     this._offers = event.offers;
+    this._isOffers = event.offers.length > 0;
     this._isFavorite = event.isFavorite;
     this._destinations = event.destinations;
     this._isDestination = !!event.destinations;
     this._mode = mode;
+    this._pointsModel = pointsModel;
     this._saveHandler = null;
     this._deleteButtonClickHandler = null;
     this._flatpickr = null;
@@ -72,7 +53,9 @@ class EventEdit extends AbstractSmartComponent {
       offers: this._offers,
       isFavorite: this._isFavorite,
       destinations: this._destinations,
-      isDestination: this._isDestination
+      isDestination: this._isDestination,
+      isOffers: this._isOffers,
+      pointsModel: this._pointsModel,
     });
   }
 
@@ -111,9 +94,8 @@ class EventEdit extends AbstractSmartComponent {
 
   getData() {
     const form = this.getElement();
-    const formData = new FormData(form);
 
-    return parseFormData(formData, this._event.id);
+    return new FormData(form);
   }
 
   setSaveClickHandler(handler) {
@@ -184,15 +166,16 @@ class EventEdit extends AbstractSmartComponent {
 
   _onChangeType(evt) {
     if (evt.target.tagName === `INPUT`) {
-      this._type = evt.target.value;
-      this._offers = getOffersForType(evt.target.value);
-
+      this._type = (evt.target.value).toLowerCase();
+      this._offers = this._pointsModel.getOffersForType(this._type);
+      this._isOffers = this._offers.length > 0;
       this.rerender();
+      evt.target.setAttribute(`checked`, true);
     }
   }
 
   _onChangeCity(evt) {
-    const currentDestination = getDestinationForCity(evt.target.value);
+    const currentDestination = this._pointsModel.getDestinationForCity(evt.target.value)[0];
     this._toggleDestination(evt, currentDestination);
     this.rerender();
   }

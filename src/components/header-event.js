@@ -2,7 +2,7 @@ import {createCitySelect} from "./select-city";
 import {createEventType} from "./select-type";
 import {createSelectTime} from "./selectTime";
 import {createSelectPrice} from "./select-price";
-import {Mode, CITIES, ButtonsText} from "./consts";
+import {Mode, ButtonsText} from "./consts";
 
 const createFavoriteBtn = (isFavorite) => {
   return (
@@ -16,7 +16,8 @@ const createFavoriteBtn = (isFavorite) => {
   );
 };
 
-export const createHeader = (typeEvent, timeStart, timeEnd, isFavorite, city, basePrice, mode) => {
+export const createHeader = (typeEvent, timeStart, timeEnd, isFavorite, city, basePrice, mode, pointsModel) => {
+  const CITIES = pointsModel.getCities();
   const resetBtn = mode === Mode.ADDING ? ButtonsText.CANCEL : ButtonsText.DELETE;
   const favoriteBtn = mode !== Mode.ADDING ? createFavoriteBtn(isFavorite) : ``;
 
@@ -25,7 +26,7 @@ export const createHeader = (typeEvent, timeStart, timeEnd, isFavorite, city, ba
   return (
     `<header class="event__header">
       ${createEventType(typeEvent)}
-      ${createCitySelect(typeEvent, city)}
+      ${createCitySelect(typeEvent, city, CITIES)}
       ${createSelectTime(timeStart, timeEnd)}
       ${createSelectPrice(basePrice)}
 
