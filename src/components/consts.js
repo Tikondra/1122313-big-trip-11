@@ -69,7 +69,7 @@ export const emptyPoint = {
   id: new Date() + Math.random(),
   isFavorite: false,
   offers: [],
-  type: `Taxi`,
+  type: `taxi`,
 };
 
 export const MenuItem = {
