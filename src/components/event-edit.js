@@ -5,15 +5,15 @@ import {createHeader} from "./header-event";
 import flatpickr from "flatpickr";
 
 import "flatpickr/dist/flatpickr.min.css";
-import {Format} from "./consts";
+import {Format, DefaultData} from "./consts";
 
 const createEventEdit = (event, mode, options = {}) => {
   const {timeStart, timeEnd, basePrice} = event;
-  const {type, offers, isFavorite, destinations, isDestination, pointsModel, isOffers} = options;
+  const {type, offers, isFavorite, destinations, isDestination, pointsModel, isOffers, externalData} = options;
 
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
-      ${createHeader(type, timeStart, timeEnd, isFavorite, destinations.name, basePrice, mode, pointsModel)}
+      ${createHeader(type, timeStart, timeEnd, isFavorite, destinations.name, basePrice, mode, pointsModel, externalData)}
       <section class="event__details">
         ${createOffers(offers, type, isOffers)}
         ${createDestination(destinations, isDestination)}
@@ -34,6 +34,7 @@ class EventEdit extends AbstractSmartComponent {
     this._destinations = event.destinations;
     this._isDestination = !!event.destinations;
     this._mode = mode;
+    this._externalData = DefaultData;
     this._pointsModel = pointsModel;
     this._saveHandler = null;
     this._deleteButtonClickHandler = null;
@@ -56,7 +57,13 @@ class EventEdit extends AbstractSmartComponent {
       isDestination: this._isDestination,
       isOffers: this._isOffers,
       pointsModel: this._pointsModel,
+      externalData: this._externalData,
     });
+  }
+
+  setData(data) {
+    this._externalData = Object.assign({}, DefaultData, data);
+    this.rerender();
   }
 
   removeElement() {
