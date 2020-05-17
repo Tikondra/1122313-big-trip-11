@@ -90,6 +90,7 @@ class PointController {
   shake() {
     this._eventEditComponent.getElement().style.animation = `shake ${ApiOption.SHAKE_ANIMATION_TIMEOUT / 1000}s`;
     this._eventComponent.getElement().style.animation = `shake ${ApiOption.SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+    this._eventEditComponent.getElement().style.border = `2px solid red`;
 
     setTimeout(this._setTimeout, ApiOption.SHAKE_ANIMATION_TIMEOUT);
   }
@@ -97,6 +98,7 @@ class PointController {
   _setTimeout() {
     this._eventEditComponent.getElement().style.animation = ``;
     this._eventComponent.getElement().style.animation = ``;
+    this._eventEditComponent.getElement().style.border = ``;
 
     this._eventEditComponent.setData({
       SAVE_BTN: `Save`,
