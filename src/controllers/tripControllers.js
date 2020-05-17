@@ -15,9 +15,37 @@ import {
   Selector, MenuItem
 } from "../components/consts";
 import moment from "moment";
-import {getDays} from "../Mocks/event-mock";
-import {getSortedEvents} from "../utils/common";
+import {getSortedEvents, makeCounter} from "../utils/common";
 import {remove, render} from "../utils/render";
+
+const dayCounter = makeCounter();
+
+const getDays = (events) => {
+  const dayDates = [];
+  const days = [];
+  const sortedEvents = events.sort((current, previous) => current.timeStart - previous.timeStart);
+  dayCounter.currentCount = 0;
+
+  sortedEvents.map((event) => {
+    if (!dayDates.includes(moment(event.timeStart).format(Format.DAY_DATE))) {
+      dayDates.push(moment(event.timeStart).format(Format.DAY_DATE));
+      days.push(generateDay(event.timeStart));
+    }
+  });
+
+  return days;
+};
+
+const generateDay = (date) => {
+  const dateTime = moment(date).format(Format.DATE_TIME);
+  const dayDate = moment(date).format(Format.DAY_DATE);
+
+  return {
+    dayCounter: dayCounter() + 1,
+    dateTime,
+    dayDate
+  };
+};
 
 const renderEventsForDay = (eventListComponent, events, onDataChange, onViewChange, day, pointsModel) => {
   const eventsForDay = events.filter((event) => moment(event.timeStart).format(Format.DAY_DATE) === day.dayDate);
