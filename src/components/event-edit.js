@@ -2,9 +2,7 @@ import AbstractSmartComponent from "./abstract-smart-component";
 import {createOffers} from "./offers";
 import {createDestination} from "./destination";
 import {createHeader} from "./header-event";
-import {getDestinationForCity, getOffersForType} from "../Mocks/event-mock";
 import flatpickr from "flatpickr";
-import {encode} from "he";
 
 import "flatpickr/dist/flatpickr.min.css";
 import {Format} from "./consts";
@@ -22,25 +20,6 @@ const createEventEdit = (event, mode, options = {}) => {
       </section>
      </form>`
   );
-};
-
-const parseFormData = (formData, id) => {
-  const dateStart = formData.get(`event-start-time`);
-  const dateEnd = formData.get(`event-end-time`);
-  const isFavorite = !!formData.get(`event-favorite`);
-  const city = encode(formData.get(`event-destination`));
-  const destination = getDestinationForCity(city);
-
-  return {
-    basePrice: formData.get(`event-price`),
-    timeStart: dateStart ? new Date(dateStart) : null,
-    timeEnd: dateEnd ? new Date(dateEnd) : null,
-    destinations: destination ? destination : {name: city, description: ``, pictures: []},
-    id,
-    type: formData.get(`event-type`),
-    offers: getOffersForType(formData.get(`event-type`)),
-    isFavorite,
-  };
 };
 
 class EventEdit extends AbstractSmartComponent {
@@ -115,9 +94,8 @@ class EventEdit extends AbstractSmartComponent {
 
   getData() {
     const form = this.getElement();
-    const formData = new FormData(form);
 
-    return parseFormData(formData, this._event.id);
+    return new FormData(form);
   }
 
   setSaveClickHandler(handler) {
@@ -192,6 +170,7 @@ class EventEdit extends AbstractSmartComponent {
       this._offers = this._pointsModel.getOffersForType(this._type);
       this._isOffers = this._offers.length > 0;
       this.rerender();
+      evt.target.setAttribute(`checked`, true);
     }
   }
 

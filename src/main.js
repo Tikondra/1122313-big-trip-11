@@ -63,9 +63,9 @@ const headerInfoComponent = new HeaderInfoComponent();
 const menuComponent = new MenuComponent();
 const boardComponent = new BoardComponent();
 const pointsModel = new PointsModel();
-const tripController = new TripController(boardComponent, pointsModel, menuComponent);
+const api = new API(ApiOption.END_POINT, ApiOption.AUTHORIZATION);
+const tripController = new TripController(boardComponent, pointsModel, menuComponent, api);
 const filterController = new FilterController(tripControls, pointsModel);
 const statisticsComponent = new StatisticsComponent(pointsModel);
-const api = new API(ApiOption.END_POINT, ApiOption.AUTHORIZATION);
 
 init();

@@ -82,3 +82,19 @@ export const getDurationMinutes = (start, end) => {
 
   return endTime.diff(startTime, `minutes`);
 };
+
+export const toNormalCase = (str) => {
+  return `${str[0].toUpperCase()}${str.slice(1)}`;
+};
+
+export const getDestinationForCity = (city, destinations) => {
+  const currentDestination = destinations.filter((it) => it.name === city);
+
+  return currentDestination[0];
+};
+
+export const getOffersForType = (type, offers) => {
+  const currentOffers = offers.filter((it) => it.type === type.toLowerCase());
+
+  return currentOffers[0].offers;
+};

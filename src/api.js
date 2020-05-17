@@ -50,7 +50,10 @@ const API = class {
       headers: new Headers({"Content-Type": `application/json`})
     })
       .then((response) => response.json())
-      .then(Point.parsePoint);
+      .then(Point.parsePoint)
+      .catch((err) => {
+        throw err;
+      });
   }
 
   deletePoint(id) {

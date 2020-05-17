@@ -32,6 +32,10 @@ class Points {
     return this._destinations.filter((it) => it.name === city);
   }
 
+  getDestinations() {
+    return this._destinations;
+  }
+
   setCities(data) {
     data.forEach((it) => this._cities.push(it.name));
   }
@@ -45,9 +49,13 @@ class Points {
   }
 
   getOffersForType(type) {
-    const currentOffers = this._offers.filter((it) => it.type === type);
+    const currentOffers = this._offers.filter((it) => it.type === type.toLowerCase());
 
     return currentOffers[0].offers;
+  }
+
+  getOffers() {
+    return this._offers;
   }
 
   removePoint(id) {

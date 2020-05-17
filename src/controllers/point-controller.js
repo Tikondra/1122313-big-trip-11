@@ -1,9 +1,30 @@
 import EventComponent from "../components/event";
 import EventEditComponent from "../components/event-edit";
+import Point from "../models/point";
 
 import {render, replace, remove} from "../utils/render";
 import {Place, Mode, emptyPoint, Selector} from "../components/consts";
 import {isEscKey} from "../utils/common";
+import {encode} from "he";
+import {getDestinationForCity, getOffersForType} from "../utils/common";
+
+const parseFormData = (formData, id, destinations, offers) => {
+  const dateStart = formData.get(`event-start-time`);
+  const dateEnd = formData.get(`event-end-time`);
+  const city = encode(formData.get(`event-destination`));
+  const destination = getDestinationForCity(city, destinations);
+
+  return new Point({
+    "id": id,
+    "base_price": parseInt(formData.get(`event-price`), 10),
+    "date_from": dateStart ? new Date(dateStart) : null,
+    "date_to": dateEnd ? new Date(dateEnd) : null,
+    "destination": destination ? destination : {name: city, description: ``, pictures: []},
+    "type": formData.get(`event-type`).toLowerCase(),
+    "offers": getOffersForType(formData.get(`event-type`), offers),
+    "is_favorite": !!formData.get(`event-favorite`),
+  });
+};
 
 class PointController {
   constructor(container, onDataChange, onViewChange, pointsModel) {
@@ -12,6 +33,8 @@ class PointController {
     this._onViewChange = onViewChange;
     this._mode = Mode.DEFAULT;
     this._pointsModel = pointsModel;
+    this._destinations = pointsModel.getDestinations();
+    this._offers = pointsModel.getOffers();
 
     this._eventComponent = null;
     this._eventEditComponent = null;
@@ -69,7 +92,8 @@ class PointController {
 
     this._eventEditComponent.setSaveClickHandler((evt) => {
       evt.preventDefault();
-      const data = this._eventEditComponent.getData();
+      const formData = this._eventEditComponent.getData();
+      const data = parseFormData(formData, event.id, this._destinations, this._offers);
       this._onDataChange(this, event, data);
     });
 

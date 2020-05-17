@@ -1,9 +1,10 @@
 import {createOptionCity} from "./option-city";
+import {toNormalCase} from "../utils/common";
 
 const getCities = (CITIES) => CITIES.map((it) => createOptionCity(it)).join(`\n`);
 
 export const createCitySelect = (typeEvent, city, CITIES) => {
-  const type = `${typeEvent[0].toUpperCase()}${typeEvent.slice(1)}`;
+  const type = toNormalCase(typeEvent);
 
   return (
     `<div class="event__field-group  event__field-group--destination">
