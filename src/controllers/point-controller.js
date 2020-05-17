@@ -3,7 +3,7 @@ import EventEditComponent from "../components/event-edit";
 import Point from "../models/point";
 
 import {render, replace, remove} from "../utils/render";
-import {Place, Mode, emptyPoint, Selector} from "../components/consts";
+import {Place, Mode, emptyPoint, Selector, ApiOption} from "../components/consts";
 import {isEscKey} from "../utils/common";
 import {encode} from "he";
 import {getDestinationForCity, getOffersForType} from "../utils/common";
@@ -82,6 +82,16 @@ class PointController {
     remove(this._eventEditComponent);
     remove(this._eventComponent);
     document.removeEventListener(`keydown`, this._onEscKeyDown);
+  }
+
+  shake() {
+    this._eventEditComponent.getElement().style.animation = `shake ${ApiOption.SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+    this._eventComponent.getElement().style.animation = `shake ${ApiOption.SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+
+    setTimeout(() => {
+      this._eventEditComponent.getElement().style.animation = ``;
+      this._eventComponent.getElement().style.animation = ``;
+    }, ApiOption.SHAKE_ANIMATION_TIMEOUT);
   }
 
   _addListeners(event) {

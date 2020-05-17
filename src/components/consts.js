@@ -33,6 +33,7 @@ export const ApiOption = {
   POINTS: `points`,
   DESTINATIONS: `destinations`,
   OFFERS: `offers`,
+  SHAKE_ANIMATION_TIMEOUT: 600,
 };
 
 export const Place = {
