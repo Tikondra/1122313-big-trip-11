@@ -3,7 +3,7 @@ import EventEditComponent from "../components/event-edit";
 import Point from "../models/point";
 
 import {render, replace, remove} from "../utils/render";
-import {Place, Mode, emptyPoint, Selector} from "../components/consts";
+import {Place, Mode, emptyPoint, Selector, ApiOption} from "../components/consts";
 import {isEscKey} from "../utils/common";
 import {encode} from "he";
 import {getDestinationForCity, getOffersForType} from "../utils/common";
@@ -13,6 +13,7 @@ const parseFormData = (formData, id, destinations, offers) => {
   const dateEnd = formData.get(`event-end-time`);
   const city = encode(formData.get(`event-destination`));
   const destination = getDestinationForCity(city, destinations);
+  const offersData = formData.get(`event-type`) ? getOffersForType(formData.get(`event-type`), offers) : null;
 
   return new Point({
     "id": id,
@@ -21,7 +22,7 @@ const parseFormData = (formData, id, destinations, offers) => {
     "date_to": dateEnd ? new Date(dateEnd) : null,
     "destination": destination ? destination : {name: city, description: ``, pictures: []},
     "type": formData.get(`event-type`).toLowerCase(),
-    "offers": getOffersForType(formData.get(`event-type`), offers),
+    "offers": offersData ? offersData : [],
     "is_favorite": !!formData.get(`event-favorite`),
   });
 };
@@ -39,6 +40,8 @@ class PointController {
     this._eventComponent = null;
     this._eventEditComponent = null;
 
+    this.shake = this.shake.bind(this);
+    this._setTimeout = this._setTimeout.bind(this);
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
 
@@ -84,6 +87,25 @@ class PointController {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
+  shake() {
+    this._eventEditComponent.getElement().style.animation = `shake ${ApiOption.SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+    this._eventComponent.getElement().style.animation = `shake ${ApiOption.SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+    this._eventEditComponent.getElement().style.border = `2px solid red`;
+
+    setTimeout(this._setTimeout, ApiOption.SHAKE_ANIMATION_TIMEOUT);
+  }
+
+  _setTimeout() {
+    this._eventEditComponent.getElement().style.animation = ``;
+    this._eventComponent.getElement().style.animation = ``;
+    this._eventEditComponent.getElement().style.border = ``;
+
+    this._eventEditComponent.setData({
+      SAVE_BTN: `Save`,
+      DELETE_BTN: `Delete`,
+    });
+  }
+
   _addListeners(event) {
     this._eventComponent.setEditBtnClickHandler(() => {
       this._onReplaceToEdit();
@@ -94,6 +116,11 @@ class PointController {
       evt.preventDefault();
       const formData = this._eventEditComponent.getData();
       const data = parseFormData(formData, event.id, this._destinations, this._offers);
+
+      this._eventEditComponent.setData({
+        SAVE_BTN: `Saving...`,
+      });
+
       this._onDataChange(this, event, data);
     });
 
@@ -101,6 +128,11 @@ class PointController {
       if (this._mode === Mode.ADDING) {
         document.querySelector(Selector.DAY).remove();
       }
+
+      this._eventEditComponent.setData({
+        DELETE_BTN: `Deleting...`,
+      });
+
       this._onDataChange(this, event, null);
     });
   }

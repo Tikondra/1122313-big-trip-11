@@ -33,6 +33,7 @@ export const ApiOption = {
   POINTS: `points`,
   DESTINATIONS: `destinations`,
   OFFERS: `offers`,
+  SHAKE_ANIMATION_TIMEOUT: 600,
 };
 
 export const Place = {
@@ -68,7 +69,7 @@ export const emptyPoint = {
   id: new Date() + Math.random(),
   isFavorite: false,
   offers: [],
-  type: `Taxi`,
+  type: `taxi`,
 };
 
 export const MenuItem = {
@@ -78,11 +79,6 @@ export const MenuItem = {
 
 export const EvtKey = {
   ESC: `Escape`
-};
-
-export const ButtonsText = {
-  CANCEL: `Cancel`,
-  DELETE: `Delete`,
 };
 
 export const TagName = {
@@ -127,4 +123,5 @@ export const Code = {
 export const DefaultData = {
   DELETE_BTN: `Delete`,
   SAVE_BTN: `Save`,
+  CANCEL: `Cancel`,
 };

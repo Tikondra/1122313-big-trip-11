@@ -131,7 +131,7 @@ class TripController {
 
     render(eventDay, newListEvents, Place.BEFOREEND);
 
-    this._creatingEvent = new PointController(newListEvents, this._onDataChange, this._onViewChange);
+    this._creatingEvent = new PointController(newListEvents, this._onDataChange, this._onViewChange, this._pointsModel);
     this._creatingEvent.render(emptyPoint, PointControllerMode.ADDING);
   }
 
@@ -184,6 +184,18 @@ class TripController {
     this._showedEventControllers = this._showedEventControllers.concat(newEvents);
   }
 
+  _addApiPoint(pointModel, pointController) {
+    if (this._pointsModel.getPoints().length === 0) {
+      this._noEventComponent.getElement().remove();
+      render(this._container.getElement(), this._sortComponent, Place.BEFORENODE);
+    }
+
+    this._pointsModel.addPoint(pointModel);
+    pointController.destroy();
+    this._container.getElement().querySelector(Selector.DAY).remove();
+    this._updateEvents();
+  }
+
   _addPoint(pointController, oldData, newData) {
     this._creatingEvent = null;
 
@@ -191,27 +203,26 @@ class TripController {
       pointController.destroy();
       this._updateEvents();
     } else {
-
-      if (this._pointsModel.getPoints().length === 0) {
-        this._noEventComponent.getElement().remove();
-        render(this._container.getElement(), this._sortComponent, Place.BEFORENODE);
-      }
-
-      this._pointsModel.addPoint(newData);
-      pointController.destroy();
-      this._container.getElement().querySelector(Selector.DAY).remove();
-      this._updateEvents();
+      this._api.createPoint(newData)
+        .then((response) => this._addApiPoint(response, pointController))
+        .catch(pointController.shake);
     }
   }
 
-  _deletePoint(pointController, oldData) {
-    this._pointsModel.removePoint(oldData.id);
+  _deleteApiPoint(id) {
+    this._pointsModel.removePoint(id);
     this._updateEvents();
 
     if (this._pointsModel.getPoints().length === 0) {
       this._sortComponent.getElement().remove();
       render(this._container.getElement(), this._noEventComponent, Place.AFTERBEGIN);
     }
+  }
+
+  _deletePoint(pointController, oldData) {
+    this._api.deletePoint(oldData.id)
+      .then(() => this._deleteApiPoint(oldData.id))
+      .catch(pointController.shake);
   }
 
   _changeApiPoint(pointModel, id, pointController) {
@@ -225,7 +236,8 @@ class TripController {
 
   _changePoint(pointController, oldData, newData) {
     this._api.updatePoint(oldData.id, newData)
-      .then((response) => this._changeApiPoint(response, oldData.id, pointController));
+      .then((response) => this._changeApiPoint(response, oldData.id, pointController))
+      .catch(pointController.shake);
   }
 
   _onDataChange(pointController, oldData, newData) {
