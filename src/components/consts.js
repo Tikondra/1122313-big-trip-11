@@ -1,5 +1,7 @@
 export const HIDDEN_CLASS = `visually-hidden`;
 export const BAR_HEIGHT = 55;
+const STORE_PREFIX = `big-trip-localstorage`;
+const STORE_VER = `v1`;
 
 export const EvenOption = {
   DAY_COUNT: 5,
@@ -34,6 +36,7 @@ export const ApiOption = {
   DESTINATIONS: `destinations`,
   OFFERS: `offers`,
   SHAKE_ANIMATION_TIMEOUT: 600,
+  STORE_NAME: `${STORE_PREFIX}-${STORE_VER}`,
 };
 
 export const Place = {

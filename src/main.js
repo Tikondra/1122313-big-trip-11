@@ -1,5 +1,6 @@
 import API from "./api/index";
 import Provider from "./api/provider";
+import Store from "./api/store";
 import HeaderInfoComponent from "./components/header-info";
 import MenuComponent from "./components/menu";
 import BoardComponent from "./components/board";
@@ -51,7 +52,7 @@ const init = () => {
     });
 
   window.addEventListener(`load`, () => {
-    navigator.serviceWorker.register(`/sw.js`);
+    navigator.serviceWorker.register(`/1122313-big-trip-11/15/sw.js`);
   });
 };
 
@@ -69,7 +70,8 @@ const menuComponent = new MenuComponent();
 const boardComponent = new BoardComponent();
 const pointsModel = new PointsModel();
 const api = new API(ApiOption.END_POINT, ApiOption.AUTHORIZATION);
-const apiWithProvider = new Provider(api);
+const store = new Store(ApiOption.STORE_NAME, window.localStorage);
+const apiWithProvider = new Provider(api, store);
 const tripController = new TripController(boardComponent, pointsModel, menuComponent, apiWithProvider);
 const filterController = new FilterController(tripControls, pointsModel);
 const statisticsComponent = new StatisticsComponent(pointsModel);
