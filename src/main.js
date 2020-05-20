@@ -1,4 +1,5 @@
-import API from "./api";
+import API from "./api/index";
+import Provider from "./api/provider";
 import HeaderInfoComponent from "./components/header-info";
 import MenuComponent from "./components/menu";
 import BoardComponent from "./components/board";
@@ -37,13 +38,13 @@ const init = () => {
   statisticsComponent.hide();
   menuComponent.setOnChange(menuSwitch);
 
-  api.getOffers()
+  apiWithProvider.getOffers()
     .then((offers) => pointsModel.setOffers(offers));
 
-  api.getDestinations()
+  apiWithProvider.getDestinations()
     .then((destinations) => pointsModel.setDestinations(destinations));
 
-  api.getPoints()
+  apiWithProvider.getPoints()
     .then((points) => {
       pointsModel.setPoints(points);
       tripController.render();
@@ -68,7 +69,8 @@ const menuComponent = new MenuComponent();
 const boardComponent = new BoardComponent();
 const pointsModel = new PointsModel();
 const api = new API(ApiOption.END_POINT, ApiOption.AUTHORIZATION);
-const tripController = new TripController(boardComponent, pointsModel, menuComponent, api);
+const apiWithProvider = new Provider(api);
+const tripController = new TripController(boardComponent, pointsModel, menuComponent, apiWithProvider);
 const filterController = new FilterController(tripControls, pointsModel);
 const statisticsComponent = new StatisticsComponent(pointsModel);
 
