@@ -48,6 +48,10 @@ const init = () => {
       pointsModel.setPoints(points);
       tripController.render();
     });
+
+  window.addEventListener(`load`, () => {
+    navigator.serviceWorker.register(`/sw.js`);
+  });
 };
 
 const headerInfo = document.querySelector(`.trip-main`);
