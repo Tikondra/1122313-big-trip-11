@@ -7,7 +7,8 @@ const getFilterNameById = (id) => {
 };
 
 const createFilterButton = (filter) => {
-  const {name, checked} = filter;
+  const {name, checked, disabled} = filter;
+  const disableStyle = disabled ? `style="opacity: 0.6; cursor: auto"` : ``;
 
   return (
     `<div class="trip-filters__filter">
@@ -17,8 +18,9 @@ const createFilterButton = (filter) => {
         type="radio"
         name="trip-filter"
         value="${name}"
-        ${checked ? `checked` : ``}>
-      <label class="trip-filters__filter-label" for="filter-${name}">${name}</label>
+        ${checked ? `checked` : ``}
+        ${disabled ? `disabled` : ``}>
+      <label ${disableStyle} class="trip-filters__filter-label" for="filter-${name}">${name}</label>
     </div>`
   );
 };
