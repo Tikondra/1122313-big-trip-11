@@ -1,7 +1,12 @@
 import {createEventImages} from "./event-img";
+import {isOnline} from "../api/provider";
 
 export const createDestination = (destinations, isDestination) => {
   const {description, pictures} = destinations;
+
+  if (!isOnline()) {
+    isDestination = false;
+  }
 
   if (isDestination && pictures.length > 0) {
     return (

@@ -1,5 +1,7 @@
 export const HIDDEN_CLASS = `visually-hidden`;
 export const BAR_HEIGHT = 55;
+const STORE_PREFIX = `big-trip-localstorage`;
+const STORE_VER = `v1`;
 
 export const EvenOption = {
   DAY_COUNT: 5,
@@ -27,13 +29,15 @@ export const Format = {
 };
 
 export const ApiOption = {
-  AUTHORIZATION: `Basic hgdjfh786kjdsfsldjfls`,
+  AUTHORIZATION: `Basic hgdjfh786kjdsf1sldjfls`,
   END_POINT: `https://11.ecmascript.pages.academy/big-trip`,
   CONTENT_TYPE: {"Content-Type": `application/json`},
   POINTS: `points`,
   DESTINATIONS: `destinations`,
   OFFERS: `offers`,
+  SYNC: `points/sync`,
   SHAKE_ANIMATION_TIMEOUT: 600,
+  STORE_NAME: `${STORE_PREFIX}-${STORE_VER}`,
 };
 
 export const Place = {

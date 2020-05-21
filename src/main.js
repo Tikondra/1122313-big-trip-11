@@ -1,4 +1,6 @@
-import API from "./api";
+import API from "./api/index";
+import Provider from "./api/provider";
+import Store from "./api/store";
 import HeaderInfoComponent from "./components/header-info";
 import MenuComponent from "./components/menu";
 import BoardComponent from "./components/board";
@@ -37,17 +39,31 @@ const init = () => {
   statisticsComponent.hide();
   menuComponent.setOnChange(menuSwitch);
 
-  api.getOffers()
+  apiWithProvider.getOffers()
     .then((offers) => pointsModel.setOffers(offers));
 
-  api.getDestinations()
+  apiWithProvider.getDestinations()
     .then((destinations) => pointsModel.setDestinations(destinations));
 
-  api.getPoints()
+  apiWithProvider.getPoints()
     .then((points) => {
       pointsModel.setPoints(points);
       tripController.render();
     });
+
+  window.addEventListener(`online`, () => {
+    document.title = document.title.replace(` [offline]`, ``);
+
+    apiWithProvider.sync();
+  });
+
+  window.addEventListener(`offline`, () => {
+    document.title += ` [offline]`;
+  });
+
+  window.addEventListener(`load`, () => {
+    navigator.serviceWorker.register(`./sw.js`);
+  });
 };
 
 const headerInfo = document.querySelector(`.trip-main`);
@@ -64,7 +80,9 @@ const menuComponent = new MenuComponent();
 const boardComponent = new BoardComponent();
 const pointsModel = new PointsModel();
 const api = new API(ApiOption.END_POINT, ApiOption.AUTHORIZATION);
-const tripController = new TripController(boardComponent, pointsModel, menuComponent, api);
+const store = new Store(ApiOption.STORE_NAME, window.localStorage);
+const apiWithProvider = new Provider(api, store);
+const tripController = new TripController(boardComponent, pointsModel, menuComponent, apiWithProvider);
 const filterController = new FilterController(tripControls, pointsModel);
 const statisticsComponent = new StatisticsComponent(pointsModel);
 
