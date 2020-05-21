@@ -1,80 +1,81 @@
+const STATUS_BASIC = `basic`;
+const STATUS_SUCCESS = 200;
 const CACHE_PREFIX = `bigtrip-cache`;
 const CACHE_VER = `v1`;
 const CACHE_NAME = `${CACHE_PREFIX}-${CACHE_VER}`;
 
-const getFilteredKeysPromises = (keys) => {
-  return keys.map((key) => {
-    if (key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME) {
-      return caches.delete(key);
-    }
+const DATA = [
+  `/`,
+  `/index.html`,
+  `/bundle.js`,
+  `/css/style.css`,
+  `/img/icons/bus.png`,
+  `/img/icons/check-in.png`,
+  `/img/icons/drive.png`,
+  `/img/icons/flight.png`,
+  `/img/icons/restaurant.png`,
+  `/img/icons/ship.png`,
+  `/img/icons/sightseeing.png`,
+  `/img/icons/taxi.png`,
+  `/img/icons/train.png`,
+  `/img/icons/transport.png`,
+  `/img/header-bg.png`,
+  `/img/header-bg@2x.png`,
+  `/img/logo.png`
+];
 
-    return null;
-  })
-    .filter((key) => key !== null);
+const getData = (cache) => cache.addAll(DATA);
+
+const onInstall = (evt) => {
+  evt.waitUntil(caches.open(CACHE_NAME).then(getData));
 };
 
-self.addEventListener(`install`, (event) => {
-  const openCache = caches.open(CACHE_NAME)
-    .then((cache) => {
+const getKey = (key) => {
+  if (key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME) {
+    return caches.delete(key);
+  }
 
-      return cache.addAll([
-        `/`,
-        `/index.html`,
-        `/bundle.js`,
-        `/css/style.css`,
-        `/img/icons/bus.png`,
-        `/img/icons/check-in.png`,
-        `/img/icons/drive.png`,
-        `/img/icons/flight.png`,
-        `/img/icons/restaurant.png`,
-        `/img/icons/ship.png`,
-        `/img/icons/sightseeing.png`,
-        `/img/icons/taxi.png`,
-        `/img/icons/train.png`,
-        `/img/icons/transport.png`,
-        `/img/header-bg.png`,
-        `/img/header-bg@2x.png`,
-        `/img/logo.png`
-      ]);
-    })
+  return null;
+};
 
-  event.waitUntil(openCache);
-});
+const getFilterKey = (key) => key !== null;
 
-self.addEventListener(`activate`, (event) => {
-  const cashedKeys = caches.keys()
-    .then((keys) => {
+const getAllKeys = (keys) => Promise.all(keys.map(getKey).filter(getFilterKey));
 
-      return Promise.all(getFilteredKeysPromises(keys));
-    });
+const onActivate = (evt) => {
+  evt.waitUntil(caches.keys()
+    .then((keys) => getAllKeys(keys)));
+};
 
-  event.waitUntil(cashedKeys);
-});
+const getRequest = (response, request) => {
+  if (!response || response.status !== STATUS_SUCCESS || response.type !== STATUS_BASIC) {
+    return response;
+  }
 
-self.addEventListener(`fetch`, (event) => {
-  const {request} = event;
+  const clonedResponse = response.clone();
 
-  const resource = caches.match(request)
-    .then((cacheResponse) => {
-      if (cacheResponse) {
-        return cacheResponse;
-      }
+  caches.open(CACHE_NAME)
+    .then((cache) => cache.put(request, clonedResponse));
 
-      return fetch(request);
-    })
-    .then((response) => {
+  return response;
+};
 
-      if (!response || !response.ok || response.type !== `basic`) {
-        return response;
-      }
+const getCacheResponse = (cacheResponse, request) => {
+  if (cacheResponse) {
+    return cacheResponse;
+  }
 
-      const clonedResponse = response.clone();
+  return fetch(request).then(getRequest);
+};
 
-      caches.open(CACHE_NAME)
-        .then((cache) => cache.put(request, clonedResponse));
+const onFetch = (evt) => {
+  const {request} = evt;
 
-      return response;
-    })
+  evt.respondWith(caches.match(request)
+    .then((cacheResponse) => getCacheResponse(cacheResponse, request))
+    .then(getRequest));
+};
 
-  event.respondWith(resource);
-});
+self.addEventListener(`install`, onInstall);
+self.addEventListener(`activate`, onActivate);
+self.addEventListener(`fetch`, onFetch);
