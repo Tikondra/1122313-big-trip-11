@@ -30,6 +30,12 @@ export const formatTime = (date) => moment(date).format(Format.TIME);
 
 export const getIsoDate = (date) => moment(date).format(Format.ISO_DATE);
 
+export const getSortByDate = (points) => {
+  const copyPoints = points.slice();
+
+  return copyPoints.sort((a, b) => a.timeStart - b.timeStart);
+};
+
 export const getSortByTime = (events) => {
   events.map((event) => {
     const startTime = moment(event.timeStart);

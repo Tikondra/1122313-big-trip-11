@@ -1,3 +1,4 @@
+import HeaderInfoComponent from "../components/header-info";
 import DayComponent from "../components/event-day";
 import EmptyDayComponent from "../components/empty-day";
 import EventsListComponent from "../components/events";
@@ -62,6 +63,8 @@ const renderOnlyEvents = (eventListComponent, events, onDataChange, onViewChange
     return pointController;
   });
 };
+
+const header = document.querySelector(`.trip-main`);
 
 class TripController {
   constructor(container, pointsModel, menuComponent, api) {
@@ -154,6 +157,8 @@ class TripController {
     if (sortedEvents.length > 0) {
       this._renderDays(this._container.getElement(), sortedEvents);
     }
+
+    this._updateInfo();
   }
 
   _resetSorting() {
@@ -238,6 +243,13 @@ class TripController {
     this._api.updatePoint(oldData.id, newData)
       .then((response) => this._changeApiPoint(response, oldData.id, pointController))
       .catch(pointController.shake);
+  }
+
+  _updateInfo() {
+    document.querySelector(`.trip-main__trip-info`).remove();
+
+    const headerInfo = new HeaderInfoComponent(this._pointsModel);
+    render(header, headerInfo, Place.AFTERBEGIN);
   }
 
   _onDataChange(pointController, oldData, newData) {

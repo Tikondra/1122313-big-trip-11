@@ -28,7 +28,6 @@ const menuSwitch = (menuItem) => {
 };
 
 const init = () => {
-  render(headerInfo, headerInfoComponent, Place.AFTERBEGIN);
   render(tripMenuTitle, menuComponent, Place.AFTERNODE);
 
   filterController.render();
@@ -48,6 +47,7 @@ const init = () => {
   apiWithProvider.getPoints()
     .then((points) => {
       pointsModel.setPoints(points);
+      render(headerInfo, headerInfoComponent, Place.AFTERBEGIN);
       tripController.render();
     });
 
@@ -75,10 +75,10 @@ const menuState = {
   stats: getStateStats,
 };
 
-const headerInfoComponent = new HeaderInfoComponent();
 const menuComponent = new MenuComponent();
 const boardComponent = new BoardComponent();
 const pointsModel = new PointsModel();
+const headerInfoComponent = new HeaderInfoComponent(pointsModel);
 const api = new API(ApiOption.END_POINT, ApiOption.AUTHORIZATION);
 const store = new Store(ApiOption.STORE_NAME, window.localStorage);
 const apiWithProvider = new Provider(api, store);
