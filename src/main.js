@@ -52,7 +52,7 @@ const init = () => {
     });
 
   window.addEventListener(`load`, () => {
-    navigator.serviceWorker.register(`/1122313-big-trip-11/15/sw.js`);
+    navigator.serviceWorker.register(`/sw.js`);
   });
 };
 
