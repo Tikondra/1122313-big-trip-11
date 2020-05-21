@@ -40,11 +40,12 @@ const getKey = (key) => {
 
 const getFilterKey = (key) => key !== null;
 
-const getAllKeys = (keys) => Promise.all(keys.map(getKey).filter(getFilterKey));
+const getAllKeys = (keys) => {
+  return Promise.all(keys.map(getKey).filter(getFilterKey));
+};
 
 const onActivate = (evt) => {
-  evt.waitUntil(caches.keys()
-    .then((keys) => getAllKeys(keys)));
+  evt.waitUntil(caches.keys().then((keys) => getAllKeys(keys)));
 };
 
 const getRequest = (response, request) => {
@@ -71,9 +72,7 @@ const getCacheResponse = (cacheResponse, request) => {
 const onFetch = (evt) => {
   const {request} = evt;
 
-  evt.respondWith(caches.match(request)
-    .then((cacheResponse) => getCacheResponse(cacheResponse, request))
-    .then(getRequest));
+  evt.respondWith(caches.match(request).then((cacheResponse) => getCacheResponse(cacheResponse, request)));
 };
 
 self.addEventListener(`install`, onInstall);
