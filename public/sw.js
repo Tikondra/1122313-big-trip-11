@@ -41,7 +41,7 @@ const getKey = (key) => {
 const getFilterKey = (key) => key !== null;
 
 const getAllKeys = (keys) => {
-  return Promise.all(keys.map(getKey).filter(getFilterKey));
+  Promise.all(keys.map(getKey).filter(getFilterKey));
 };
 
 const onActivate = (evt) => {
