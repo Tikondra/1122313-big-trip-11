@@ -1,6 +1,7 @@
 import Point from "../models/point";
+import {nanoid} from "nanoid";
 
-const isOnline = () => {
+export const isOnline = () => {
   return window.navigator.onLine;
 };
 
@@ -57,11 +58,20 @@ class Provider {
 
   createPoint(point) {
     if (isOnline()) {
-      return this._api.createPoint(point);
+      return this._api.createPoint(point)
+        .then((newPoint) => {
+          this._store.setItem(newPoint.id, newPoint.toRAW());
+
+          return newPoint;
+        });
     }
 
-    // TODO: Реализовать логику при отсутствии интернета
-    return Promise.reject(`offline logic is not implemented`);
+    const localNewPointId = nanoid();
+    const localNewPoint = Point.clone(Object.assign(point, {id: localNewPointId}));
+
+    this._store.setItem(localNewPoint.id, localNewPoint.toRAW());
+
+    return Promise.resolve(localNewPoint);
   }
 
   updatePoint(id, data) {
