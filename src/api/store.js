@@ -43,6 +43,13 @@ class Store {
     );
   }
 
+  setItems(items) {
+    this._storage.setItem(
+        this._storeKey,
+        JSON.stringify(items)
+    );
+  }
+
   setDestinations(destinations) {
     this._storage.setItem(this._destinationKey, JSON.stringify(destinations));
   }

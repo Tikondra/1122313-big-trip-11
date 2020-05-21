@@ -71,6 +71,16 @@ class API {
     return this._load({url: `${ApiOption.POINTS}/${id}`, method: Method.DELETE});
   }
 
+  sync(data) {
+    return this._load({
+      url: ApiOption.SYNC,
+      method: Method.POST,
+      body: JSON.stringify(data),
+      headers: new Headers(ApiOption.CONTENT_TYPE)
+    })
+      .then((response) => response.json());
+  }
+
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {
     headers.append(`Authorization`, this._authorization);
 

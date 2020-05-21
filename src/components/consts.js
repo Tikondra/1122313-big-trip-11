@@ -35,6 +35,7 @@ export const ApiOption = {
   POINTS: `points`,
   DESTINATIONS: `destinations`,
   OFFERS: `offers`,
+  SYNC: `points/sync`,
   SHAKE_ANIMATION_TIMEOUT: 600,
   STORE_NAME: `${STORE_PREFIX}-${STORE_VER}`,
 };

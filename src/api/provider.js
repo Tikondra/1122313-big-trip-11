@@ -5,6 +5,19 @@ export const isOnline = () => {
   return window.navigator.onLine;
 };
 
+const getSyncedPoints = (items) => {
+  return items.filter(({success}) => success)
+    .map(({payload}) => payload.point);
+};
+
+const createStoreStructure = (items) => {
+  return items.reduce((acc, current) => {
+    return Object.assign({}, acc, {
+      [current.id]: current,
+    });
+  }, {});
+};
+
 class Provider {
   constructor(api, store) {
     this._api = api;
@@ -15,7 +28,9 @@ class Provider {
     if (isOnline()) {
       return this._api.getPoints()
         .then((points) => {
-          points.forEach((point) => this._store.setItem(point.id, point.toRAW()));
+          const items = createStoreStructure(points.map((point) => point.toRAW()));
+
+          this._store.setItems(items);
 
           return points;
         });
@@ -100,6 +115,24 @@ class Provider {
     this._store.removeItem(id);
 
     return Promise.resolve();
+  }
+
+  sync() {
+    if (isOnline()) {
+      const storePoints = Object.values(this._store.getItems());
+
+      return this._api.sync(storePoints)
+        .then((response) => {
+          const createdPoints = getSyncedPoints(response.created);
+          const updatedPoints = getSyncedPoints(response.updated);
+
+          const items = createStoreStructure([...createdPoints, ...updatedPoints]);
+
+          this._store.setItems(items);
+        });
+    }
+
+    return Promise.reject(new Error(`Sync data failed`));
   }
 }
 
