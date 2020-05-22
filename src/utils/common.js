@@ -104,3 +104,10 @@ export const getOffersForType = (type, offers) => {
 
   return currentOffers[0].offers;
 };
+
+export const disableControls = (state) => {
+  const filters = document.querySelectorAll(`.trip-filters__filter-input`);
+  const sorts = document.querySelectorAll(`.trip-sort__input`);
+
+  [...filters, ...sorts].forEach((it) => it.disabled = state);
+};

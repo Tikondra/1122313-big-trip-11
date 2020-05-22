@@ -12,15 +12,18 @@ import PointsModel from "./models/points";
 import {Place, ApiOption} from "./components/consts";
 
 import {render} from "./utils/render";
+import {disableControls} from "./utils/common";
 
 const getStateTable = (tripController, statisticsComponent) => {
   statisticsComponent.hide();
+  disableControls(false);
   tripController.show();
 };
 
 const getStateStats = (tripController, statisticsComponent) => {
   statisticsComponent.show();
   filterController.setDefaultFilterType();
+  disableControls(true);
   tripController.hide();
 };
 
