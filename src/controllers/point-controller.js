@@ -142,6 +142,7 @@ class PointController {
 
   _onReplaceToEdit() {
     this._onViewChange();
+    this._eventEditComponent.applyFlatpickr();
     replace(this._eventEditComponent, this._eventComponent);
     this._mode = Mode.EDIT;
   }
@@ -152,6 +153,8 @@ class PointController {
 
     if (document.contains(this._eventEditComponent.getElement())) {
       replace(this._eventComponent, this._eventEditComponent);
+
+      this._eventEditComponent.delleteFlatpickr();
     }
 
     this._mode = Mode.DEFAULT;
