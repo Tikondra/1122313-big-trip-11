@@ -29,7 +29,7 @@ export const Format = {
 };
 
 export const ApiOption = {
-  AUTHORIZATION: `Basic hgdjfh786kjdrsf1sldjfls`,
+  AUTHORIZATION: `Basic hgfdjfh786kjdrsf1sldjfls`,
   END_POINT: `https://11.ecmascript.pages.academy/big-trip`,
   CONTENT_TYPE: {"Content-Type": `application/json`},
   POINTS: `points`,
