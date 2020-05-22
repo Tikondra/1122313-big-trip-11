@@ -77,6 +77,8 @@ class TripController {
     this._showedEventControllers = [];
     this._showedDays = [];
 
+    this._addPointBtn = document.querySelector(`.trip-main__event-add-btn`);
+
     this._sortComponent = new SortComponent();
     this._emptyDay = new EmptyDayComponent();
     this._eventListComponent = new EventsListComponent();
@@ -106,9 +108,8 @@ class TripController {
     this._events = this._pointsModel.getPoints();
     const eventsCopy = this._events.slice();
     const container = this._container.getElement();
-    const addPointBtn = document.querySelector(`.trip-main__event-add-btn`);
 
-    addPointBtn.addEventListener(`click`, this._onAddNewEvent);
+    this._addPointBtn.addEventListener(`click`, this._onAddNewEvent);
 
     if (this._events.length === 0) {
       render(container, this._noEventComponent, Place.AFTERBEGIN);
@@ -203,6 +204,7 @@ class TripController {
 
   _addPoint(pointController, oldData, newData) {
     this._creatingEvent = null;
+    this._addPointBtn.disabled = false;
 
     if (newData === null) {
       pointController.destroy();
@@ -299,7 +301,8 @@ class TripController {
     }
   }
 
-  _onAddNewEvent() {
+  _onAddNewEvent(evt) {
+    evt.target.disabled = true;
     this._onViewChange();
     this.createPoint();
     this.show();
