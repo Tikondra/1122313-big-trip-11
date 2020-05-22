@@ -9,11 +9,14 @@ import {encode} from "he";
 import {getDestinationForCity, getOffersForType} from "../utils/common";
 
 const parseFormData = (formData, id, destinations, offers) => {
+  const type = formData.get(`event-type`).toLowerCase();
   const dateStart = formData.get(`event-start-time`);
   const dateEnd = formData.get(`event-end-time`);
   const city = encode(formData.get(`event-destination`));
   const destination = getDestinationForCity(city, destinations);
-  const offersData = formData.get(`event-type`) ? getOffersForType(formData.get(`event-type`), offers) : null;
+  const offersData = type ? getOffersForType(type, offers) : null;
+  const pointOffers = formData.getAll(`event-offer-${type}`);
+  const checkedOffers = offersData.filter((offer) => pointOffers.includes(offer.title));
 
   return new Point({
     "id": id,
@@ -21,8 +24,8 @@ const parseFormData = (formData, id, destinations, offers) => {
     "date_from": dateStart ? new Date(dateStart) : null,
     "date_to": dateEnd ? new Date(dateEnd) : null,
     "destination": destination ? destination : {name: city, description: ``, pictures: []},
-    "type": formData.get(`event-type`).toLowerCase(),
-    "offers": offersData ? offersData : [],
+    "type": type.toLowerCase(),
+    "offers": checkedOffers ? checkedOffers : [],
     "is_favorite": !!formData.get(`event-favorite`),
   });
 };

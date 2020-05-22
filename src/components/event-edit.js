@@ -9,13 +9,13 @@ import {Format, DefaultData} from "./consts";
 
 const createEventEdit = (event, mode, options = {}) => {
   const {timeStart, timeEnd, basePrice} = event;
-  const {type, offers, isFavorite, destinations, isDestination, pointsModel, isOffers, externalData} = options;
+  const {type, offers, isFavorite, destinations, isDestination, pointsModel, isOffers, externalData, allOffers} = options;
 
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
       ${createHeader(type, timeStart, timeEnd, isFavorite, destinations.name, basePrice, mode, pointsModel, externalData)}
       <section class="event__details">
-        ${createOffers(offers, type, isOffers)}
+        ${createOffers(offers, type, isOffers, allOffers)}
         ${createDestination(destinations, isDestination)}
       </section>
      </form>`
@@ -36,6 +36,7 @@ class EventEdit extends AbstractSmartComponent {
     this._mode = mode;
     this._externalData = DefaultData;
     this._pointsModel = pointsModel;
+    this._allOffers = pointsModel.getOffersForType(event.type);
     this._saveHandler = null;
     this._deleteButtonClickHandler = null;
     this._flatpickr = null;
@@ -52,6 +53,7 @@ class EventEdit extends AbstractSmartComponent {
     return createEventEdit(this._event, this._mode, {
       type: this._type,
       offers: this._offers,
+      allOffers: this._allOffers,
       isFavorite: this._isFavorite,
       destinations: this._destinations,
       isDestination: this._isDestination,

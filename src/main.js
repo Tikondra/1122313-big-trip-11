@@ -27,6 +27,15 @@ const menuSwitch = (menuItem) => {
   return menuState[menuItem](tripController, statisticsComponent);
 };
 
+const load = (offers, destinations, points) => {
+  pointsModel.setOffers(offers);
+  pointsModel.setDestinations(destinations);
+  pointsModel.setPoints(points);
+
+  render(headerInfo, headerInfoComponent, Place.AFTERBEGIN);
+  tripController.render();
+};
+
 const init = () => {
   render(tripMenuTitle, menuComponent, Place.AFTERNODE);
 
@@ -38,18 +47,8 @@ const init = () => {
   statisticsComponent.hide();
   menuComponent.setOnChange(menuSwitch);
 
-  apiWithProvider.getOffers()
-    .then((offers) => pointsModel.setOffers(offers));
-
-  apiWithProvider.getDestinations()
-    .then((destinations) => pointsModel.setDestinations(destinations));
-
-  apiWithProvider.getPoints()
-    .then((points) => {
-      pointsModel.setPoints(points);
-      render(headerInfo, headerInfoComponent, Place.AFTERBEGIN);
-      tripController.render();
-    });
+  Promise.all([apiWithProvider.getOffers(), apiWithProvider.getDestinations(), apiWithProvider.getPoints()])
+    .then(([offers, destinations, points]) => load(offers, destinations, points));
 
   window.addEventListener(`online`, () => {
     document.title = document.title.replace(` [offline]`, ``);

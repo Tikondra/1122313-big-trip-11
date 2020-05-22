@@ -176,7 +176,7 @@ class TripController {
     });
   }
 
-  _renderDay(container, day, eventsCopy) {
+  _renderDay(container, day, events) {
     const eventListComponent = new EventsListComponent();
     const eventDay = new DayComponent(day);
     this._showedDays.push(eventDay);
@@ -185,7 +185,7 @@ class TripController {
 
     render(eventDay.getElement(), eventListComponent, Place.BEFOREEND);
 
-    const newEvents = renderEventsForDay(eventListComponent, eventsCopy, this._onDataChange, this._onViewChange, day, this._pointsModel);
+    const newEvents = renderEventsForDay(eventListComponent, events, this._onDataChange, this._onViewChange, day, this._pointsModel);
     this._showedEventControllers = this._showedEventControllers.concat(newEvents);
   }
 
