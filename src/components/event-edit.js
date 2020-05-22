@@ -181,7 +181,7 @@ class EventEdit extends AbstractSmartComponent {
       this._destinations = currentDestination;
       this._isDestination = true;
     } else {
-      this._destinations.name = evt.target.value;
+      this._destinations.name = ``;
       this._isDestination = false;
     }
   }

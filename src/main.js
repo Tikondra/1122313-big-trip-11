@@ -60,9 +60,9 @@ const init = () => {
     document.title += ` [offline]`;
   });
 
-  // window.addEventListener(`load`, () => {
-  //   navigator.serviceWorker.register(`./sw.js`);
-  // });
+  window.addEventListener(`load`, () => {
+    navigator.serviceWorker.register(`./sw.js`);
+  });
 };
 
 const headerInfo = document.querySelector(`.trip-main`);
@@ -81,8 +81,8 @@ const headerInfoComponent = new HeaderInfoComponent(pointsModel);
 const api = new API(ApiOption.END_POINT, ApiOption.AUTHORIZATION);
 const store = new Store(ApiOption.STORE_NAME, window.localStorage);
 const apiWithProvider = new Provider(api, store);
-const tripController = new TripController(boardComponent, pointsModel, menuComponent, apiWithProvider);
-const filterController = new FilterController(tripControls, pointsModel);
 const statisticsComponent = new StatisticsComponent(pointsModel);
+const tripController = new TripController(boardComponent, pointsModel, menuComponent, apiWithProvider, statisticsComponent);
+const filterController = new FilterController(tripControls, pointsModel);
 
 init();
