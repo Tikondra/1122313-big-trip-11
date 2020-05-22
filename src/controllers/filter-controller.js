@@ -32,6 +32,13 @@ class FilterController {
     }
   }
 
+  setDefaultFilterType() {
+    this._pointsModel.setFilter(FilterType.EVERYTHING);
+    this._activeFilterType = FilterType.EVERYTHING;
+
+    this._onDataChange();
+  }
+
   _isDisabled(type) {
     return getPointsByFilter(this._pointsModel.getPoints(), type).length > 0;
   }

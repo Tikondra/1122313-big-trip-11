@@ -67,7 +67,7 @@ const renderOnlyEvents = (eventListComponent, events, onDataChange, onViewChange
 const header = document.querySelector(`.trip-main`);
 
 class TripController {
-  constructor(container, pointsModel, menuComponent, api, statistics) {
+  constructor(container, pointsModel, menuComponent, api, statistics, filterController) {
     this._container = container;
     this._pointsModel = pointsModel;
     this._api = api;
@@ -84,6 +84,7 @@ class TripController {
     this._eventListComponent = new EventsListComponent();
     this._noEventComponent = new NoEventComponent();
     this._menuComponent = menuComponent;
+    this._filterController = filterController;
     this._statistics = statistics;
 
     this._onDataChange = this._onDataChange.bind(this);
@@ -309,6 +310,7 @@ class TripController {
     this.createPoint();
     this.show();
     this._statistics.hide();
+    this._filterController.setDefaultFilterType();
     this._menuComponent.setActiveItem(MenuItem.TABLE);
   }
 }
