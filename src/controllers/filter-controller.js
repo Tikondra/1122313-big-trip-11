@@ -1,6 +1,7 @@
 import {FilterType, Place} from "../components/consts";
 import FilterComponent from "../components/filter";
 import {replace, render} from "../utils/render";
+import {getPointsByFilter} from "../utils/filter";
 
 class FilterController {
   constructor(container, pointsModel) {
@@ -31,10 +32,22 @@ class FilterController {
     }
   }
 
+  setDefaultFilterType() {
+    this._pointsModel.setFilter(FilterType.EVERYTHING);
+    this._activeFilterType = FilterType.EVERYTHING;
+
+    this._onDataChange();
+  }
+
+  _isDisabled(type) {
+    return getPointsByFilter(this._pointsModel.getPoints(), type).length > 0;
+  }
+
   _getFilter(filterType) {
     return {
       name: filterType,
       checked: filterType === this._activeFilterType,
+      disabled: !this._isDisabled(filterType),
     };
   }
 

@@ -10,25 +10,19 @@ export const makeCounter = () => {
   return counter;
 };
 
-export const isTrue = () => Math.random() > 0.5;
-
 export const isEscKey = (currentKey) => currentKey === EvtKey.ESC;
-
-export const getRandomIntegerNumber = (max, min = 0) => {
-  return min + Math.floor(Math.random() * (max - min));
-};
-
-export const getRandomArrayItem = (array) => {
-  const randomIndex = getRandomIntegerNumber(0, array.length);
-
-  return array[randomIndex];
-};
 
 export const castTimeFormat = (value) => value < Format.LESS_TEN ? `0${value}` : String(value);
 
 export const formatTime = (date) => moment(date).format(Format.TIME);
 
 export const getIsoDate = (date) => moment(date).format(Format.ISO_DATE);
+
+export const getSortByDate = (points) => {
+  const copyPoints = points.slice();
+
+  return copyPoints.sort((a, b) => a.timeStart - b.timeStart);
+};
 
 export const getSortByTime = (events) => {
   events.map((event) => {
@@ -60,18 +54,6 @@ export const getSortedEvents = (events, sortType) => {
   return sortedEvents;
 };
 
-export const shuffle = function (array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const temp = array[j];
-
-    array[j] = array[i];
-    array[i] = temp;
-  }
-
-  return array;
-};
-
 export const getUniqItems = (item, index, array) => {
   return array.indexOf(item) === index;
 };
@@ -97,4 +79,15 @@ export const getOffersForType = (type, offers) => {
   const currentOffers = offers.filter((it) => it.type === type.toLowerCase());
 
   return currentOffers[0].offers;
+};
+
+export const disableControls = (state) => {
+  const filters = document.querySelectorAll(`.trip-filters__filter-input`);
+  const sorts = document.querySelectorAll(`.trip-sort__input`);
+
+  [...filters, ...sorts].forEach((it) => {
+    it.disabled = state;
+
+    return true;
+  });
 };

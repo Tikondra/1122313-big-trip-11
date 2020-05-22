@@ -9,13 +9,13 @@ import {Format, DefaultData} from "./consts";
 
 const createEventEdit = (event, mode, options = {}) => {
   const {timeStart, timeEnd, basePrice} = event;
-  const {type, offers, isFavorite, destinations, isDestination, pointsModel, isOffers, externalData} = options;
+  const {type, offers, isFavorite, destinations, isDestination, pointsModel, isOffers, externalData, allOffers} = options;
 
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
       ${createHeader(type, timeStart, timeEnd, isFavorite, destinations.name, basePrice, mode, pointsModel, externalData)}
       <section class="event__details">
-        ${createOffers(offers, type, isOffers)}
+        ${createOffers(offers, type, isOffers, allOffers)}
         ${createDestination(destinations, isDestination)}
       </section>
      </form>`
@@ -23,28 +23,29 @@ const createEventEdit = (event, mode, options = {}) => {
 };
 
 class EventEdit extends AbstractSmartComponent {
-  constructor(event, mode, pointsModel) {
+  constructor(point, mode, pointsModel) {
     super();
 
-    this._event = event;
-    this._type = event.type;
-    this._offers = event.offers;
-    this._isOffers = event.offers.length > 0;
-    this._isFavorite = event.isFavorite;
-    this._destinations = event.destinations;
-    this._isDestination = !!event.destinations;
+    this._event = point;
+    this._type = point.type;
+    this._offers = point.offers;
+    this._isOffers = point.offers.length > 0;
+    this._isFavorite = point.isFavorite;
+    this._destinations = point.destinations;
+    this._isDestination = !!point.destinations;
     this._mode = mode;
     this._externalData = DefaultData;
     this._pointsModel = pointsModel;
+    this._allOffers = pointsModel.getOffersForType(this._type);
     this._saveHandler = null;
     this._deleteButtonClickHandler = null;
-    this._flatpickr = null;
+    this._flatpickrFrom = null;
+    this._flatpickrTo = null;
 
     this._onChangeType = this._onChangeType.bind(this);
     this._onChangeCity = this._onChangeCity.bind(this);
     this._onFavoriteToggle = this._onFavoriteToggle.bind(this);
 
-    this._applyFlatpickr();
     this._subscribeOnEvents();
   }
 
@@ -52,6 +53,7 @@ class EventEdit extends AbstractSmartComponent {
     return createEventEdit(this._event, this._mode, {
       type: this._type,
       offers: this._offers,
+      allOffers: this._pointsModel.getOffersForType(this._type),
       isFavorite: this._isFavorite,
       destinations: this._destinations,
       isDestination: this._isDestination,
@@ -67,9 +69,14 @@ class EventEdit extends AbstractSmartComponent {
   }
 
   removeElement() {
-    if (this._flatpickr) {
-      this._flatpickr.destroy();
-      this._flatpickr = null;
+    if (this._flatpickrFrom) {
+      this._flatpickrFrom.destroy();
+      this._flatpickrFrom = null;
+    }
+
+    if (this._flatpickrTo) {
+      this._flatpickrTo.destroy();
+      this._flatpickrTo = null;
     }
 
     super.removeElement();
@@ -84,17 +91,17 @@ class EventEdit extends AbstractSmartComponent {
   rerender() {
     super.rerender();
 
-    this._applyFlatpickr();
+    this.applyFlatpickr();
   }
 
   reset() {
-    const event = this._event;
+    const point = this._event;
 
-    this._type = event.type;
-    this._offers = event.offers;
-    this._isFavorite = event.isFavorite;
-    this._destinations = event.destinations;
-    this._isDestination = !!event.destinations;
+    this._type = point.type;
+    this._offers = point.offers;
+    this._isFavorite = point.isFavorite;
+    this._destinations = point.destinations;
+    this._isDestination = !!point.destinations;
 
     this.rerender();
   }
@@ -117,20 +124,33 @@ class EventEdit extends AbstractSmartComponent {
     this._deleteButtonClickHandler = handler;
   }
 
-  _applyFlatpickr() {
+  applyFlatpickr() {
     const startTimeElement = this.getElement().querySelector(`#event-start-time-1`);
     const endTimeElement = this.getElement().querySelector(`#event-end-time-1`);
 
-    if (this._flatpickr) {
-      this._delleteFlatpickr();
-    }
+    this.delleteFlatpickr();
 
-    this._initFlatpickr(startTimeElement, this._event.timeStart);
-    this._initFlatpickr(endTimeElement, this._event.timeEnd);
+    this._initFlatpickrFrom(startTimeElement, this._event.timeStart);
+    this._initFlatpickrTo(endTimeElement, this._event.timeEnd);
   }
 
-  _initFlatpickr(element, date) {
-    this._flatpickr = flatpickr(element, this._optionsFlatpickr(date));
+  delleteFlatpickr() {
+    if (this._flatpickrFrom) {
+      this._flatpickrFrom.destroy();
+      this._flatpickrFrom = null;
+    }
+    if (this._flatpickrTo) {
+      this._flatpickrTo.destroy();
+      this._flatpickrTo = null;
+    }
+  }
+
+  _initFlatpickrFrom(element, date) {
+    this._flatpickrFrom = flatpickr(element, this._optionsFlatpickr(date));
+  }
+
+  _initFlatpickrTo(element, date) {
+    this._flatpickrTo = flatpickr(element, this._optionsFlatpickr(date));
   }
 
   _optionsFlatpickr(date) {
@@ -139,11 +159,6 @@ class EventEdit extends AbstractSmartComponent {
       dateFormat: Format.DATE,
       defaultDate: date || ``,
     };
-  }
-
-  _delleteFlatpickr() {
-    this._flatpickr.destroy();
-    this._flatpickr = null;
   }
 
   _subscribeOnEvents() {
@@ -166,7 +181,7 @@ class EventEdit extends AbstractSmartComponent {
       this._destinations = currentDestination;
       this._isDestination = true;
     } else {
-      this._destinations.name = evt.target.value;
+      this._destinations.name = ``;
       this._isDestination = false;
     }
   }
@@ -174,8 +189,9 @@ class EventEdit extends AbstractSmartComponent {
   _onChangeType(evt) {
     if (evt.target.tagName === `INPUT`) {
       this._type = (evt.target.value).toLowerCase();
-      this._offers = this._pointsModel.getOffersForType(this._type);
-      this._isOffers = this._offers.length > 0;
+      this._allOffers = this._pointsModel.getOffersForType(this._type);
+      this._offers = [];
+      this._isOffers = this._allOffers.length > 0;
       this.rerender();
       evt.target.setAttribute(`checked`, true);
     }

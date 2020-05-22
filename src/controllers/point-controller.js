@@ -9,11 +9,14 @@ import {encode} from "he";
 import {getDestinationForCity, getOffersForType} from "../utils/common";
 
 const parseFormData = (formData, id, destinations, offers) => {
+  const type = formData.get(`event-type`).toLowerCase();
   const dateStart = formData.get(`event-start-time`);
   const dateEnd = formData.get(`event-end-time`);
   const city = encode(formData.get(`event-destination`));
   const destination = getDestinationForCity(city, destinations);
-  const offersData = formData.get(`event-type`) ? getOffersForType(formData.get(`event-type`), offers) : null;
+  const offersData = type ? getOffersForType(type, offers) : null;
+  const pointOffers = formData.getAll(`event-offer-${type}`);
+  const checkedOffers = offersData.filter((offer) => pointOffers.includes(offer.title));
 
   return new Point({
     "id": id,
@@ -21,8 +24,8 @@ const parseFormData = (formData, id, destinations, offers) => {
     "date_from": dateStart ? new Date(dateStart) : null,
     "date_to": dateEnd ? new Date(dateEnd) : null,
     "destination": destination ? destination : {name: city, description: ``, pictures: []},
-    "type": formData.get(`event-type`).toLowerCase(),
-    "offers": offersData ? offersData : [],
+    "type": type.toLowerCase(),
+    "offers": checkedOffers ? checkedOffers : [],
     "is_favorite": !!formData.get(`event-favorite`),
   });
 };
@@ -57,6 +60,7 @@ class PointController {
     switch (mode) {
       case Mode.DEFAULT:
         if (oldEventEditComponent && oldEventComponent) {
+          oldEventEditComponent.delleteFlatpickr();
           replace(this._eventComponent, oldEventComponent);
           replace(this._eventEditComponent, oldEventEditComponent);
           this._onReplaceToEvent();
@@ -71,6 +75,7 @@ class PointController {
         }
         document.addEventListener(`keydown`, this._onEscKeyDown);
         render(this._container, this._eventEditComponent, Place.AFTERBEGIN);
+        this._eventEditComponent.applyFlatpickr();
         break;
     }
   }
@@ -139,6 +144,7 @@ class PointController {
 
   _onReplaceToEdit() {
     this._onViewChange();
+    this._eventEditComponent.applyFlatpickr();
     replace(this._eventEditComponent, this._eventComponent);
     this._mode = Mode.EDIT;
   }
@@ -149,6 +155,8 @@ class PointController {
 
     if (document.contains(this._eventEditComponent.getElement())) {
       replace(this._eventComponent, this._eventEditComponent);
+
+      this._eventEditComponent.delleteFlatpickr();
     }
 
     this._mode = Mode.DEFAULT;
@@ -162,6 +170,7 @@ class PointController {
       }
       this._onReplaceToEvent();
       document.removeEventListener(`keydown`, this._onEscKeyDown);
+      this._eventEditComponent.delleteFlatpickr();
     }
   }
 }

@@ -12,14 +12,18 @@ import PointsModel from "./models/points";
 import {Place, ApiOption} from "./components/consts";
 
 import {render} from "./utils/render";
+import {disableControls} from "./utils/common";
 
 const getStateTable = (tripController, statisticsComponent) => {
   statisticsComponent.hide();
+  disableControls(false);
   tripController.show();
 };
 
 const getStateStats = (tripController, statisticsComponent) => {
   statisticsComponent.show();
+  filterController.setDefaultFilterType();
+  disableControls(true);
   tripController.hide();
 };
 
@@ -27,8 +31,16 @@ const menuSwitch = (menuItem) => {
   return menuState[menuItem](tripController, statisticsComponent);
 };
 
-const init = () => {
+const load = (offers, destinations, points) => {
+  pointsModel.setOffers(offers);
+  pointsModel.setDestinations(destinations);
+  pointsModel.setPoints(points);
+
   render(headerInfo, headerInfoComponent, Place.AFTERBEGIN);
+  tripController.render();
+};
+
+const init = () => {
   render(tripMenuTitle, menuComponent, Place.AFTERNODE);
 
   filterController.render();
@@ -39,17 +51,8 @@ const init = () => {
   statisticsComponent.hide();
   menuComponent.setOnChange(menuSwitch);
 
-  apiWithProvider.getOffers()
-    .then((offers) => pointsModel.setOffers(offers));
-
-  apiWithProvider.getDestinations()
-    .then((destinations) => pointsModel.setDestinations(destinations));
-
-  apiWithProvider.getPoints()
-    .then((points) => {
-      pointsModel.setPoints(points);
-      tripController.render();
-    });
+  Promise.all([apiWithProvider.getOffers(), apiWithProvider.getDestinations(), apiWithProvider.getPoints()])
+    .then(([offers, destinations, points]) => load(offers, destinations, points));
 
   window.addEventListener(`online`, () => {
     document.title = document.title.replace(` [offline]`, ``);
@@ -75,15 +78,22 @@ const menuState = {
   stats: getStateStats,
 };
 
-const headerInfoComponent = new HeaderInfoComponent();
 const menuComponent = new MenuComponent();
 const boardComponent = new BoardComponent();
 const pointsModel = new PointsModel();
+const headerInfoComponent = new HeaderInfoComponent(pointsModel);
 const api = new API(ApiOption.END_POINT, ApiOption.AUTHORIZATION);
 const store = new Store(ApiOption.STORE_NAME, window.localStorage);
 const apiWithProvider = new Provider(api, store);
-const tripController = new TripController(boardComponent, pointsModel, menuComponent, apiWithProvider);
-const filterController = new FilterController(tripControls, pointsModel);
 const statisticsComponent = new StatisticsComponent(pointsModel);
+const filterController = new FilterController(tripControls, pointsModel);
+const tripController = new TripController(
+    boardComponent,
+    pointsModel,
+    menuComponent,
+    apiWithProvider,
+    statisticsComponent,
+    filterController
+);
 
 init();

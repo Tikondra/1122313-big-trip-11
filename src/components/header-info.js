@@ -2,20 +2,26 @@ import {createTripInfo} from "./trip-info";
 import {createTripCost} from "./trip-cost";
 import AbstractComponent from "./abstract-component";
 
-const createHeaderInfo = () => {
+const createHeaderInfo = (points) => {
 
   return (
     `<section class="trip-main__trip-info  trip-info">
-            ${createTripInfo()}
-            ${createTripCost()}
+        ${createTripInfo(points)}
+        ${createTripCost(points)}
      </section>`
   );
 };
 
 class HeaderInfo extends AbstractComponent {
+  constructor(pointsModel) {
+    super();
+
+    this._pointsModel = pointsModel;
+  }
+
   getTemplate() {
 
-    return createHeaderInfo();
+    return createHeaderInfo(this._pointsModel.getPoints());
   }
 }
 
