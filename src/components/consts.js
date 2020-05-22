@@ -25,7 +25,10 @@ export const Format = {
   ISO_DATE: `YYYY-MM-DDTHH:mm`,
   DATE_TIME: `YYYY-MM-DD`,
   DATE_TIME_REVERS: `MM/DD/YY hh:mm`,
-  DAY_DATE: `MMM DD`
+  DAY_DATE: `MMM DD`,
+  MAX_TITLE_COUNT: 3,
+  MAX_DATE_COUNT: 2,
+  MIN_DATE_COUNT: 1,
 };
 
 export const ApiOption = {

@@ -5,9 +5,9 @@ import moment from "moment";
 const getTitle = (cities) => {
   const countCity = cities.length;
 
-  if (countCity <= 3 && countCity !== 0) {
+  if (countCity <= Format.MAX_TITLE_COUNT && countCity !== 0) {
     return cities.join(` &mdash; `);
-  } else if (countCity > 3) {
+  } else if (countCity > Format.MAX_TITLE_COUNT) {
     return `${cities[0]} &mdash; ... &mdash; ${cities[cities.length - 1]}`;
   }
 
@@ -15,7 +15,6 @@ const getTitle = (cities) => {
 };
 
 const getCities = (points) => {
-
   return points.reduce((cityList, point) => {
     if (!cityList.includes(point.destinations.name)) {
       cityList.push(point.destinations.name);
@@ -28,11 +27,11 @@ const getCities = (points) => {
 const getDate = (dates) => {
   const from = dates[0];
 
-  if (dates.length >= 2) {
+  if (dates.length >= Format.MAX_DATE_COUNT) {
     const to = dates[dates.length - 1];
 
     return `${from} &mdash; ${to}`;
-  } else if (dates.length === 1) {
+  } else if (dates.length === Format.MIN_DATE_COUNT) {
     return `${from}`;
   }
 
@@ -40,7 +39,6 @@ const getDate = (dates) => {
 };
 
 const getDates = (points) => {
-
   return points.reduce((dateList, point) => {
     const date = moment(point.timeStart).format(Format.DAY_DATE);
     if (!dateList.includes(date)) {

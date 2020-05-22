@@ -6,8 +6,8 @@ const createHeaderInfo = (points) => {
 
   return (
     `<section class="trip-main__trip-info  trip-info">
-            ${createTripInfo(points)}
-            ${createTripCost(points)}
+        ${createTripInfo(points)}
+        ${createTripCost(points)}
      </section>`
   );
 };

@@ -1,9 +1,6 @@
 export const createOffer = (option, type, i, options) => {
   const {title, price} = option;
-  const allOptions = options.reduce((optionList, it) => {
-    optionList.push(it.title);
-    return optionList;
-  }, []);
+  const allOptions = options.map((offer) => offer.title);
 
   const isChecked = allOptions.includes(title) ? `checked` : ``;
 

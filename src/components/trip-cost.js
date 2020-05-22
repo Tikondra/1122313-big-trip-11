@@ -1,17 +1,19 @@
+const getOffersPrice = (offersPriceAll, offer) => {
+  offersPriceAll += offer.price;
+
+  return offersPriceAll;
+};
+
+const getAllPrice = (total, point) => {
+  const offersPrice = point.offers.reduce(getOffersPrice, 0);
+
+  total += point.basePrice + offersPrice;
+
+  return total;
+};
+
 export const createTripCost = (points) => {
-  const totalPrice = 0;
-  const price = points.reduce((total, point) => {
-    const totalOffersPrice = 0;
-    const offersPrice = point.offers.reduce((offersPriceAll, offer) => {
-      offersPriceAll += offer.price;
-
-      return offersPriceAll;
-    }, totalOffersPrice);
-
-    total += point.basePrice + offersPrice;
-
-    return total;
-  }, totalPrice);
+  const price = points.reduce(getAllPrice, 0);
 
   return (
     `<p class="trip-info__cost">
