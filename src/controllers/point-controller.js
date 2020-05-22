@@ -74,6 +74,7 @@ class PointController {
         }
         document.addEventListener(`keydown`, this._onEscKeyDown);
         render(this._container, this._eventEditComponent, Place.AFTERBEGIN);
+        this._eventEditComponent.applyFlatpickr();
         break;
     }
   }
@@ -168,6 +169,7 @@ class PointController {
       }
       this._onReplaceToEvent();
       document.removeEventListener(`keydown`, this._onEscKeyDown);
+      this._eventEditComponent.delleteFlatpickr();
     }
   }
 }
