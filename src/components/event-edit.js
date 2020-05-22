@@ -23,20 +23,20 @@ const createEventEdit = (event, mode, options = {}) => {
 };
 
 class EventEdit extends AbstractSmartComponent {
-  constructor(event, mode, pointsModel) {
+  constructor(point, mode, pointsModel) {
     super();
 
-    this._event = event;
-    this._type = event.type;
-    this._offers = event.offers;
-    this._isOffers = event.offers.length > 0;
-    this._isFavorite = event.isFavorite;
-    this._destinations = event.destinations;
-    this._isDestination = !!event.destinations;
+    this._event = point;
+    this._type = point.type;
+    this._offers = point.offers;
+    this._isOffers = point.offers.length > 0;
+    this._isFavorite = point.isFavorite;
+    this._destinations = point.destinations;
+    this._isDestination = !!point.destinations;
     this._mode = mode;
     this._externalData = DefaultData;
     this._pointsModel = pointsModel;
-    this._allOffers = pointsModel.getOffersForType(event.type);
+    this._allOffers = pointsModel.getOffersForType(this._type);
     this._saveHandler = null;
     this._deleteButtonClickHandler = null;
     this._flatpickrFrom = null;
@@ -53,7 +53,7 @@ class EventEdit extends AbstractSmartComponent {
     return createEventEdit(this._event, this._mode, {
       type: this._type,
       offers: this._offers,
-      allOffers: this._allOffers,
+      allOffers: this._pointsModel.getOffersForType(this._type),
       isFavorite: this._isFavorite,
       destinations: this._destinations,
       isDestination: this._isDestination,
@@ -95,13 +95,13 @@ class EventEdit extends AbstractSmartComponent {
   }
 
   reset() {
-    const event = this._event;
+    const point = this._event;
 
-    this._type = event.type;
-    this._offers = event.offers;
-    this._isFavorite = event.isFavorite;
-    this._destinations = event.destinations;
-    this._isDestination = !!event.destinations;
+    this._type = point.type;
+    this._offers = point.offers;
+    this._isFavorite = point.isFavorite;
+    this._destinations = point.destinations;
+    this._isDestination = !!point.destinations;
 
     this.rerender();
   }
@@ -189,8 +189,9 @@ class EventEdit extends AbstractSmartComponent {
   _onChangeType(evt) {
     if (evt.target.tagName === `INPUT`) {
       this._type = (evt.target.value).toLowerCase();
-      this._offers = this._pointsModel.getOffersForType(this._type);
-      this._isOffers = this._offers.length > 0;
+      this._allOffers = this._pointsModel.getOffersForType(this._type);
+      this._offers = [];
+      this._isOffers = this._allOffers.length > 0;
       this.rerender();
       evt.target.setAttribute(`checked`, true);
     }

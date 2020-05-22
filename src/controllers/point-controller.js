@@ -60,6 +60,7 @@ class PointController {
     switch (mode) {
       case Mode.DEFAULT:
         if (oldEventEditComponent && oldEventComponent) {
+          oldEventEditComponent.delleteFlatpickr();
           replace(this._eventComponent, oldEventComponent);
           replace(this._eventEditComponent, oldEventEditComponent);
           this._onReplaceToEvent();

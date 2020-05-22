@@ -60,9 +60,9 @@ const init = () => {
     document.title += ` [offline]`;
   });
 
-  window.addEventListener(`load`, () => {
-    navigator.serviceWorker.register(`./sw.js`);
-  });
+  // window.addEventListener(`load`, () => {
+  //   navigator.serviceWorker.register(`./sw.js`);
+  // });
 };
 
 const headerInfo = document.querySelector(`.trip-main`);
