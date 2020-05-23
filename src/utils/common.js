@@ -14,8 +14,6 @@ export const isEscKey = (currentKey) => currentKey === EvtKey.ESC;
 
 export const castTimeFormat = (value) => value < Format.LESS_TEN ? `0${value}` : String(value);
 
-export const formatTime = (date) => moment(date).format(Format.TIME);
-
 export const getIsoDate = (date) => moment(date).format(Format.ISO_DATE);
 
 export const getSortByDate = (points) => {

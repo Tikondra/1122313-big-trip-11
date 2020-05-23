@@ -1,5 +1,6 @@
-import {formatTime, castTimeFormat, getIsoDate, getDurationMinutes} from "../utils/common";
+import {castTimeFormat, getIsoDate, getDurationMinutes} from "../utils/common";
 import {Format} from "./consts";
+import moment from "moment";
 
 const getDuration = (start, end) => {
   const duration = getDurationMinutes(start, end);
@@ -15,8 +16,8 @@ const getDuration = (start, end) => {
 };
 
 const getDataEvent = (start, end) => {
-  const startTime = formatTime(start);
-  const endTime = formatTime(end);
+  const startTime = moment(start).format(Format.TIME);
+  const endTime = moment(end).format(Format.TIME);
   const duration = getDuration(start, end);
 
   return {

@@ -172,18 +172,20 @@ class EventEdit extends AbstractSmartComponent {
   }
 
   _initFlatpickrFrom(element, date) {
-    this._flatpickrFrom = flatpickr(element, this._optionsFlatpickr(date));
+    this._flatpickrFrom = flatpickr(element, this._optionsFlatpickr(date, null, this._timeEnd));
   }
 
   _initFlatpickrTo(element, date) {
-    this._flatpickrTo = flatpickr(element, this._optionsFlatpickr(date));
+    this._flatpickrTo = flatpickr(element, this._optionsFlatpickr(date, this._timeStart, null));
   }
 
-  _optionsFlatpickr(date) {
+  _optionsFlatpickr(date, minDate, maxDate) {
     return {
       enableTime: true,
       dateFormat: Format.DATE,
       defaultDate: date || ``,
+      minDate,
+      maxDate,
     };
   }
 

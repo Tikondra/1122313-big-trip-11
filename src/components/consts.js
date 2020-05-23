@@ -13,7 +13,7 @@ export const Format = {
   IN_HOUR: 60,
   IN_DAY: 24,
   DATE: `m/d/y H:i`,
-  TIME: `hh:mm`,
+  TIME: `HH:mm`,
   ISO_DATE: `YYYY-MM-DDTHH:mm`,
   DATE_TIME: `YYYY-MM-DD`,
   DATE_TIME_REVERS: `MM/DD/YY hh:mm`,
