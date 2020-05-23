@@ -1,4 +1,4 @@
-import DayComponent from "../components/event-day";
+import DayComponent from "../components/day";
 import EmptyDayComponent from "../components/empty-day";
 import SortComponent from "../components/sort";
 import NoEventComponent from "../components/no-event";

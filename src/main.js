@@ -1,4 +1,4 @@
-import API from "./api/index";
+import API from "./api/api";
 import Provider from "./api/provider";
 import Store from "./api/store";
 import HeaderInfoComponent from "./components/header-info";
@@ -64,9 +64,9 @@ const init = () => {
     document.title += ` [offline]`;
   });
 
-  // window.addEventListener(`load`, () => {
-  //   navigator.serviceWorker.register(`./sw.js`);
-  // });
+  window.addEventListener(`load`, () => {
+    navigator.serviceWorker.register(`./sw.js`);
+  });
 };
 
 const headerInfo = document.querySelector(`.trip-main`);

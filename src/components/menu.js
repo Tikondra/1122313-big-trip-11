@@ -25,7 +25,7 @@ class Menu extends AbstractComponent {
     item.classList.add(`trip-tabs__btn--active`);
   }
 
-  setOnChange(handler) {
+  setOnChange(onMenuSwitch) {
     this.getElement().addEventListener(`click`, (evt) => {
 
       if (evt.target.tagName !== TagName.A) {
@@ -36,7 +36,7 @@ class Menu extends AbstractComponent {
 
       this.setActiveItem(menuItem);
 
-      handler(menuItem);
+      onMenuSwitch(menuItem);
     });
   }
 }

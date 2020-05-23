@@ -52,7 +52,7 @@ class EventEdit extends AbstractSmartComponent {
     this._pointsModel = pointsModel;
     this._allOffers = pointsModel.getOffersForType(this._type);
     this._isOffers = this._allOffers.length > 0;
-    this._saveHandler = null;
+    this._onSaveHandler = null;
     this._deleteButtonClickHandler = null;
     this._flatpickrFrom = null;
     this._flatpickrTo = null;
@@ -105,7 +105,7 @@ class EventEdit extends AbstractSmartComponent {
   }
 
   recoveryListeners() {
-    this.setSaveClickHandler(this._saveHandler);
+    this.setSaveClickHandler(this._onSaveHandler);
     this._subscribeOnEvents();
     this.setDeleteButtonClickHandler(this._deleteButtonClickHandler);
   }
@@ -139,7 +139,7 @@ class EventEdit extends AbstractSmartComponent {
 
   setSaveClickHandler(handler) {
     this.getElement().addEventListener(`submit`, handler);
-    this._saveHandler = handler;
+    this._onSaveHandler = handler;
   }
 
   setDeleteButtonClickHandler(handler) {
