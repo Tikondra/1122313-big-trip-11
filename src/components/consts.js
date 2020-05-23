@@ -32,6 +32,8 @@ export const ApiOption = {
   OFFERS: `offers`,
   SYNC: `points/sync`,
   SHAKE_ANIMATION_TIMEOUT: 600,
+  DURATION_SHAKE: 1000,
+  ERROR_BORDER: `2px solid red`,
   STORE_NAME: `${STORE_PREFIX}-${STORE_VER}`,
 };
 
@@ -123,4 +125,9 @@ export const DefaultData = {
   DELETE_BTN: `Delete`,
   SAVE_BTN: `Save`,
   CANCEL: `Cancel`,
+};
+
+export const DuringData = {
+  DELETE_BTN: `Deleting...`,
+  SAVE_BTN: `Saving...`,
 };

@@ -6,6 +6,21 @@ import {BAR_HEIGHT, TypeChart, typeIcon} from "./consts";
 import {getUniqItems} from "../utils/common";
 import {formatedDuration, getCountByTypes, getDurationByTypes, getMoneyByTypes} from "../utils/statistics";
 
+const ChartParameter = {
+  TYPE: `horizontalBar`,
+  BACKGROUND_COLOR: `#ffffff`,
+  MIN_BAR_LENGTH: 50,
+  BAR_THICKNESS: 44,
+  ANCHOR: `start`,
+  OPTION_ANCHOR: `end`,
+  ALIGN: `start`,
+  FONT_COLOR: `#000000`,
+  FONT_SIZE: 13,
+  PADDING: 5,
+  TITLE_SIZE: 23,
+  TITLE_POSITION: `left`,
+};
+
 const GetFormat = {
   "MONEY": (val) => `€ ${val}`,
   "TRANSPORT": (val) => `${val}x`,
@@ -15,43 +30,43 @@ const GetFormat = {
 const configChart = (types, data, typeChart) => {
   return {
     plugins: [ChartDataLabels],
-    type: `horizontalBar`,
+    type: ChartParameter.TYPE,
     data: {
       labels: types,
       datasets: [{
         data,
-        backgroundColor: `#ffffff`,
-        hoverBackgroundColor: `#ffffff`,
-        anchor: `start`,
-        minBarLength: 50,
-        barThickness: 44,
+        backgroundColor: ChartParameter.BACKGROUND_COLOR,
+        hoverBackgroundColor: ChartParameter.BACKGROUND_COLOR,
+        anchor: ChartParameter.ANCHOR,
+        minBarLength: ChartParameter.MIN_BAR_LENGTH,
+        barThickness: ChartParameter.BAR_THICKNESS,
       }]
     },
     options: {
       plugins: {
         datalabels: {
           font: {
-            size: 13
+            size: ChartParameter.FONT_SIZE
           },
-          color: `#000000`,
-          anchor: `end`,
-          align: `start`,
+          color: ChartParameter.FONT_COLOR,
+          anchor: ChartParameter.OPTION_ANCHOR,
+          align: ChartParameter.ALIGN,
           formatter: GetFormat[typeChart]
         }
       },
       title: {
         display: true,
         text: typeChart,
-        fontColor: `#000000`,
-        fontSize: 23,
-        position: `left`
+        fontColor: ChartParameter.FONT_COLOR,
+        fontSize: ChartParameter.TITLE_SIZE,
+        position: ChartParameter.TITLE_POSITION
       },
       scales: {
         yAxes: [{
           ticks: {
-            fontColor: `#000000`,
-            padding: 5,
-            fontSize: 13,
+            fontColor: ChartParameter.FONT_COLOR,
+            padding: ChartParameter.PADDING,
+            fontSize: ChartParameter.FONT_SIZE,
             callback: (type) => {
               return `${typeIcon[type.toLowerCase()]} ${type}`;
             }

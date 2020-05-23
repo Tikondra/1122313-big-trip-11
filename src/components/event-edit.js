@@ -121,7 +121,6 @@ class EventEdit extends AbstractSmartComponent {
 
     this._type = point.type;
     this._offers = point.offers;
-    this._isFavorite = point.isFavorite;
     this._destinations = point.destinations;
     this._isDestination = !!point.destinations;
     this._timeStart = point.timeStart;
