@@ -34,7 +34,21 @@ const getDurationByType = (type, events) => {
     }
   });
 
-  return Math.floor(total / Format.IN_HOUR);
+  return total;
+};
+
+export const formatedDuration = (total) => {
+  const hours = Math.floor(total / Format.IN_HOUR);
+  const minutes = total % Format.IN_HOUR;
+
+  const durationHours = hours > 0 ? `${hours}H` : ``;
+  const durationMinutes = minutes > 0 ? `${minutes}M` : ``;
+
+  if (durationHours) {
+    return `${durationHours}`;
+  }
+
+  return `${durationMinutes}`;
 };
 
 export const getMoneyByTypes = (types, events) => {

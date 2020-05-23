@@ -4,12 +4,12 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import {BAR_HEIGHT, TypeChart, typeIcon} from "./consts";
 import {getUniqItems} from "../utils/common";
-import {getCountByTypes, getDurationByTypes, getMoneyByTypes} from "../utils/statistics";
+import {formatedDuration, getCountByTypes, getDurationByTypes, getMoneyByTypes} from "../utils/statistics";
 
 const GetFormat = {
   "MONEY": (val) => `€ ${val}`,
   "TRANSPORT": (val) => `${val}x`,
-  "TIME SPENT": (val) => `${val}H`
+  "TIME SPENT": (val) => `${formatedDuration(val)}`
 };
 
 const configChart = (types, data, typeChart) => {
