@@ -159,8 +159,7 @@ class TripController {
 
   _resetSorting() {
     this._sortComponent.setSortType(SortType.EVENT);
-    remove(this._sortComponent);
-    render(this._container.getElement(), this._sortComponent, Place.BEFORENODE);
+    this._sortComponent.rerender();
     this._sortComponent.setSortTypeChangeHandler(this._onSortRender);
   }
 
