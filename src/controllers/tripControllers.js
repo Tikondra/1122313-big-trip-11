@@ -1,4 +1,3 @@
-import HeaderInfoComponent from "../components/header-info";
 import DayComponent from "../components/event-day";
 import EmptyDayComponent from "../components/empty-day";
 import SortComponent from "../components/sort";
@@ -65,7 +64,7 @@ const renderOnlyEvents = (eventList, events, onDataChange, onViewChange, pointsM
 const header = document.querySelector(`.trip-main`);
 
 class TripController {
-  constructor(container, pointsModel, menuComponent, api, statistics, filterController) {
+  constructor(container, pointsModel, menuComponent, api, statistics, filterController, headerInfoComponent) {
     this._container = container;
     this._tripDays = this._container.getElement();
     this._pointsModel = pointsModel;
@@ -82,6 +81,7 @@ class TripController {
     this._dayForSort = new EmptyDayComponent();
     this._dayForNew = new EmptyDayComponent();
     this._noEventComponent = new NoEventComponent();
+    this._headerInfo = headerInfoComponent;
     this._menuComponent = menuComponent;
     this._filterController = filterController;
     this._statistics = statistics;
@@ -241,10 +241,8 @@ class TripController {
   }
 
   _updateInfo() {
-    document.querySelector(`.trip-main__trip-info`).remove();
-
-    const headerInfo = new HeaderInfoComponent(this._pointsModel);
-    render(header, headerInfo, Place.AFTERBEGIN);
+    this._headerInfo.destroy();
+    render(header, this._headerInfo, Place.AFTERBEGIN);
   }
 
   _onDataChange(pointController, oldData, newData) {

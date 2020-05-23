@@ -93,7 +93,8 @@ const tripController = new TripController(
     menuComponent,
     apiWithProvider,
     statisticsComponent,
-    filterController
+    filterController,
+    headerInfoComponent
 );
 
 init();
