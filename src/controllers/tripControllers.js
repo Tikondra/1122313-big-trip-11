@@ -286,7 +286,8 @@ class TripController {
 
     const sortedEvents = getSortedEvents(this._pointsModel.getPoints(), sortType);
 
-    tripDays.innerHTML = ``;
+    this._removeEvents();
+    this._removeDays();
 
     if (sortType !== SortType.EVENT) {
       render(tripDays, this._emptyDay, Place.BEFOREEND);
@@ -294,8 +295,6 @@ class TripController {
       const eventDay = tripDays.querySelector(`.day`);
 
       render(eventDay, this._eventListComponent, Place.BEFOREEND);
-
-      this._eventListComponent.getElement().innerHTML = ``;
 
       const newEvents = renderOnlyEvents(this._eventListComponent, sortedEvents, this._onDataChange, this._onViewChange, this._pointsModel);
       this._showedEventControllers = this._showedEventControllers.concat(newEvents);
