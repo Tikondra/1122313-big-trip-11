@@ -3,7 +3,7 @@ import EventEditComponent from "../components/event-edit";
 import Point from "../models/point";
 
 import {render, replace, remove} from "../utils/render";
-import {Place, Mode, emptyPoint, Selector, ApiOption} from "../components/consts";
+import {Place, Mode, emptyPoint, ApiOption} from "../components/consts";
 import {isEscKey} from "../utils/common";
 import {encode} from "he";
 import {getDestinationForCity, getOffersForType} from "../utils/common";

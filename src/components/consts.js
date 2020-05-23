@@ -4,22 +4,14 @@ const STORE_PREFIX = `big-trip-localstorage`;
 const STORE_VER = `v1`;
 
 export const EvenOption = {
-  DAY_COUNT: 5,
-  COUNT: 25,
   TYPE_TRANSPORT: [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`],
   TYPE_ACTIVITY: [`Check-in`, `Sightseeing`, `Restaurant`],
 };
 
 export const Format = {
   LESS_TEN: 10,
-  HOURS_RANGE: 10,
-  MINUTES_RANGE: 60,
-  DAY_RANGE: 7,
-  DAY_MIN: 1,
-  START_TIME: 6,
   IN_HOUR: 60,
   IN_DAY: 24,
-  YEAR: 2,
   DATE: `m/d/y H:i`,
   TIME: `hh:mm`,
   ISO_DATE: `YYYY-MM-DDTHH:mm`,
@@ -93,7 +85,6 @@ export const TagName = {
 };
 
 export const Selector = {
-  DAY: `.day`,
   EVENT_LIST: `.trip-events__list`
 };
 
