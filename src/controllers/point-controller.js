@@ -32,7 +32,7 @@ const parseFormData = (formData, id, destinations, offers) => {
 
 class PointController {
   constructor(container, onDataChange, onViewChange, pointsModel) {
-    this._container = container.getElement();
+    this._container = container;
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
     this._mode = Mode.DEFAULT;
@@ -130,10 +130,6 @@ class PointController {
     });
 
     this._eventEditComponent.setDeleteButtonClickHandler(() => {
-      if (this._mode === Mode.ADDING) {
-        document.querySelector(Selector.DAY).remove();
-      }
-
       this._eventEditComponent.setData({
         DELETE_BTN: `Deleting...`,
       });
@@ -166,7 +162,6 @@ class PointController {
     if (isEscKey(evt.key)) {
       if (this._mode === Mode.ADDING) {
         this._onDataChange(this, emptyPoint, null);
-        document.querySelector(Selector.DAY).remove();
       }
       this._onReplaceToEvent();
       document.removeEventListener(`keydown`, this._onEscKeyDown);

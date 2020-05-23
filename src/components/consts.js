@@ -93,7 +93,8 @@ export const TagName = {
 };
 
 export const Selector = {
-  DAY: `.day`
+  DAY: `.day`,
+  EVENT_LIST: `.trip-events__list`
 };
 
 export const TypeChart = {

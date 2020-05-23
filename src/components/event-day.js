@@ -9,6 +9,7 @@ const createEventDay = (day) => {
           <span class="day__counter">${dayCounter}</span>
           <time class="day__date" datetime="${dateTime}">${dayDate}</time>
         </div>
+        <ul class="trip-events__list"></ul>
      </li>`
   );
 };

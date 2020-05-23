@@ -26,6 +26,11 @@ class AbstractComponent {
     this._element = null;
   }
 
+  destroy() {
+    this.getElement().remove();
+    this.removeElement();
+  }
+
   show() {
     if (this._element) {
       this._element.classList.remove(HIDDEN_CLASS);
