@@ -9,21 +9,21 @@ import TripController from "./controllers/tripControllers";
 import FilterController from "./controllers/filter-controller";
 import PointsModel from "./models/points";
 
-import {Place, ApiOption} from "./components/consts";
+import {Place, ApiOption, MenuItem} from "./components/consts";
 
 import {render} from "./utils/render";
-import {disableControls} from "./utils/common";
 
 const getStateTable = (tripController, statisticsComponent) => {
+  pointsModel.setActivePage(MenuItem.TABLE);
+  filterController.setDefaultFilterType();
   statisticsComponent.hide();
-  disableControls(false);
   tripController.show();
 };
 
 const getStateStats = (tripController, statisticsComponent) => {
-  statisticsComponent.show();
+  pointsModel.setActivePage(MenuItem.STATS);
   filterController.setDefaultFilterType();
-  disableControls(true);
+  statisticsComponent.show();
   tripController.hide();
 };
 

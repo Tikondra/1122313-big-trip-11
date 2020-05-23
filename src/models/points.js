@@ -1,4 +1,4 @@
-import {FilterType} from "../components/consts";
+import {FilterType, MenuItem} from "../components/consts";
 import {getPointsByFilter} from "../utils/filter";
 
 class Points {
@@ -12,6 +12,7 @@ class Points {
     this._destinations = [];
     this._cities = [];
     this._offers = [];
+    this._activePage = MenuItem.TABLE;
   }
 
   getPoints() {
@@ -58,6 +59,27 @@ class Points {
     return this._offers;
   }
 
+  setActivePage(page) {
+    this._activePage = page;
+  }
+
+  getActivePage() {
+    return this._activePage;
+  }
+
+  setFilter(filterType) {
+    this._activeFilterType = filterType;
+    this._callHandlers(this._filterChangeHandlers);
+  }
+
+  setFilterChangeHandler(handler) {
+    this._filterChangeHandlers.push(handler);
+  }
+
+  setDataChangeHandler(handler) {
+    this._dataChangeHandlers.push(handler);
+  }
+
   removePoint(id) {
     const index = this._points.findIndex((it) => it.id === id);
     const from = this._points.slice(0, index);
@@ -93,19 +115,6 @@ class Points {
   addPoint(point) {
     this._points = [point, ...this._points];
     this._callHandlers(this._dataChangeHandlers);
-  }
-
-  setFilter(filterType) {
-    this._activeFilterType = filterType;
-    this._callHandlers(this._filterChangeHandlers);
-  }
-
-  setFilterChangeHandler(handler) {
-    this._filterChangeHandlers.push(handler);
-  }
-
-  setDataChangeHandler(handler) {
-    this._dataChangeHandlers.push(handler);
   }
 
   _callHandlers(handlers) {
