@@ -7,9 +7,21 @@ import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import {Format, DefaultData} from "./consts";
 
-const createEventEdit = (event, mode, options = {}) => {
-  const {timeStart, timeEnd, basePrice} = event;
-  const {type, offers, isFavorite, destinations, isDestination, pointsModel, isOffers, externalData, allOffers} = options;
+const createEventEdit = (mode, options = {}) => {
+  const {
+    type,
+    offers,
+    isFavorite,
+    destinations,
+    isDestination,
+    pointsModel,
+    isOffers,
+    externalData,
+    allOffers,
+    timeStart,
+    timeEnd,
+    basePrice
+  } = options;
 
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
@@ -29,14 +41,17 @@ class EventEdit extends AbstractSmartComponent {
     this._event = point;
     this._type = point.type;
     this._offers = point.offers;
-    this._isOffers = point.offers.length > 0;
     this._isFavorite = point.isFavorite;
     this._destinations = point.destinations;
     this._isDestination = !!point.destinations;
+    this._timeStart = point.timeStart;
+    this._timeEnd = point.timeEnd;
+    this._basePrice = point.basePrice;
     this._mode = mode;
     this._externalData = DefaultData;
     this._pointsModel = pointsModel;
     this._allOffers = pointsModel.getOffersForType(this._type);
+    this._isOffers = this._allOffers.length > 0;
     this._saveHandler = null;
     this._deleteButtonClickHandler = null;
     this._flatpickrFrom = null;
@@ -44,19 +59,26 @@ class EventEdit extends AbstractSmartComponent {
 
     this._onChangeType = this._onChangeType.bind(this);
     this._onChangeCity = this._onChangeCity.bind(this);
+    this._onChangeDateFrom = this._onChangeDateFrom.bind(this);
+    this._onChangeDateTo = this._onChangeDateTo.bind(this);
+    this._onChangePrice = this._onChangePrice.bind(this);
+    this._onChangeOffers = this._onChangeOffers.bind(this);
     this._onFavoriteToggle = this._onFavoriteToggle.bind(this);
 
     this._subscribeOnEvents();
   }
 
   getTemplate() {
-    return createEventEdit(this._event, this._mode, {
+    return createEventEdit(this._mode, {
       type: this._type,
       offers: this._offers,
       allOffers: this._pointsModel.getOffersForType(this._type),
       isFavorite: this._isFavorite,
       destinations: this._destinations,
       isDestination: this._isDestination,
+      timeStart: this._timeStart,
+      timeEnd: this._timeEnd,
+      basePrice: this._basePrice,
       isOffers: this._isOffers,
       pointsModel: this._pointsModel,
       externalData: this._externalData,
@@ -102,6 +124,10 @@ class EventEdit extends AbstractSmartComponent {
     this._isFavorite = point.isFavorite;
     this._destinations = point.destinations;
     this._isDestination = !!point.destinations;
+    this._timeStart = point.timeStart;
+    this._timeEnd = point.timeEnd;
+    this._basePrice = point.basePrice;
+    this._allOffers = this._pointsModel.getOffersForType(this._type);
 
     this.rerender();
   }
@@ -130,8 +156,8 @@ class EventEdit extends AbstractSmartComponent {
 
     this.delleteFlatpickr();
 
-    this._initFlatpickrFrom(startTimeElement, this._event.timeStart);
-    this._initFlatpickrTo(endTimeElement, this._event.timeEnd);
+    this._initFlatpickrFrom(startTimeElement, this._timeStart);
+    this._initFlatpickrTo(endTimeElement, this._timeEnd);
   }
 
   delleteFlatpickr() {
@@ -164,9 +190,14 @@ class EventEdit extends AbstractSmartComponent {
   _subscribeOnEvents() {
     const element = this.getElement();
     const favoriteBtn = element.querySelector(`.event__favorite-btn`);
+    const offers = element.querySelector(`.event__available-offers`);
 
     if (favoriteBtn) {
       favoriteBtn.addEventListener(`click`, this._onFavoriteToggle);
+    }
+
+    if (offers) {
+      offers.addEventListener(`change`, this._onChangeOffers);
     }
 
     element.querySelector(`.event__type-list`)
@@ -174,6 +205,15 @@ class EventEdit extends AbstractSmartComponent {
 
     element.querySelector(`.event__input--destination`)
       .addEventListener(`change`, this._onChangeCity);
+
+    element.querySelector(`#event-start-time-1`)
+      .addEventListener(`change`, this._onChangeDateFrom);
+
+    element.querySelector(`#event-end-time-1`)
+      .addEventListener(`change`, this._onChangeDateTo);
+
+    element.querySelector(`.event__input--price`)
+      .addEventListener(`change`, this._onChangePrice);
   }
 
   _toggleDestination(evt, currentDestination) {
@@ -205,6 +245,45 @@ class EventEdit extends AbstractSmartComponent {
 
   _onFavoriteToggle() {
     this._isFavorite = !this._isFavorite;
+  }
+
+  _onChangeDateFrom(evt) {
+    this._timeStart = new Date(evt.target.value);
+    this.rerender();
+  }
+
+  _onChangeDateTo(evt) {
+    this._timeEnd = new Date(evt.target.value);
+    this.rerender();
+  }
+
+  _onChangePrice(evt) {
+    const input = evt.target;
+
+    if (!input.validity.patternMismatch) {
+      this._basePrice = input.value;
+      this.rerender();
+    } else {
+      input.setCustomValidity(`Используйте числовой формат`);
+    }
+  }
+
+  _onChangeOffers(evt) {
+    const offer = evt.target.value;
+    const state = this._offers.findIndex((it) => it.title === offer);
+    const offers = this._offers;
+
+    if (state < 0) {
+      const newOffer = {
+        title: offer,
+      };
+      offers.push(newOffer);
+    } else {
+      offers.splice(state, 1);
+    }
+
+    this._offers = offers;
+    this.rerender();
   }
 }
 

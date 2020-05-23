@@ -12,7 +12,8 @@ export const createSelectPrice = (price) => {
         name="event-price"
         value="${price}"
         pattern="^[0-9]+$"
-        title="Используйте числовой формат">
+        title="Используйте числовой формат"
+        required>
     </div>`
   );
 };
