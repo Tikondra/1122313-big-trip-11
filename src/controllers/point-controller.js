@@ -2,7 +2,7 @@ import EventComponent from "../components/event";
 import EventEditComponent from "../components/event-edit";
 import Point from "../models/point";
 
-import {render, replace, remove} from "../utils/render";
+import {render, replace} from "../utils/render";
 import {Place, Mode, emptyPoint, ApiOption} from "../components/consts";
 import {isEscKey} from "../utils/common";
 import {encode} from "he";
@@ -70,8 +70,8 @@ class PointController {
         break;
       case Mode.ADDING:
         if (oldEventEditComponent && oldEventComponent) {
-          remove(oldEventEditComponent);
-          remove(oldEventComponent);
+          oldEventEditComponent.destroy();
+          oldEventComponent.destroy();
         }
         document.addEventListener(`keydown`, this._onEscKeyDown);
         render(this._container, this._eventEditComponent, Place.AFTERBEGIN);
@@ -87,8 +87,8 @@ class PointController {
   }
 
   destroy() {
-    remove(this._eventEditComponent);
-    remove(this._eventComponent);
+    this._eventEditComponent.destroy();
+    this._eventComponent.destroy();
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 

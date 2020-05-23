@@ -14,7 +14,7 @@ import {
 } from "../components/consts";
 import moment from "moment";
 import {getSortedEvents, makeCounter} from "../utils/common";
-import {remove, render} from "../utils/render";
+import {render} from "../utils/render";
 
 const dayCounter = makeCounter();
 
@@ -142,7 +142,7 @@ class TripController {
   }
 
   _removeDays() {
-    this._showedDays.forEach((day) => remove(day));
+    this._showedDays.forEach((day) => day.destroy());
     this._showedDays = [];
   }
 
