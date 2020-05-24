@@ -43,7 +43,6 @@ class Sort extends AbstractSmartComponent {
   }
 
   getTemplate() {
-
     return createSort(this._currentSortType);
   }
 
@@ -73,7 +72,6 @@ class Sort extends AbstractSmartComponent {
     }
 
     this._currentSortType = sortType;
-
     this._sortHandler(this._currentSortType);
     this.rerender();
   }
