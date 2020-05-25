@@ -137,9 +137,11 @@ class PointController {
     });
 
     this._eventEditComponent.setFavoriteButtonHandler(() => {
+      const formData = this._eventEditComponent.getData();
+      const point = parseFormData(formData, event.id, this._destinations, this._offers);
       const newPoint = PointModel.clone(event);
 
-      newPoint.isFavorite = !newPoint.isFavorite;
+      newPoint.isFavorite = !point.isFavorite;
 
       this._onDataChange(this, event, newPoint, true);
     });
