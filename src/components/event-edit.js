@@ -52,7 +52,8 @@ class EventEdit extends AbstractSmartComponent {
     this._pointsModel = pointsModel;
     this._allOffers = pointsModel.getOffersForType(this._type);
     this._isOffers = this._allOffers.length > 0;
-    this._onSaveHandler = null;
+    this._onButtonSave = null;
+    this._favoriteButtonClickHandler = null;
     this._deleteButtonClickHandler = null;
     this._flatpickrFrom = null;
     this._flatpickrTo = null;
@@ -105,7 +106,7 @@ class EventEdit extends AbstractSmartComponent {
   }
 
   recoveryListeners() {
-    this.setSaveClickHandler(this._onSaveHandler);
+    this.setSaveClickHandler(this._onButtonSave);
     this._subscribeOnEvents();
     this.setDeleteButtonClickHandler(this._deleteButtonClickHandler);
   }
@@ -137,9 +138,9 @@ class EventEdit extends AbstractSmartComponent {
     return new FormData(form);
   }
 
-  setSaveClickHandler(handler) {
-    this.getElement().addEventListener(`submit`, handler);
-    this._onSaveHandler = handler;
+  setSaveClickHandler(onButtonSave) {
+    this.getElement().addEventListener(`submit`, onButtonSave);
+    this._onButtonSave = onButtonSave;
   }
 
   setDeleteButtonClickHandler(handler) {
@@ -147,6 +148,16 @@ class EventEdit extends AbstractSmartComponent {
       .addEventListener(`click`, handler);
 
     this._deleteButtonClickHandler = handler;
+  }
+
+  setFavoriteButtonHandler(onFavoriteChange) {
+    const favoriteButton = this.getElement().querySelector(`.event__favorite-btn`);
+
+    if (favoriteButton) {
+      favoriteButton.addEventListener(`click`, onFavoriteChange);
+    }
+
+    this._favoriteButtonClickHandler = onFavoriteChange;
   }
 
   applyFlatpickr() {

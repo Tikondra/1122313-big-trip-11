@@ -1,12 +1,11 @@
 import EventComponent from "../components/event";
 import EventEditComponent from "../components/event-edit";
-import Point from "../models/point";
+import PointModel from "../models/point";
 
 import {render, replace} from "../utils/render";
 import {Place, Mode, emptyPoint, ApiOption, DuringData} from "../components/consts";
-import {isEscKey} from "../utils/common";
 import {encode} from "he";
-import {getDestinationForCity, getOffersForType} from "../utils/common";
+import {getDestinationForCity, getOffersForType, isEscKey} from "../utils/common";
 
 const parseFormData = (formData, id, destinations, offers) => {
   const type = formData.get(`event-type`).toLowerCase();
@@ -18,7 +17,7 @@ const parseFormData = (formData, id, destinations, offers) => {
   const pointOffers = formData.getAll(`event-offer-${type}`);
   const checkedOffers = offersData.filter((offer) => pointOffers.includes(offer.title));
 
-  return new Point({
+  return new PointModel({
     "id": id,
     "base_price": parseInt(formData.get(`event-price`), 10),
     "date_from": dateStart ? new Date(dateStart) : null,
@@ -135,6 +134,14 @@ class PointController {
       });
 
       this._onDataChange(this, event, null);
+    });
+
+    this._eventEditComponent.setFavoriteButtonHandler(() => {
+      const newPoint = PointModel.clone(event);
+
+      newPoint.isFavorite = !newPoint.isFavorite;
+
+      this._onDataChange(this, event, newPoint);
     });
   }
 
