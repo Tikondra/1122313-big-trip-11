@@ -141,7 +141,7 @@ class PointController {
 
       newPoint.isFavorite = !newPoint.isFavorite;
 
-      this._onDataChange(this, event, newPoint);
+      this._onDataChange(this, event, newPoint, true);
     });
   }
 

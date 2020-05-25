@@ -214,7 +214,7 @@ class TripController {
     this._updateEvents();
 
     if (this._pointsModel.getPoints().length === 0) {
-      this._sortComponent.getElement().remove();
+      this._sortComponent.destroy();
       render(this._container.getElement(), this._noEventComponent, Place.AFTERBEGIN);
     }
   }
@@ -225,8 +225,12 @@ class TripController {
       .catch(pointController.shake);
   }
 
-  _changeApiPoint(pointModel, id, pointController) {
+  _changeApiPoint(pointModel, id, pointController, inFavorite) {
     const isSuccess = this._pointsModel.updatePoint(id, pointModel);
+
+    if (inFavorite) {
+      return;
+    }
 
     if (isSuccess) {
       pointController.render(pointModel, PointControllerMode.DEFAULT);
@@ -234,9 +238,9 @@ class TripController {
     }
   }
 
-  _changePoint(pointController, oldData, newData) {
+  _changePoint(pointController, oldData, newData, inFavorite) {
     this._api.updatePoint(oldData.id, newData)
-      .then((response) => this._changeApiPoint(response, oldData.id, pointController))
+      .then((response) => this._changeApiPoint(response, oldData.id, pointController, inFavorite))
       .catch(pointController.shake);
   }
 
@@ -245,13 +249,13 @@ class TripController {
     render(header, this._headerInfo, Place.AFTERBEGIN);
   }
 
-  _onDataChange(pointController, oldData, newData) {
+  _onDataChange(pointController, oldData, newData, inFavorite = false) {
     if (oldData === emptyPoint) {
       this._addPoint(pointController, oldData, newData);
     } else if (newData === null) {
       this._deletePoint(pointController, oldData);
     } else {
-      this._changePoint(pointController, oldData, newData);
+      this._changePoint(pointController, oldData, newData, inFavorite);
     }
   }
 
