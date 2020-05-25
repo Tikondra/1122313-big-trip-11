@@ -233,9 +233,6 @@ class EventEdit extends AbstractSmartComponent {
     if (currentDestination) {
       this._destinations = currentDestination;
       this._isDestination = true;
-    } else {
-      this._destinations.name = ``;
-      this._isDestination = false;
     }
   }
 
@@ -283,12 +280,14 @@ class EventEdit extends AbstractSmartComponent {
 
   _onChangeOffers(evt) {
     const offer = evt.target.value;
+    const price = Number(evt.path[1].querySelector(`.event__offer-price`).textContent);
     const state = this._offers.findIndex((it) => it.title === offer);
     const offers = this._offers;
 
     if (state < 0) {
       const newOffer = {
         title: offer,
+        price,
       };
       offers.push(newOffer);
     } else {
@@ -296,7 +295,6 @@ class EventEdit extends AbstractSmartComponent {
     }
 
     this._offers = offers;
-    this.rerender();
   }
 }
 
